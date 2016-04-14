@@ -128,8 +128,15 @@ namespace expert_system
                 return;
             }
 
-            FormOutputResultDiagramUsers diagramResult = new FormOutputResultDiagramUsers(m_strLoginUser, "");
+            string result = cmbResult.Text;
+
+            FormOutputResultDiagramUsers diagramResult = new FormOutputResultDiagramUsers(m_strLoginUser, result);
             diagramResult.Show();
+        }
+
+        private void cmbResult_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
         }
     }
 }

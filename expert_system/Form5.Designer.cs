@@ -92,6 +92,7 @@
             this.cmbResult.Size = new System.Drawing.Size(121, 21);
             this.cmbResult.TabIndex = 5;
             this.cmbResult.Text = "Результаты";
+            this.cmbResult.SelectedIndexChanged += new System.EventHandler(this.cmbResult_SelectedIndexChanged);
             // 
             // button2
             // 

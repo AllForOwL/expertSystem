@@ -434,9 +434,18 @@ namespace expert_system
                 }
                 writeResultOnOrientation.Close();
 
+                string pathFile_ = Path.GetFullPath(@"InfoUsers\" + m_strLoginUser + "result.txt");
+                StreamWriter writeResultOnOrientation_ = new StreamWriter(pathFile_, true);
+
+                for (int i = 0; i < 6; i++)
+                {
+                    writeResultOnOrientation_.WriteLine(arrayValueOrientation[i]);
+                }
+                writeResultOnOrientation_.Close();
+
                 // запись результатов для определения значения нечёткой логики в файл
-                pathFile = Path.GetFullPath(@"InfoUsers\" + m_strLoginUser + "result_from_logic.txt");
-                StreamWriter writeResultOnOrientationLogic = new StreamWriter(pathFile, true);
+                string pathFile2 = Path.GetFullPath(@"InfoUsers\" + m_strLoginUser + nameOrientation + "result_from_logic.txt");
+                StreamWriter writeResultOnOrientationLogic = new StreamWriter(pathFile2, true);
 
                 writeResultOnOrientationLogic.WriteLine(m_flCreative);
                 writeResultOnOrientationLogic.WriteLine(m_flHumanitarian);
@@ -446,6 +455,18 @@ namespace expert_system
                 writeResultOnOrientationLogic.WriteLine(m_flTechnical);
 
                writeResultOnOrientationLogic.Close();
+
+               string pathFile4 = Path.GetFullPath(@"InfoUsers\" + m_strLoginUser + "result_from_logic.txt");
+               StreamWriter writeResultOnOrientationLogic4 = new StreamWriter(pathFile4, true);
+
+               writeResultOnOrientationLogic4.WriteLine(m_flCreative);
+               writeResultOnOrientationLogic4.WriteLine(m_flHumanitarian);
+               writeResultOnOrientationLogic4.WriteLine(m_flLinguistic);
+               writeResultOnOrientationLogic4.WriteLine(m_flMathematical);
+               writeResultOnOrientationLogic4.WriteLine(m_flSports);
+               writeResultOnOrientationLogic4.WriteLine(m_flTechnical);
+
+               writeResultOnOrientationLogic4.Close();
 
                /*pathFile = Path.GetFullPath(@"InfoUsers\result_" + m_strLoginUser + "_temp.txt");
                StreamWriter writeResult = new StreamWriter(pathFile, false);

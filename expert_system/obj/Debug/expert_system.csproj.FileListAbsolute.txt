@@ -43,3 +43,4 @@ H:\github\expertSystem\expert_system\expert_system\obj\Debug\expert_system.Outpu
 H:\github\expertSystem\expert_system\expert_system\obj\Debug\expert_system.OutputResultsUser.resources
 H:\github\expertSystem\expert_system\expert_system\obj\Debug\expert_system.Properties.Resources.resources
 H:\github\expertSystem\expert_system\expert_system\obj\Debug\expert_system.csproj.GenerateResource.Cache
+H:\github\expertSystem\expert_system\expert_system\obj\Debug\expert_system.csprojResolveAssemblyReference.cache

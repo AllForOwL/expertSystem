@@ -62,56 +62,92 @@ namespace expert_system
                     }
             }
 
-            string pathFile = Path.GetFullPath(@"InfoUsers\" + m_strLogin + "result_" + nameOrientation + ".txt");
-
-            if (!File.Exists(pathFile))
+            string pathFile = "";
+            if (m_strTest == "нечеткая модель" || m_strTest == "Matlab")
             {
-                MessageBox.Show("Нет результатов теста");
-                return;
-            }
-           
-            StreamReader readFile = new StreamReader(pathFile);
+                pathFile = Path.GetFullPath(@"InfoUsers\" + m_strLogin + nameOrientation+ "result_from_logic.txt");
 
-            int rowsInTable = 0;
-            int colsInTable = 0;
-
-            dataGridView1.RowCount += 2;
-
-            Random rand = new Random();
-
-            double buffer;
-
-            while (!readFile.EndOfStream)
-            {
-                if (m_strTest == "нечеткая модель" || m_strTest == "Matlab")
+                if (!File.Exists(pathFile))
                 {
-                    buffer = Convert.ToDouble(readFile.ReadLine()); 
-
-                    if (buffer > 4)
-                    {
-                        buffer += 1.8;
-                    }
-                    else
-                    {
-                        buffer += 1.2;
-                    }
-                    dataGridView1.Rows[rowsInTable].Cells[colsInTable].Value += buffer.ToString();
-                }
-                else
-                {
-                    dataGridView1.Rows[rowsInTable].Cells[colsInTable].Value = readFile.ReadLine();
+                    MessageBox.Show("Тест не был пройден");
+                    return;
                 }
 
-                ++colsInTable;
+                StreamReader readFileForFuzzy = new StreamReader(pathFile);
+               
+                double valueFromFile;
+                int rowsInTable = 0;
+                double valueForTable = 0.0;
 
-                if (colsInTable == 6)
+                while (!readFileForFuzzy.EndOfStream)
                 {
-                    colsInTable = 0;
+                    ++dataGridView1.RowCount;
+                    for (int i = 0; i < 6; i++)
+                    {
+                        valueFromFile = Convert.ToDouble(readFileForFuzzy.ReadLine());
+                        //MessageBox.Show(valueForTable.ToString());
+
+                        if (valueFromFile == 0)
+                        {
+                            valueForTable = 0.0;
+                            dataGridView1.Rows[rowsInTable].Cells[i].Value = valueForTable.ToString();
+                        }
+                        else if (valueFromFile > 0 && valueFromFile <= 2)
+                        {
+                            valueForTable = 0.3;
+                            dataGridView1.Rows[rowsInTable].Cells[i].Value = valueForTable.ToString();
+                        }
+                        else if (valueFromFile > 2 && valueFromFile <= 4)
+                        {
+                            valueForTable = 0.6;
+                            dataGridView1.Rows[rowsInTable].Cells[i].Value = valueForTable.ToString();
+                        }
+                        else if (valueFromFile > 4 && valueFromFile < 6)
+                        {
+                            valueForTable = 0.9;
+                            dataGridView1.Rows[rowsInTable].Cells[i].Value = valueForTable.ToString();
+                        }
+                        else if (valueFromFile == 6)
+                        {
+                            valueForTable = 1.0;
+                            dataGridView1.Rows[rowsInTable].Cells[i].Value = valueForTable.ToString();
+                        }
+                    }
                     ++rowsInTable;
-                    dataGridView1.RowCount += 1;
                 }
-            }
 
+                readFileForFuzzy.Close();
+            }
+            else
+            {
+                String pathFile3 = Path.GetFullPath(@"InfoUsers\" + m_strLogin + "result_" + nameOrientation + ".txt");
+
+                if (!File.Exists(pathFile3))
+                {
+                    MessageBox.Show("Тест не был пройден");
+                    return;
+                }
+
+                StreamReader readFile = new StreamReader(pathFile3);
+
+                int valueFromFile;
+                int rowsInTable = 0;
+                double valueForTable = 0.0;
+                string tempOrientation;
+
+                while (!readFile.EndOfStream)
+                {
+                    ++dataGridView1.RowCount;
+                    tempOrientation = readFile.ReadLine();
+                    for (int i = 0; i < 6; i++)
+                    {
+                        dataGridView1.Rows[rowsInTable].Cells[i].Value = readFile.ReadLine();             
+                    }
+                    ++rowsInTable;
+                }
+
+                readFile.Close();
+            }
             this.Show();
         }
 

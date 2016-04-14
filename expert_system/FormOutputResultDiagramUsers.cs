@@ -31,7 +31,16 @@ namespace expert_system
 
         private void FormOutputResultDiagramUsers_Load(object sender, EventArgs e)
         {
-            string pathFile = Path.GetFullPath(@"InfoUsers\" + m_strLogin + "result_" + m_strOrientation + ".txt");
+            string pathFile;
+
+            if (m_strOrientation == "без нечеткой модели")
+            {
+                pathFile = Path.GetFullPath(@"InfoUsers\" + m_strLogin + "result.txt");
+            }
+            else
+            {
+                pathFile = Path.GetFullPath(@"InfoUsers\" + m_strLogin + "result_from_logic.txt");
+            }
 
             StreamReader readFile = new StreamReader(pathFile);
 
