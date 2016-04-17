@@ -138,5 +138,14 @@ namespace expert_system
         {
 
         }
+
+        private void button4_Click(object sender, EventArgs e)
+        {
+            string result = cmbResult.Text;
+
+
+            OutputResultsUser outputResult = new OutputResultsUser(m_strLoginUser, result, true);
+            outputResult.Show();
+        }
     }
 }

@@ -33,26 +33,19 @@ namespace expert_system
         {
             string pathFile;
 
-            if (m_strOrientation == "без нечеткой модели")
-            {
-                pathFile = Path.GetFullPath(@"InfoUsers\" + m_strLogin + "result.txt");
-            }
-            else
-            {
-                pathFile = Path.GetFullPath(@"InfoUsers\" + m_strLogin + "result_from_logic.txt");
-            }
+            pathFile = Path.GetFullPath(@"InfoUsers\" + m_strLogin + "result_" + m_strOrientation + ".txt");
 
             StreamReader readFile = new StreamReader(pathFile);
 
             string orientation;
-            int[] arrayPoints = new int[6];
+            double[] arrayPoints = new double[6];
 
             while (!readFile.EndOfStream)
             {
                 orientation = readFile.ReadLine();
                 for (int i = 0; i < 6; i++)
                 {
-                    arrayPoints[i] = Convert.ToInt16(readFile.ReadLine());
+                    arrayPoints[i] = Convert.ToDouble(readFile.ReadLine());
                 }
             }
 

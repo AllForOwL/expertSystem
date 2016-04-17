@@ -17,19 +17,21 @@ namespace expert_system
         int m_iTypeTest;
         string m_strLogin;
         string m_strTest;
+        bool m_blAnswer;
 
         public FormTableFromResult()
         {
             InitializeComponent();
         }
 
-        public FormTableFromResult(string loginUser, int typeTest, string strTypeTest)
+        public FormTableFromResult(string loginUser, int typeTest, string strTypeTest, bool answer)
         {
             InitializeComponent();
 
             m_strLogin = loginUser;
             m_iTypeTest = typeTest;
             m_strTest = strTypeTest;
+            m_blAnswer = answer;
 
             string nameOrientation = "";
 
@@ -62,6 +64,43 @@ namespace expert_system
                     }
             }
 
+            if (m_blAnswer)
+            {
+                string pathFileAnswer = Path.GetFullPath(@"InfoUsers\answer_" + nameOrientation + m_strLogin + ".txt");
+                StreamReader readResultOnOrientationAnswer = new StreamReader(pathFileAnswer);
+
+                if (!File.Exists(pathFileAnswer))
+                {
+                    MessageBox.Show("Нету результатов в данном тесте");
+                    return;
+                }
+
+                dataGridView1.ColumnCount = 1;
+
+                int rowsInTable = 0;
+                int rowsAll = 0;
+
+                while (!readResultOnOrientationAnswer.EndOfStream)
+                {
+                    ++dataGridView1.RowCount;
+                    dataGridView1.Rows[rowsAll].Cells[0].Value = rowsInTable.ToString();
+                    dataGridView1.Rows[rowsAll].Cells[0].Value = readResultOnOrientationAnswer.ReadLine();
+
+                    ++rowsInTable;
+                    ++rowsAll;
+
+                    if (rowsInTable == 36)
+                    {
+                        rowsInTable = 0;
+                    }
+                }
+
+
+                readResultOnOrientationAnswer.Close();
+                this.Show();
+                return;
+            }
+
             string pathFile = "";
             if (m_strTest == "нечеткая модель" || m_strTest == "Matlab")
             {
@@ -78,41 +117,49 @@ namespace expert_system
                 double valueFromFile;
                 int rowsInTable = 0;
                 double valueForTable = 0.0;
+                double valueForTable_2 = 0.0;
 
                 while (!readFileForFuzzy.EndOfStream)
                 {
                     ++dataGridView1.RowCount;
                     for (int i = 0; i < 6; i++)
                     {
+                        valueForTable_2 = 0.0;
                         valueFromFile = Convert.ToDouble(readFileForFuzzy.ReadLine());
                         //MessageBox.Show(valueForTable.ToString());
 
-                        if (valueFromFile == 0)
+                        if (valueFromFile >= 0.0 && valueFromFile < 1.0)
                         {
-                            valueForTable = 0.0;
-                            dataGridView1.Rows[rowsInTable].Cells[i].Value = valueForTable.ToString();
+                            valueForTable_2 = 0.0;
+                            dataGridView1.Rows[rowsInTable].Cells[i].Value = valueForTable_2.ToString();
                         }
-                        else if (valueFromFile > 0 && valueFromFile <= 2)
+                        else if (valueFromFile >= 1.0 && valueFromFile < 2.0)
                         {
-                            valueForTable = 0.3;
-                            dataGridView1.Rows[rowsInTable].Cells[i].Value = valueForTable.ToString();
+                            valueForTable_2 = 0.2;
+                            dataGridView1.Rows[rowsInTable].Cells[i].Value = valueForTable_2.ToString();
                         }
-                        else if (valueFromFile > 2 && valueFromFile <= 4)
+                        else if (valueFromFile >= 2.0 && valueFromFile < 3.0)
                         {
-                            valueForTable = 0.6;
-                            dataGridView1.Rows[rowsInTable].Cells[i].Value = valueForTable.ToString();
+                            valueForTable_2 = 0.4;
+                            dataGridView1.Rows[rowsInTable].Cells[i].Value = valueForTable_2.ToString();
                         }
-                        else if (valueFromFile > 4 && valueFromFile < 6)
+                        else if (valueFromFile >= 3.0 && valueFromFile < 4.0)
                         {
-                            valueForTable = 0.9;
-                            dataGridView1.Rows[rowsInTable].Cells[i].Value = valueForTable.ToString();
+                            valueForTable_2 = 0.6;
+                            dataGridView1.Rows[rowsInTable].Cells[i].Value = valueForTable_2.ToString();
                         }
-                        else if (valueFromFile == 6)
+                        else if (valueFromFile >= 4.0 && valueFromFile < 5.0)
                         {
-                            valueForTable = 1.0;
-                            dataGridView1.Rows[rowsInTable].Cells[i].Value = valueForTable.ToString();
+                            valueForTable_2 = 0.8;
+                            dataGridView1.Rows[rowsInTable].Cells[i].Value = valueForTable_2.ToString();
+                        }
+                        else if (valueFromFile >= 5.0)
+                        {
+                            valueForTable_2 = 1.0;
+                            dataGridView1.Rows[rowsInTable].Cells[i].Value = valueForTable_2.ToString();
                         }
                     }
+                    valueForTable = 0;
                     ++rowsInTable;
                 }
 
@@ -130,9 +177,9 @@ namespace expert_system
 
                 StreamReader readFile = new StreamReader(pathFile3);
 
-                int valueFromFile;
+               // int valueFromFile;
                 int rowsInTable = 0;
-                double valueForTable = 0.0;
+               // double valueForTable = 0.0;
                 string tempOrientation;
 
                 while (!readFile.EndOfStream)

@@ -20,10 +20,10 @@ namespace expert_system
 
         private void button1_Click(object sender, EventArgs e)
         {
-            string PathAllUsers = Path.GetFullPath(@"InfoUsers\AllUsers.txt");
+           string PathAllUsers = Path.GetFullPath(@"InfoUsers\AllUsers.txt");
            
            StreamWriter writeNewUsers = new StreamWriter(PathAllUsers, true);
-
+           
            string FIOUsers = textBox2.Text;
            string loginUsers = textBox4.Text;
            string passUsers  = textBox5.Text;

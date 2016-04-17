@@ -44,7 +44,7 @@ namespace expert_system
             }
             else
             {
-                string PathAllUsers = Path.GetFullPath(@"InfoUsers\surname_FIO.txt");
+                string PathAllUsers = Path.GetFullPath(@"InfoUsers\AllUsers.txt");
 
                 StreamReader readAllUsers = new StreamReader(PathAllUsers, false);
 
@@ -53,6 +53,7 @@ namespace expert_system
 
                 while (!readAllUsers.EndOfStream)
                 {
+                    tempLoginPass = readAllUsers.ReadLine();
                     tempLogin = readAllUsers.ReadLine();
                     tempPassword = readAllUsers.ReadLine();
 

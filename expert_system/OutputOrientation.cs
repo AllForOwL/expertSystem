@@ -33,10 +33,10 @@ namespace expert_system
         {
             StreamReader readResult = new StreamReader(Path.GetFullPath(@"InfoUsers\" + m_strLogin + "result_" + m_strOrientation + ".txt"));
 
-            int    maxValue = 0;
-            string orientation = "";
-            string pathFileFromOrientation = "";
-            int    tempValue = 0;
+            double    maxValue = 0;
+            string    orientation = "";
+            string    pathFileFromOrientation = "";
+            double    tempValue = 0;
 
             while (!readResult.EndOfStream)
             {
@@ -44,7 +44,7 @@ namespace expert_system
                 orientation = readResult.ReadLine();
                 for (int i = 0; i < 6; i++)
                 {
-                    tempValue = Convert.ToInt16(readResult.ReadLine());
+                    tempValue = Convert.ToDouble(readResult.ReadLine());
 
                     if (tempValue > maxValue)
                     {
