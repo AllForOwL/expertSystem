@@ -13,15 +13,16 @@ namespace expert_system
 {
     public partial class FormNumberUserDirection : Form
     {
+        public string m_typeTest;
+
         public FormNumberUserDirection()
         {
             InitializeComponent();
+
         }
 
         private void FormNumberUserDirection_Load(object sender, EventArgs e)
         {
-             StreamReader readLoginAllUsers = new StreamReader(Path.GetFullPath(@"InfoUsers\surname_FIO.txt"));
-
             int numberCreative = 0;
             int numberHumanitarian = 0;
             int numberLinguistic = 0;
@@ -38,16 +39,31 @@ namespace expert_system
             string direction = "";
             double maxDirection;
 
-            while (!readLoginAllUsers.EndOfStream)
+            string []arrayOrientation = new string[5];
+            arrayOrientation[0] = "preschool_child";
+            arrayOrientation[1] = "three_class";
+            arrayOrientation[2] = "five_class";
+            arrayOrientation[3] = "preschool";
+            arrayOrientation[4] = "parent";
+
+            int numberOrientation = 0;
+
+            while (numberOrientation != 5)
             {
                 maxDirection = 0;
-                surname = readLoginAllUsers.ReadLine();
-                login = readLoginAllUsers.ReadLine();
 
-                StreamReader readResultUsers = new StreamReader(Path.GetFullPath(@"InfoUsers\result_" + login + ".txt"));
+                if (!File.Exists(Path.GetFullPath(@"InfoUsers\Allresult_" + arrayOrientation[numberOrientation] + ".txt")))
+                {
+                    ++numberOrientation;
+                    continue;
+                }
 
+                StreamReader readResultUsers = new StreamReader(Path.GetFullPath(@"InfoUsers\Allresult_" + arrayOrientation[numberOrientation] + ".txt"));
+
+                login = readResultUsers.ReadLine();
                 while (!readResultUsers.EndOfStream)
                 {
+
                     for (int i = 1; i < 7; i++)
                     {
                         valueFromFile = Convert.ToDouble((readResultUsers.ReadLine()));
@@ -103,8 +119,9 @@ namespace expert_system
                     }
                 }
                 readResultUsers.Close();
+                ++numberOrientation;
             }
-            readLoginAllUsers.Close();
+            
 
             chart1.Series[0].Points.Add(numberCreative);
             chart1.Series[1].Points.Add(numberHumanitarian);
@@ -112,6 +129,8 @@ namespace expert_system
             chart1.Series[3].Points.Add(numberMathematical);
             chart1.Series[4].Points.Add(numberSports);
             chart1.Series[5].Points.Add(numberTechnical);
+            
+
         }
     }
 }

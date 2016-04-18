@@ -462,9 +462,21 @@ namespace expert_system
 
                 writeResultOnOrientationAnswer.Close();
 
-
-
                // запись результатоа без логики в файл
+
+                string pathFileAll = Path.GetFullPath(@"InfoUsers\Allresult_" + nameOrientation + ".txt");
+                StreamWriter writeResultOnOrientationAll = new StreamWriter(pathFileAll, true);
+                
+                writeResultOnOrientationAll.WriteLine(m_strLoginUser + 0.0);
+                writeResultOnOrientationAll.WriteLine(m_flCreative + 0.0);
+                writeResultOnOrientationAll.WriteLine(m_flHumanitarian + 0.0);
+                writeResultOnOrientationAll.WriteLine(m_flLinguistic + 0.0);
+                writeResultOnOrientationAll.WriteLine(m_flMathematical + 0.0);
+                writeResultOnOrientationAll.WriteLine(m_flSports + 0.0);
+                writeResultOnOrientationAll.WriteLine(m_flTechnical + 0.0);
+                
+                writeResultOnOrientationAll.Close();
+               
                 string pathFile = Path.GetFullPath(@"InfoUsers\" + m_strLoginUser + "result_" + nameOrientation + ".txt");
                 StreamWriter writeResultOnOrientation = new StreamWriter(pathFile, true);
                 writeResultOnOrientation.WriteLine(bigOrientation);

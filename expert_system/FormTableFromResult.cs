@@ -19,9 +19,42 @@ namespace expert_system
         string m_strTest;
         bool m_blAnswer;
 
-        public FormTableFromResult()
+        public FormTableFromResult(string strTypeTest)
         {
             InitializeComponent();
+
+            m_strTest = strTypeTest;
+
+            ++dataGridView1.ColumnCount;
+
+            int columnCount = dataGridView1.ColumnCount;
+
+            string pathFileAll = Path.GetFullPath(@"InfoUsers\Allresult_" + strTypeTest + ".txt");
+
+            if (!File.Exists(pathFileAll))
+            {
+                MessageBox.Show("Тест ещё никто не проходил");
+                return;
+            }
+
+            StreamReader readResultOnOrientationAll = new StreamReader(pathFileAll);
+
+            int rows = 0;
+
+            while (!readResultOnOrientationAll.EndOfStream)
+            {
+                ++dataGridView1.RowCount;
+                dataGridView1.Rows[rows].Cells[6].Value = readResultOnOrientationAll.ReadLine();
+
+                for (int i = 0; i < 6; i++)
+                {
+                    ++dataGridView1.RowCount;
+                    dataGridView1.Rows[rows].Cells[i].Value = readResultOnOrientationAll.ReadLine();
+                }
+                ++rows;
+            }
+            
+            readResultOnOrientationAll.Close();   
         }
 
         public FormTableFromResult(string loginUser, int typeTest, string strTypeTest, bool answer)

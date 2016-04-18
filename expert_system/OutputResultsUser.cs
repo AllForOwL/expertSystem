@@ -15,12 +15,21 @@ namespace expert_system
     {
         public string m_strLogin;
         public string m_strTypeTest;
-        public bool   m_blAnswer; 
+        public bool   m_blAnswer;
+        public bool m_blDiagram;
 
         public OutputResultsUser()
         {
             InitializeComponent();
 
+            m_strLogin = "root";
+        }
+
+        public OutputResultsUser(bool diagram)
+        {
+            InitializeComponent();
+
+            m_blDiagram = true;
             m_strLogin = "root";
         }
 
@@ -81,7 +90,8 @@ namespace expert_system
         {
             if (m_strLogin == "root")
             {
-                FormTableFromResult formResult = new FormTableFromResult();
+                m_strTypeTest = "preschool_parent";
+                FormTableFromResult formResult = new FormTableFromResult(m_strTypeTest);
                 formResult.Show();
             }
             else
@@ -94,7 +104,8 @@ namespace expert_system
         {
             if (m_strLogin == "root")
             {
-                FormTableFromResult formResult = new FormTableFromResult();
+                m_strTypeTest = "three_class";
+                FormTableFromResult formResult = new FormTableFromResult(m_strTypeTest);
                 formResult.Show();
             }
             else
@@ -107,7 +118,8 @@ namespace expert_system
         {
             if (m_strLogin == "root")
             {
-                FormTableFromResult formResult = new FormTableFromResult();
+                m_strTypeTest = "five_class";
+                FormTableFromResult formResult = new FormTableFromResult(m_strTypeTest);
                 formResult.Show();
             }
             else
@@ -120,7 +132,8 @@ namespace expert_system
         {
             if (m_strLogin == "root")
             {
-                FormTableFromResult formResult = new FormTableFromResult();
+                m_strTypeTest = "preschool";
+                FormTableFromResult formResult = new FormTableFromResult(m_strTypeTest);
                 formResult.Show();
             }
             else
@@ -133,7 +146,8 @@ namespace expert_system
         {
             if (m_strLogin == "root")
             {
-                FormTableFromResult formResult = new FormTableFromResult();
+                m_strTypeTest = "parent";
+                FormTableFromResult formResult = new FormTableFromResult(m_strTypeTest);
                 formResult.Show();
             }
             else

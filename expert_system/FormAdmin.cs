@@ -26,8 +26,8 @@ namespace expert_system
 
         private void button3_Click(object sender, EventArgs e)
         {
-            FormNumberUserDirection userDirection = new FormNumberUserDirection();
-            userDirection.Show();
+            FormNumberUserDirection result = new FormNumberUserDirection();
+            result.Show();
         }
 
         private void button2_Click(object sender, EventArgs e)
