@@ -109,6 +109,7 @@ namespace expert_system
                 }
 
                 dataGridView1.ColumnCount = 1;
+                dataGridView1.Columns[0].HeaderCell.Value = "";
 
                 int rowsInTable = 0;
                 int rowsAll = 0;

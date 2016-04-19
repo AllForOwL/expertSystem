@@ -29,6 +29,7 @@
         private void InitializeComponent()
         {
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.textBox1 = new System.Windows.Forms.TextBox();
             this.button5 = new System.Windows.Forms.Button();
             this.label1 = new System.Windows.Forms.Label();
             this.radioButton5 = new System.Windows.Forms.RadioButton();
@@ -39,6 +40,7 @@
             this.comboBox1 = new System.Windows.Forms.ComboBox();
             this.button1 = new System.Windows.Forms.Button();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.textBox2 = new System.Windows.Forms.TextBox();
             this.button8 = new System.Windows.Forms.Button();
             this.label2 = new System.Windows.Forms.Label();
             this.radioButton10 = new System.Windows.Forms.RadioButton();
@@ -49,6 +51,7 @@
             this.button2 = new System.Windows.Forms.Button();
             this.comboBox2 = new System.Windows.Forms.ComboBox();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
+            this.textBox3 = new System.Windows.Forms.TextBox();
             this.button6 = new System.Windows.Forms.Button();
             this.label3 = new System.Windows.Forms.Label();
             this.radioButton15 = new System.Windows.Forms.RadioButton();
@@ -59,6 +62,7 @@
             this.button3 = new System.Windows.Forms.Button();
             this.comboBox3 = new System.Windows.Forms.ComboBox();
             this.groupBox4 = new System.Windows.Forms.GroupBox();
+            this.textBox4 = new System.Windows.Forms.TextBox();
             this.button7 = new System.Windows.Forms.Button();
             this.label4 = new System.Windows.Forms.Label();
             this.radioButton18 = new System.Windows.Forms.RadioButton();
@@ -66,10 +70,6 @@
             this.radioButton16 = new System.Windows.Forms.RadioButton();
             this.button4 = new System.Windows.Forms.Button();
             this.comboBox4 = new System.Windows.Forms.ComboBox();
-            this.textBox1 = new System.Windows.Forms.TextBox();
-            this.textBox2 = new System.Windows.Forms.TextBox();
-            this.textBox3 = new System.Windows.Forms.TextBox();
-            this.textBox4 = new System.Windows.Forms.TextBox();
             this.button9 = new System.Windows.Forms.Button();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
@@ -95,6 +95,14 @@
             this.groupBox1.TabIndex = 0;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Дошкольник";
+            // 
+            // textBox1
+            // 
+            this.textBox1.Location = new System.Drawing.Point(479, 62);
+            this.textBox1.Name = "textBox1";
+            this.textBox1.Size = new System.Drawing.Size(100, 20);
+            this.textBox1.TabIndex = 9;
+            this.textBox1.Visible = false;
             // 
             // button5
             // 
@@ -212,6 +220,14 @@
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "3 класс";
             // 
+            // textBox2
+            // 
+            this.textBox2.Location = new System.Drawing.Point(479, 50);
+            this.textBox2.Name = "textBox2";
+            this.textBox2.Size = new System.Drawing.Size(100, 20);
+            this.textBox2.TabIndex = 9;
+            this.textBox2.Visible = false;
+            // 
             // button8
             // 
             this.button8.Location = new System.Drawing.Point(584, 82);
@@ -328,6 +344,14 @@
             this.groupBox3.TabStop = false;
             this.groupBox3.Text = "5 класс";
             // 
+            // textBox3
+            // 
+            this.textBox3.Location = new System.Drawing.Point(479, 70);
+            this.textBox3.Name = "textBox3";
+            this.textBox3.Size = new System.Drawing.Size(100, 20);
+            this.textBox3.TabIndex = 9;
+            this.textBox3.Visible = false;
+            // 
             // button6
             // 
             this.button6.Location = new System.Drawing.Point(585, 96);
@@ -442,6 +466,15 @@
             this.groupBox4.TabStop = false;
             this.groupBox4.Text = "родитель";
             // 
+            // textBox4
+            // 
+            this.textBox4.Location = new System.Drawing.Point(479, 61);
+            this.textBox4.Name = "textBox4";
+            this.textBox4.Size = new System.Drawing.Size(100, 20);
+            this.textBox4.TabIndex = 9;
+            this.textBox4.UseWaitCursor = true;
+            this.textBox4.Visible = false;
+            // 
             // button7
             // 
             this.button7.Location = new System.Drawing.Point(585, 88);
@@ -519,39 +552,6 @@
             this.comboBox4.Text = "Изменить";
             this.comboBox4.SelectedIndexChanged += new System.EventHandler(this.comboBox4_SelectedIndexChanged);
             // 
-            // textBox1
-            // 
-            this.textBox1.Location = new System.Drawing.Point(479, 62);
-            this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(100, 20);
-            this.textBox1.TabIndex = 9;
-            this.textBox1.Visible = false;
-            // 
-            // textBox2
-            // 
-            this.textBox2.Location = new System.Drawing.Point(479, 50);
-            this.textBox2.Name = "textBox2";
-            this.textBox2.Size = new System.Drawing.Size(100, 20);
-            this.textBox2.TabIndex = 9;
-            this.textBox2.Visible = false;
-            // 
-            // textBox3
-            // 
-            this.textBox3.Location = new System.Drawing.Point(479, 70);
-            this.textBox3.Name = "textBox3";
-            this.textBox3.Size = new System.Drawing.Size(100, 20);
-            this.textBox3.TabIndex = 9;
-            this.textBox3.Visible = false;
-            // 
-            // textBox4
-            // 
-            this.textBox4.Location = new System.Drawing.Point(479, 61);
-            this.textBox4.Name = "textBox4";
-            this.textBox4.Size = new System.Drawing.Size(100, 20);
-            this.textBox4.TabIndex = 9;
-            this.textBox4.UseWaitCursor = true;
-            this.textBox4.Visible = false;
-            // 
             // button9
             // 
             this.button9.Location = new System.Drawing.Point(12, 2);
@@ -560,6 +560,7 @@
             this.button9.TabIndex = 4;
             this.button9.Text = "Сохранить измененния";
             this.button9.UseVisualStyleBackColor = true;
+            this.button9.Click += new System.EventHandler(this.button9_Click);
             // 
             // FormChangeQuestion
             // 

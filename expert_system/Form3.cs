@@ -32,11 +32,11 @@ namespace expert_system
         public int m_iYearUser;
         public string m_strLoginUser;
 
-        public string[] m_arrayAnswerChild  = new string[36];
+        public string[] m_arrayAnswerChild  = new string[216];
         public string[,] m_arrayAnswerParent = new string[5, 18];
         public int m_iCountQuestion;
 
-        public int [] m_iArrayAnswer = new int[36];
+        public int [] m_iArrayAnswer = new int[216];
 
         public FormTest()
         {
@@ -120,7 +120,7 @@ namespace expert_system
             {
                 StreamReader readFileChildQuestions = new StreamReader(questionsChild, false);
 
-                for (int rows = 0; rows < 36; rows++)
+                for (int rows = 0; rows < 216; rows++)
                 {
                     m_arrayAnswerChild[rows] = readFileChildQuestions.ReadLine();
                 }
@@ -130,11 +130,11 @@ namespace expert_system
                 groupBox1.Visible = true;
 
                 questionChild.Text = m_arrayAnswerChild[m_iCountQuestion];
-                childAnswer1.Text = "да";
-                childAnswer2.Text = "скорее да";
-                childAnswer3.Text = "не знаю";
-                childAnswer4.Text = "скорее нет";
-                childAnswer5.Text = "нет";
+                childAnswer1.Text = m_arrayAnswerChild[m_iCountQuestion+1];
+                childAnswer2.Text = m_arrayAnswerChild[m_iCountQuestion+2];
+                childAnswer3.Text = m_arrayAnswerChild[m_iCountQuestion+3];
+                childAnswer4.Text = m_arrayAnswerChild[m_iCountQuestion+4];
+                childAnswer5.Text = m_arrayAnswerChild[m_iCountQuestion+5];
             }
 
             if (m_iYearUser == 0 || m_iYearUser == 4)
@@ -554,9 +554,14 @@ namespace expert_system
                 return;
             }
 
-            ++m_iCountQuestion;
+            m_iCountQuestion+=6;
 
             questionChild.Text = m_arrayAnswerChild[m_iCountQuestion];
+            childAnswer1.Text = m_arrayAnswerChild[m_iCountQuestion + 1];
+            childAnswer2.Text = m_arrayAnswerChild[m_iCountQuestion + 2];
+            childAnswer3.Text = m_arrayAnswerChild[m_iCountQuestion + 3];
+            childAnswer4.Text = m_arrayAnswerChild[m_iCountQuestion + 4];
+            childAnswer5.Text = m_arrayAnswerChild[m_iCountQuestion + 5];
 
             if (m_iCountQuestion <= 17)
             {

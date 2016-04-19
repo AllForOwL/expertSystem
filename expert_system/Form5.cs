@@ -130,7 +130,7 @@ namespace expert_system
 
             string result = cmbResult.Text;
 
-            FormOutputResultDiagramUsers diagramResult = new FormOutputResultDiagramUsers(m_strLoginUser, result);
+            FormNumberUserDirection diagramResult = new FormNumberUserDirection();
             diagramResult.Show();
         }
 
