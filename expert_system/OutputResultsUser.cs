@@ -15,6 +15,7 @@ namespace expert_system
     {
         public string m_strLogin;
         public string m_strTypeTest;
+        public string m_strOrientation;
         public bool   m_blAnswer;
         public bool m_blDiagram;
 
@@ -23,6 +24,14 @@ namespace expert_system
             InitializeComponent();
 
             m_strLogin = "root";
+        }
+
+        public OutputResultsUser(int diagram)
+        {
+            InitializeComponent();
+
+            m_strLogin = "root";
+            m_blDiagram = true;
         }
 
         public OutputResultsUser(bool diagram)
@@ -42,13 +51,13 @@ namespace expert_system
             m_blAnswer = false;
         }
 
-        public OutputResultsUser(string login, string typeTest, bool answer)
+        public OutputResultsUser(string login, string result, bool answer)
         {
             InitializeComponent();
 
             m_strLogin = login;
-            m_strTypeTest = typeTest;
-            m_blAnswer = true;
+            m_strTypeTest = result;
+            m_blDiagram = true;
         }
 
         private void OutputResultsUser_Load(object sender, EventArgs e)
@@ -91,11 +100,27 @@ namespace expert_system
             if (m_strLogin == "root")
             {
                 m_strTypeTest = "preschool_parent";
+
+                if (m_blDiagram)
+                {
+                    FormOutputResultDiagramUsers diagram = new FormOutputResultDiagramUsers(m_strLogin, m_strTypeTest);
+                    diagram.Show();
+                    return;
+                }
+
                 FormTableFromResult formResult = new FormTableFromResult(m_strTypeTest);
                 formResult.Show();
             }
             else
             {
+                if (m_blDiagram)
+                {
+                    m_strOrientation = "preschool_parent";
+                    FormOutputResultDiagramUsers diagram = new FormOutputResultDiagramUsers(m_strLogin, m_strTypeTest, m_strOrientation);
+                    diagram.Show();
+                    return;
+                }
+
                 FormTableFromResult formResult = new FormTableFromResult(m_strLogin, 0, m_strTypeTest, m_blAnswer);
             }
         }
@@ -105,11 +130,26 @@ namespace expert_system
             if (m_strLogin == "root")
             {
                 m_strTypeTest = "three_class";
+
+                if (m_blDiagram)
+                {
+                    FormOutputResultDiagramUsers diagram = new FormOutputResultDiagramUsers(m_strLogin, m_strTypeTest);
+                    diagram.Show();
+                    return;
+                }
+
                 FormTableFromResult formResult = new FormTableFromResult(m_strTypeTest);
                 formResult.Show();
             }
             else
             {
+                if (m_blDiagram)
+                {
+                    m_strOrientation = "three_class";
+                    FormOutputResultDiagramUsers diagram = new FormOutputResultDiagramUsers(m_strLogin, m_strTypeTest, m_strOrientation); 
+                    diagram.Show();
+                    return;
+                }
                 FormTableFromResult formResult = new FormTableFromResult(m_strLogin, 1, m_strTypeTest, m_blAnswer);
             }
         }
@@ -119,11 +159,26 @@ namespace expert_system
             if (m_strLogin == "root")
             {
                 m_strTypeTest = "five_class";
+
+                if (m_blDiagram)
+                {
+                    FormOutputResultDiagramUsers diagram = new FormOutputResultDiagramUsers(m_strLogin, m_strTypeTest);
+                    diagram.Show();
+                    return;
+                }
+
                 FormTableFromResult formResult = new FormTableFromResult(m_strTypeTest);
                 formResult.Show();
             }
             else
             {
+                if (m_blDiagram)
+                {
+                    m_strOrientation = "five_class";
+                    FormOutputResultDiagramUsers diagram = new FormOutputResultDiagramUsers(m_strLogin, m_strTypeTest, m_strOrientation);           
+                    diagram.Show();
+                    return;
+                }
                 FormTableFromResult formResult = new FormTableFromResult(m_strLogin, 2, m_strTypeTest, m_blAnswer);
             }
         }
@@ -133,11 +188,26 @@ namespace expert_system
             if (m_strLogin == "root")
             {
                 m_strTypeTest = "preschool";
+
+                if (m_blDiagram)
+                {
+                    FormOutputResultDiagramUsers diagram = new FormOutputResultDiagramUsers(m_strLogin, m_strTypeTest);
+                    diagram.Show();
+                    return;
+                }
+
                 FormTableFromResult formResult = new FormTableFromResult(m_strTypeTest);
                 formResult.Show();
             }
             else
             {
+                if (m_blDiagram)
+                {
+                    m_strOrientation = "preschool";
+                    FormOutputResultDiagramUsers diagram = new FormOutputResultDiagramUsers(m_strLogin, m_strTypeTest, m_strOrientation);                
+                    diagram.Show();
+                    return;
+                }
                 FormTableFromResult formResult = new FormTableFromResult(m_strLogin, 3, m_strTypeTest, m_blAnswer);
             }
         }
@@ -147,11 +217,26 @@ namespace expert_system
             if (m_strLogin == "root")
             {
                 m_strTypeTest = "parent";
+
+                if (m_blDiagram)
+                {
+                    FormOutputResultDiagramUsers diagram = new FormOutputResultDiagramUsers(m_strLogin, m_strTypeTest);
+                    diagram.Show();
+                    return;
+                }
+
                 FormTableFromResult formResult = new FormTableFromResult(m_strTypeTest);
                 formResult.Show();
             }
             else
             {
+                if (m_blDiagram)
+                {
+                    m_strOrientation = "parent";
+                    FormOutputResultDiagramUsers diagram = new FormOutputResultDiagramUsers(m_strLogin, m_strTypeTest, m_strOrientation);                 
+                    diagram.Show();
+                    return;
+                }
                 FormTableFromResult formResult = new FormTableFromResult(m_strLogin, 4, m_strTypeTest, m_blAnswer);
             }
         }

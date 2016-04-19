@@ -26,6 +26,7 @@ namespace expert_system
             m_strTest = strTypeTest;
 
             ++dataGridView1.ColumnCount;
+            dataGridView1.RowHeadersWidth = 50;
 
             int columnCount = dataGridView1.ColumnCount;
 
@@ -41,6 +42,8 @@ namespace expert_system
 
             int rows = 0;
 
+            dataGridView1.Columns[6].HeaderCell.Value = "Логин";
+
             while (!readResultOnOrientationAll.EndOfStream)
             {
                 ++dataGridView1.RowCount;
@@ -52,6 +55,7 @@ namespace expert_system
                     dataGridView1.Rows[rows].Cells[i].Value = readResultOnOrientationAll.ReadLine();
                 }
                 ++rows;
+                dataGridView1.Rows[rows-1].HeaderCell.Value = rows.ToString();
             }
             
             readResultOnOrientationAll.Close();   
@@ -100,32 +104,35 @@ namespace expert_system
             if (m_blAnswer)
             {
                 string pathFileAnswer = Path.GetFullPath(@"InfoUsers\answer_" + nameOrientation + m_strLogin + ".txt");
-                StreamReader readResultOnOrientationAnswer = new StreamReader(pathFileAnswer);
 
                 if (!File.Exists(pathFileAnswer))
                 {
                     MessageBox.Show("Нету результатов в данном тесте");
                     return;
                 }
+                
+                StreamReader readResultOnOrientationAnswer = new StreamReader(pathFileAnswer);
 
                 dataGridView1.ColumnCount = 1;
                 dataGridView1.Columns[0].HeaderCell.Value = "";
+                dataGridView1.RowHeadersWidth = 50;
 
-                int rowsInTable = 0;
+                int rowsInTable = 1;
                 int rowsAll = 0;
 
                 while (!readResultOnOrientationAnswer.EndOfStream)
                 {
                     ++dataGridView1.RowCount;
-                    dataGridView1.Rows[rowsAll].Cells[0].Value = rowsInTable.ToString();
+                    dataGridView1.Rows[rowsAll].HeaderCell.Value = rowsInTable.ToString();
                     dataGridView1.Rows[rowsAll].Cells[0].Value = readResultOnOrientationAnswer.ReadLine();
 
                     ++rowsInTable;
                     ++rowsAll;
 
-                    if (rowsInTable == 36)
+                    if (rowsInTable == 37)
                     {
                         rowsInTable = 0;
+                        ++dataGridView1.RowCount;
                     }
                 }
 

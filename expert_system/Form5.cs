@@ -129,9 +129,10 @@ namespace expert_system
             }
 
             string result = cmbResult.Text;
+            string typeTest = cmbChooiseTest.Text;
 
-            FormNumberUserDirection diagramResult = new FormNumberUserDirection();
-            diagramResult.Show();
+            OutputResultsUser outputResult = new OutputResultsUser(m_strLoginUser, result, true);
+            outputResult.Show();
         }
 
         private void cmbResult_SelectedIndexChanged(object sender, EventArgs e)
@@ -144,7 +145,7 @@ namespace expert_system
             string result = cmbResult.Text;
 
 
-            OutputResultsUser outputResult = new OutputResultsUser(m_strLoginUser, result, true);
+            OutputResultsUser outputResult = new OutputResultsUser(m_strLoginUser, result);
             outputResult.Show();
         }
     }
