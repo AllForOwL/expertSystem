@@ -156,7 +156,7 @@ namespace expert_system
                 orientation = readFile_.ReadLine();
                 for (int i = 0; i < 6; i++)
                 {
-                    arrayPoints[i] += Convert.ToDouble(readFile_.ReadLine());
+                    arrayPoints[i] = Convert.ToDouble(readFile_.ReadLine());
                 }
             }
 

@@ -190,8 +190,8 @@ namespace expert_system
 
             // если вопрос в творческом направлении
              if (
-                (m_iCountQuestion >= 0 && m_iCountQuestion <= 2) ||
-                (m_iCountQuestion >= 18 && m_iCountQuestion <= 20)
+                (m_iCountQuestion >= 0 && m_iCountQuestion < 18) ||
+                (m_iCountQuestion >= 108 && m_iCountQuestion <126)
                 )
             {
                 if (childAnswer5.Checked)
@@ -219,8 +219,8 @@ namespace expert_system
             }
                  // если вопрос в лингвистическом направлении
             else if (
-                (m_iCountQuestion >= 3 && m_iCountQuestion <= 5) ||
-                (m_iCountQuestion >= 21 && m_iCountQuestion <= 23)
+                (m_iCountQuestion >= 18 && m_iCountQuestion < 36) ||
+                (m_iCountQuestion >= 126 && m_iCountQuestion < 144)
                 )
             {
                 if (childAnswer5.Checked)
@@ -248,8 +248,8 @@ namespace expert_system
             }
                  // если вопрос в техническом направлении
             else if (
-                (m_iCountQuestion >= 6 && m_iCountQuestion <= 8) ||
-                (m_iCountQuestion >= 24 && m_iCountQuestion <= 26)
+                (m_iCountQuestion >= 36 && m_iCountQuestion < 54) ||
+                (m_iCountQuestion >= 144 && m_iCountQuestion < 162)
                 )
             {
                 if (childAnswer5.Checked)
@@ -277,8 +277,8 @@ namespace expert_system
             }
                  // если вопрос в гуманитарном направлении
             else if (
-                (m_iCountQuestion >= 9 && m_iCountQuestion <= 11) ||
-                (m_iCountQuestion >= 27 && m_iCountQuestion <= 29)
+                (m_iCountQuestion >= 54 && m_iCountQuestion < 72) ||
+                (m_iCountQuestion >= 180 && m_iCountQuestion < 196)
                 )
             {
                 if (childAnswer5.Checked)
@@ -306,8 +306,8 @@ namespace expert_system
             }
                  // если вопрос в математическом направлении
             else if (
-                (m_iCountQuestion >= 12 && m_iCountQuestion <= 14) ||
-                (m_iCountQuestion >= 30 && m_iCountQuestion <= 32)
+                (m_iCountQuestion >= 72 && m_iCountQuestion < 90) ||
+                (m_iCountQuestion >= 196 && m_iCountQuestion < 214)
                 )
             {
                 if (childAnswer5.Checked)
@@ -365,7 +365,7 @@ namespace expert_system
             m_banswerParent = false;
 
             // если последний вопрос
-           if (m_iCountQuestion == 35)
+           if (m_iCountQuestion >= 210)
             {
                 float[] arrayValueOrientation = new float[6];
 
