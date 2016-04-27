@@ -113,26 +113,89 @@ namespace expert_system
                 
                 StreamReader readResultOnOrientationAnswer = new StreamReader(pathFileAnswer);
 
-                dataGridView1.ColumnCount = 1;
+                if (nameOrientation == "preschool_parent")
+                {
+                    dataGridView1.ColumnCount = 2;
+                }
+                else
+                {
+                    dataGridView1.ColumnCount = 1;
+                }
+
                 dataGridView1.Columns[0].HeaderCell.Value = "";
                 dataGridView1.RowHeadersWidth = 50;
 
                 int rowsInTable = 1;
                 int rowsAll = 0;
+                int cells = 0;
+
+                int countAllAnswer = 0;
+                int countAnswer = 0;
+                string strAnswer   = " ";
+                bool setCOuntAnswer = true;
+
+                int countAnswer_ = 99999;
 
                 while (!readResultOnOrientationAnswer.EndOfStream)
                 {
                     ++dataGridView1.RowCount;
-                    dataGridView1.Rows[rowsAll].HeaderCell.Value = rowsInTable.ToString();
-                    dataGridView1.Rows[rowsAll].Cells[0].Value = readResultOnOrientationAnswer.ReadLine();
+                    if (setCOuntAnswer)
+                    {
+                        ++countAllAnswer;
+                        dataGridView1.Rows[rowsAll].HeaderCell.Value = countAllAnswer.ToString();
+                    }
+
+                    countAnswer = Convert.ToInt16(readResultOnOrientationAnswer.ReadLine());
+
+                    if (countAnswer == 1)
+                    {
+                        strAnswer = "да";
+                    }
+                    else if (countAnswer == 2)
+                    {
+                        strAnswer = "скорее да";
+                    }
+                    else if (countAnswer == 3)
+                    {
+                        strAnswer = "не знаю";
+                    }
+                    else if (countAnswer == 4)
+                    {
+                        strAnswer = "скорее нет";
+                    }
+                    else
+                    {
+                        strAnswer = "нет";
+                    }
+
+                    dataGridView1.Rows[rowsAll].Cells[cells].Value = strAnswer;
 
                     ++rowsInTable;
                     ++rowsAll;
 
-                    if (rowsInTable == 37)
+                    if (rowsInTable == countAnswer_)
                     {
                         rowsInTable = 0;
                         ++dataGridView1.RowCount;
+                        cells = 0;
+                        countAnswer_ = 999999;
+                        countAllAnswer = 0;
+                      
+                    }
+                    else  if (rowsInTable == 37 && nameOrientation == "preschool_parent")
+                    {
+                        cells = 1;
+                        rowsInTable = 0;
+                        rowsAll = 0;
+                        countAnswer_ = 18;
+                        setCOuntAnswer = false;
+                    }
+                    else if (rowsInTable == 37)
+                    {
+                        rowsInTable = 0;
+                        ++dataGridView1.RowCount;
+                        cells = 0;
+                        setCOuntAnswer = true;
                     }
                 }
 

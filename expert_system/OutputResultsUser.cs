@@ -42,6 +42,15 @@ namespace expert_system
             m_strLogin = "root";
         }
 
+        public OutputResultsUser(bool diagram, string typeTest)
+        {
+            InitializeComponent();
+
+            m_blDiagram = true;
+            m_strLogin = "root";
+            m_strTypeTest = typeTest;
+        }
+
         public OutputResultsUser(string login, string typeTest)
         {
             InitializeComponent();
@@ -58,6 +67,16 @@ namespace expert_system
             m_strLogin = login;
             m_strTypeTest = result;
             m_blDiagram = true;
+        }
+
+        public OutputResultsUser(string login, string result, bool answer, bool diagram)
+        {
+            InitializeComponent();
+
+            m_strLogin = login;
+            m_strTypeTest = result;
+            m_blAnswer = true;
+            m_blDiagram = false;
         }
 
         private void OutputResultsUser_Load(object sender, EventArgs e)
@@ -103,7 +122,8 @@ namespace expert_system
 
                 if (m_blDiagram)
                 {
-                    FormOutputResultDiagramUsers diagram = new FormOutputResultDiagramUsers(m_strLogin, m_strTypeTest);
+                    m_strOrientation = "preschool_parent";
+                    FormOutputResultDiagramUsers diagram = new FormOutputResultDiagramUsers(m_strLogin, m_strTypeTest, m_strOrientation);
                     diagram.Show();
                     return;
                 }
@@ -133,7 +153,8 @@ namespace expert_system
 
                 if (m_blDiagram)
                 {
-                    FormOutputResultDiagramUsers diagram = new FormOutputResultDiagramUsers(m_strLogin, m_strTypeTest);
+                    m_strOrientation = "three_class";
+                    FormOutputResultDiagramUsers diagram = new FormOutputResultDiagramUsers(m_strLogin, m_strTypeTest, m_strOrientation);
                     diagram.Show();
                     return;
                 }
@@ -162,7 +183,8 @@ namespace expert_system
 
                 if (m_blDiagram)
                 {
-                    FormOutputResultDiagramUsers diagram = new FormOutputResultDiagramUsers(m_strLogin, m_strTypeTest);
+                    m_strOrientation = "five_class";
+                    FormOutputResultDiagramUsers diagram = new FormOutputResultDiagramUsers(m_strLogin, m_strTypeTest, m_strOrientation);
                     diagram.Show();
                     return;
                 }
@@ -191,7 +213,8 @@ namespace expert_system
 
                 if (m_blDiagram)
                 {
-                    FormOutputResultDiagramUsers diagram = new FormOutputResultDiagramUsers(m_strLogin, m_strTypeTest);
+                    m_strOrientation = "preschool";
+                    FormOutputResultDiagramUsers diagram = new FormOutputResultDiagramUsers(m_strLogin, m_strTypeTest, m_strOrientation);
                     diagram.Show();
                     return;
                 }
@@ -220,7 +243,8 @@ namespace expert_system
 
                 if (m_blDiagram)
                 {
-                    FormOutputResultDiagramUsers diagram = new FormOutputResultDiagramUsers(m_strLogin, m_strTypeTest);
+                    m_strOrientation = "parent";
+                    FormOutputResultDiagramUsers diagram = new FormOutputResultDiagramUsers(m_strLogin, m_strTypeTest, m_strOrientation);
                     diagram.Show();
                     return;
                 }

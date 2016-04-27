@@ -26,7 +26,7 @@ namespace expert_system
 
         private void button3_Click(object sender, EventArgs e)
         {
-            OutputResultsUser result = new OutputResultsUser(true);
+            OutputResultsUser result = new OutputResultsUser(true, comboBox1.SelectedText);
             result.Show();
         }
 

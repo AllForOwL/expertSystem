@@ -37,6 +37,8 @@ namespace expert_system
         public int m_iCountQuestion;
 
         public int [] m_iArrayAnswer = new int[216];
+        public int [] m_iArrayAnsweParent = new int[18];
+        public int m_iCountAnswer;
 
         public FormTest()
         {
@@ -47,6 +49,7 @@ namespace expert_system
         {
             InitializeComponent();
 
+            m_iCountAnswer = 0;
             m_iYearUser = yearUser;
             m_strLoginUser = loginUser;
             m_iCountQuestion = 0;
@@ -167,26 +170,44 @@ namespace expert_system
 
         private void button1_Click(object sender, EventArgs e)
         {
+            if (m_iYearUser == 0 && m_iCountAnswer < 18)
+            {
+                if (parentAnswer1.Checked)
+                {
+                    m_iArrayAnsweParent[m_iCountAnswer] = 1;
+                }
+                else if (parentAnswer2.Checked)
+                {
+                    m_iArrayAnsweParent[m_iCountAnswer] = 2;
+                }
+                else if (parentAnswer3.Checked)
+                {
+                    m_iArrayAnsweParent[m_iCountAnswer] = 3;
+                }
+            }
+
             if (childAnswer1.Checked)
             {
-                m_iArrayAnswer[m_iCountQuestion] = 1; 
+                m_iArrayAnswer[m_iCountAnswer] = 1; 
             }
             else if (childAnswer2.Checked)
             {
-                m_iArrayAnswer[m_iCountQuestion] = 2;
+                m_iArrayAnswer[m_iCountAnswer] = 2;
             }
             else if (childAnswer3.Checked)
             {
-                m_iArrayAnswer[m_iCountQuestion] = 3;
+                m_iArrayAnswer[m_iCountAnswer] = 3;
             }
             else if (childAnswer4.Checked)
             {
-                m_iArrayAnswer[m_iCountQuestion] = 4;
+                m_iArrayAnswer[m_iCountAnswer] = 4;
             }
             else if (childAnswer5.Checked)
             {
-                m_iArrayAnswer[m_iCountQuestion] = 5;
+                m_iArrayAnswer[m_iCountAnswer] = 5;
             }
+
+            ++m_iCountAnswer;
 
             // если вопрос в творческом направлении
              if (
@@ -360,199 +381,215 @@ namespace expert_system
                 }
             }
 
+             if (m_iCountQuestion >= 210)
+             {
+                 float[] arrayValueOrientation = new float[6];
+
+                 arrayValueOrientation[0] = m_flWithoutLogicCreative;
+                 arrayValueOrientation[1] = m_flWithoutLogicHumanitarian;
+                 arrayValueOrientation[2] = m_flWithoutLogicLinguistic;
+                 arrayValueOrientation[3] = m_flWithoutLogicMathematical;
+                 arrayValueOrientation[4] = m_flWithoutLogicSports;
+                 arrayValueOrientation[5] = m_flWithoutLogicTechnical;
+
+                 float max = arrayValueOrientation[0];
+                 int numberElement = 0;
+                 string bigOrientation = "творческий";
+
+                 for (int i = 1; i < 6; i++)
+                 {
+                     if (arrayValueOrientation[i] > max)
+                     {
+                         max = arrayValueOrientation[i];
+                         numberElement = i;
+                     }
+                 }
+
+                 // определяем приоритетное направление
+                 switch (numberElement)
+                 {
+                     case 1:
+                         {
+                             bigOrientation = "гуманитарный";
+                             break;
+                         }
+                     case 2:
+                         {
+                             bigOrientation = "лингвистический";
+                             break;
+                         }
+                     case 3:
+                         {
+                             bigOrientation = "математический";
+                             break;
+                         }
+                     case 4:
+                         {
+                             bigOrientation = "спортивный";
+                             break;
+                         }
+                     case 5:
+                         {
+                             bigOrientation = "технический";
+                             break;
+                         }
+
+                 }
+
+                 string nameOrientation = "";
+
+                 // какого возраста пользователь
+                 switch (m_iYearUser)
+                 {
+                     case 0:
+                         {
+                             nameOrientation = "preschool_parent";
+                             break;
+                         }
+                     case 1:
+                         {
+                             nameOrientation = "three_class";
+                             break;
+                         }
+                     case 2:
+                         {
+                             nameOrientation = "five_class";
+                             break;
+                         }
+                     case 3:
+                         {
+                             nameOrientation = "preschool";
+                             break;
+                         }
+                     case 4:
+                         {
+                             nameOrientation = "parent";
+                             break;
+                         }
+                 }
+
+                 bool writeAnswerParent = false;
+
+                 if (m_iYearUser == 0)
+                 {
+                     writeAnswerParent = true;   
+                 }
+
+                 string pathFileAnswer = Path.GetFullPath(@"InfoUsers\answer_" + nameOrientation + m_strLoginUser + ".txt");
+                 StreamWriter writeResultOnOrientationAnswer = new StreamWriter(pathFileAnswer, true);
+
+                 for (int i = 0; i < 36; i++)
+                 {
+                     writeResultOnOrientationAnswer.WriteLine(m_iArrayAnswer[i]);
+                 }
+
+                 if (writeAnswerParent)
+                 {
+                     for (int i = 0; i < 18; i++)
+                     {
+                         writeResultOnOrientationAnswer.WriteLine(m_iArrayAnsweParent[i]);
+                     }
+                 }
+
+                 writeResultOnOrientationAnswer.Close();
+
+                 // запись результатоа без логики в файл
+
+                 string pathFileAll = Path.GetFullPath(@"InfoUsers\Allresult_" + nameOrientation + ".txt");
+                 StreamWriter writeResultOnOrientationAll = new StreamWriter(pathFileAll, true);
+
+                 writeResultOnOrientationAll.WriteLine(m_strLoginUser + 0.0);
+                 writeResultOnOrientationAll.WriteLine(m_flCreative + 0.0);
+                 writeResultOnOrientationAll.WriteLine(m_flHumanitarian + 0.0);
+                 writeResultOnOrientationAll.WriteLine(m_flLinguistic + 0.0);
+                 writeResultOnOrientationAll.WriteLine(m_flMathematical + 0.0);
+                 writeResultOnOrientationAll.WriteLine(m_flSports + 0.0);
+                 writeResultOnOrientationAll.WriteLine(m_flTechnical + 0.0);
+
+                 writeResultOnOrientationAll.Close();
+
+                 string pathFile = Path.GetFullPath(@"InfoUsers\" + m_strLoginUser + "result_" + nameOrientation + ".txt");
+                 StreamWriter writeResultOnOrientation = new StreamWriter(pathFile, true);
+                 writeResultOnOrientation.WriteLine(bigOrientation);
+
+                 writeResultOnOrientation.WriteLine(m_flCreative);
+                 writeResultOnOrientation.WriteLine(m_flHumanitarian);
+                 writeResultOnOrientation.WriteLine(m_flLinguistic);
+                 writeResultOnOrientation.WriteLine(m_flMathematical);
+                 writeResultOnOrientation.WriteLine(m_flSports);
+                 writeResultOnOrientation.WriteLine(m_flTechnical);
+                 writeResultOnOrientation.Close();
+
+                 string pathFile_ = Path.GetFullPath(@"InfoUsers\" + m_strLoginUser + "result.txt");
+                 StreamWriter writeResultOnOrientation_ = new StreamWriter(pathFile_, true);
+
+                 writeResultOnOrientation_.WriteLine(m_flCreative);
+                 writeResultOnOrientation_.WriteLine(m_flHumanitarian);
+                 writeResultOnOrientation_.WriteLine(m_flLinguistic);
+                 writeResultOnOrientation_.WriteLine(m_flMathematical);
+                 writeResultOnOrientation_.WriteLine(m_flSports);
+                 writeResultOnOrientation_.WriteLine(m_flTechnical);
+                 writeResultOnOrientation_.Close();
+
+                 // запись результатов для определения значения нечёткой логики в файл
+                 string pathFile2 = Path.GetFullPath(@"InfoUsers\" + m_strLoginUser + nameOrientation + "result_from_logic.txt");
+                 StreamWriter writeResultOnOrientationLogic = new StreamWriter(pathFile2, true);
+
+                 for (int i = 0; i < 6; i++)
+                 {
+                     writeResultOnOrientationLogic.WriteLine(arrayValueOrientation[i]);
+                 }
+
+                 writeResultOnOrientationLogic.Close();
+
+                 string pathFile4 = Path.GetFullPath(@"InfoUsers\" + m_strLoginUser + "result_from_logic.txt");
+                 StreamWriter writeResultOnOrientationLogic4 = new StreamWriter(pathFile4, true);
+
+                 writeResultOnOrientationLogic4.WriteLine(m_flCreative);
+                 writeResultOnOrientationLogic4.WriteLine(m_flHumanitarian);
+                 writeResultOnOrientationLogic4.WriteLine(m_flLinguistic);
+                 writeResultOnOrientationLogic4.WriteLine(m_flMathematical);
+                 writeResultOnOrientationLogic4.WriteLine(m_flSports);
+                 writeResultOnOrientationLogic4.WriteLine(m_flTechnical);
+
+                 writeResultOnOrientationLogic4.Close();
+
+                 /*pathFile = Path.GetFullPath(@"InfoUsers\result_" + m_strLoginUser + "_temp.txt");
+                 StreamWriter writeResult = new StreamWriter(pathFile, false);
+
+                 writeResult.WriteLine(m_flCreative);
+                 writeResult.WriteLine(m_flHumanitarian);
+                 writeResult.WriteLine(m_flLinguistic);
+                 writeResult.WriteLine(m_flMathematical);
+                 writeResult.WriteLine(m_flSports);
+                 writeResult.WriteLine(m_flTechnical);
+               
+                 writeResult.Close();*/
+
+                 /*pathFile = Path.GetFullPath(@"InfoUsers\result_" + m_strLoginUser + ".txt");
+
+                 StreamWriter writeResult3 = new StreamWriter(pathFile, true);
+
+                 writeResult3.WriteLine(m_flCreative);
+                 writeResult3.WriteLine(m_flHumanitarian);
+                 writeResult3.WriteLine(m_flLinguistic);
+                 writeResult3.WriteLine(m_flMathematical);
+                 writeResult3.WriteLine(m_flSports);
+                 writeResult3.WriteLine(m_flTechnical);
+
+                 writeResult3.Close();*/
+
+                 OutputOrientation orientation = new OutputOrientation(m_strLoginUser, nameOrientation);
+                 orientation.Show();
+
+                 return;
+             }
+
             // отвел ли родител и ребёнок
             m_banswerChild = false;
             m_banswerParent = false;
 
-            // если последний вопрос
-           if (m_iCountQuestion >= 210)
-            {
-                float[] arrayValueOrientation = new float[6];
-
-                arrayValueOrientation[0] = m_flWithoutLogicCreative;
-                arrayValueOrientation[1] = m_flWithoutLogicHumanitarian;
-                arrayValueOrientation[2] = m_flWithoutLogicLinguistic;
-                arrayValueOrientation[3] = m_flWithoutLogicMathematical;
-                arrayValueOrientation[4] = m_flWithoutLogicSports;
-                arrayValueOrientation[5] = m_flWithoutLogicTechnical;
-
-                float max = arrayValueOrientation[0];
-                int numberElement = 0;
-                string bigOrientation = "творческий";
-
-                for (int i=1; i < 6; i++)
-                {
-                    if (arrayValueOrientation[i] > max)
-                    {
-                        max = arrayValueOrientation[i];
-                        numberElement = i;
-                    }
-                }
-
-               // определяем приоритетное направление
-                switch (numberElement)
-                {
-                    case 1:
-                        {
-                            bigOrientation = "гуманитарный";
-                            break;
-                        }
-                    case 2:
-                        {
-                            bigOrientation = "лингвистический";
-                            break;
-                        }
-                    case 3:
-                        {
-                            bigOrientation = "математический";
-                            break;
-                        }
-                    case 4:
-                        {
-                            bigOrientation = "спортивный";
-                            break;
-                        }
-                    case 5:
-                        {
-                            bigOrientation = "технический";
-                            break;
-                        }
-
-                }
-
-                string nameOrientation = "";
-               
-                // какого возраста пользователь
-                switch (m_iYearUser)
-                {
-                    case 0:
-                        {
-                            nameOrientation = "preschool_parent";
-                            break;
-                        }
-                    case 1:
-                        {
-                            nameOrientation = "three_class";
-                            break;
-                        }
-                    case 2:
-                        {
-                            nameOrientation = "five_class";
-                            break;
-                        }
-                    case 3:
-                        {
-                            nameOrientation = "preschool";
-                            break;
-                        }
-                    case 4:
-                        {
-                            nameOrientation = "parent";
-                            break;
-                        }
-                }
-
-                string pathFileAnswer = Path.GetFullPath(@"InfoUsers\answer_" + nameOrientation + m_strLoginUser + ".txt");
-                StreamWriter writeResultOnOrientationAnswer = new StreamWriter(pathFileAnswer, true);
-
-                for (int i = 0; i < 36; i++)
-                {
-                    writeResultOnOrientationAnswer.WriteLine(m_iArrayAnswer[i]);
-                }
-
-                writeResultOnOrientationAnswer.Close();
-
-               // запись результатоа без логики в файл
-
-                string pathFileAll = Path.GetFullPath(@"InfoUsers\Allresult_" + nameOrientation + ".txt");
-                StreamWriter writeResultOnOrientationAll = new StreamWriter(pathFileAll, true);
-                
-                writeResultOnOrientationAll.WriteLine(m_strLoginUser + 0.0);
-                writeResultOnOrientationAll.WriteLine(m_flCreative + 0.0);
-                writeResultOnOrientationAll.WriteLine(m_flHumanitarian + 0.0);
-                writeResultOnOrientationAll.WriteLine(m_flLinguistic + 0.0);
-                writeResultOnOrientationAll.WriteLine(m_flMathematical + 0.0);
-                writeResultOnOrientationAll.WriteLine(m_flSports + 0.0);
-                writeResultOnOrientationAll.WriteLine(m_flTechnical + 0.0);
-                
-                writeResultOnOrientationAll.Close();
-               
-                string pathFile = Path.GetFullPath(@"InfoUsers\" + m_strLoginUser + "result_" + nameOrientation + ".txt");
-                StreamWriter writeResultOnOrientation = new StreamWriter(pathFile, true);
-                writeResultOnOrientation.WriteLine(bigOrientation);
-
-                writeResultOnOrientation.WriteLine(m_flCreative);
-                writeResultOnOrientation.WriteLine(m_flHumanitarian);
-                writeResultOnOrientation.WriteLine(m_flLinguistic);
-                writeResultOnOrientation.WriteLine(m_flMathematical);
-                writeResultOnOrientation.WriteLine(m_flSports);
-                writeResultOnOrientation.WriteLine(m_flTechnical);
-                writeResultOnOrientation.Close();
-
-                string pathFile_ = Path.GetFullPath(@"InfoUsers\" + m_strLoginUser + "result.txt");
-                StreamWriter writeResultOnOrientation_ = new StreamWriter(pathFile_, true);
-
-                writeResultOnOrientation_.WriteLine(m_flCreative);
-                writeResultOnOrientation_.WriteLine(m_flHumanitarian);
-                writeResultOnOrientation_.WriteLine(m_flLinguistic);
-                writeResultOnOrientation_.WriteLine(m_flMathematical);
-                writeResultOnOrientation_.WriteLine(m_flSports);
-                writeResultOnOrientation_.WriteLine(m_flTechnical);
-                writeResultOnOrientation_.Close();
-
-                // запись результатов для определения значения нечёткой логики в файл
-                string pathFile2 = Path.GetFullPath(@"InfoUsers\" + m_strLoginUser + nameOrientation + "result_from_logic.txt");
-                StreamWriter writeResultOnOrientationLogic = new StreamWriter(pathFile2, true);
-
-                for (int i = 0; i < 6; i++)
-                {
-                    writeResultOnOrientationLogic.WriteLine(arrayValueOrientation[i]);
-                }
-
-                writeResultOnOrientationLogic.Close();
-
-               string pathFile4 = Path.GetFullPath(@"InfoUsers\" + m_strLoginUser + "result_from_logic.txt");
-               StreamWriter writeResultOnOrientationLogic4 = new StreamWriter(pathFile4, true);
-
-               writeResultOnOrientationLogic4.WriteLine(m_flCreative);
-               writeResultOnOrientationLogic4.WriteLine(m_flHumanitarian);
-               writeResultOnOrientationLogic4.WriteLine(m_flLinguistic);
-               writeResultOnOrientationLogic4.WriteLine(m_flMathematical);
-               writeResultOnOrientationLogic4.WriteLine(m_flSports);
-               writeResultOnOrientationLogic4.WriteLine(m_flTechnical);
-
-               writeResultOnOrientationLogic4.Close();
-
-               /*pathFile = Path.GetFullPath(@"InfoUsers\result_" + m_strLoginUser + "_temp.txt");
-               StreamWriter writeResult = new StreamWriter(pathFile, false);
-
-               writeResult.WriteLine(m_flCreative);
-               writeResult.WriteLine(m_flHumanitarian);
-               writeResult.WriteLine(m_flLinguistic);
-               writeResult.WriteLine(m_flMathematical);
-               writeResult.WriteLine(m_flSports);
-               writeResult.WriteLine(m_flTechnical);
-               
-               writeResult.Close();*/
-
-                /*pathFile = Path.GetFullPath(@"InfoUsers\result_" + m_strLoginUser + ".txt");
-
-                StreamWriter writeResult3 = new StreamWriter(pathFile, true);
-
-                writeResult3.WriteLine(m_flCreative);
-                writeResult3.WriteLine(m_flHumanitarian);
-                writeResult3.WriteLine(m_flLinguistic);
-                writeResult3.WriteLine(m_flMathematical);
-                writeResult3.WriteLine(m_flSports);
-                writeResult3.WriteLine(m_flTechnical);
-
-                writeResult3.Close();*/
-
-                OutputOrientation orientation = new OutputOrientation(m_strLoginUser, nameOrientation);
-                orientation.Show();
-
-                return;
-            }
+            // если последний вопро
 
             m_iCountQuestion+=6;
 
@@ -563,12 +600,14 @@ namespace expert_system
             childAnswer4.Text = m_arrayAnswerChild[m_iCountQuestion + 4];
             childAnswer5.Text = m_arrayAnswerChild[m_iCountQuestion + 5];
 
-            if (m_iCountQuestion <= 17)
+
+
+            if (m_iCountAnswer <= 17)
             {
-                questionParent.Text = m_arrayAnswerParent[0, m_iCountQuestion];
-                parentAnswer1.Text = m_arrayAnswerParent[1, m_iCountQuestion];
-                parentAnswer2.Text = m_arrayAnswerParent[2, m_iCountQuestion];
-                parentAnswer3.Text = m_arrayAnswerParent[3, m_iCountQuestion];
+                questionParent.Text = m_arrayAnswerParent[0, m_iCountAnswer];
+                parentAnswer1.Text = m_arrayAnswerParent[1, m_iCountAnswer];
+                parentAnswer2.Text = m_arrayAnswerParent[2, m_iCountAnswer];
+                parentAnswer3.Text = m_arrayAnswerParent[3, m_iCountAnswer];
             }
 
             childAnswer1.Checked = true;
