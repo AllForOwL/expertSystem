@@ -22,6 +22,13 @@ namespace expert_system
         public float m_flMathematical;
         public float m_flSports;
 
+        public float m_flCreativeParent;
+        public float m_flLinguisticParent;
+        public float m_flTechnicalParent;
+        public float m_flHumanitarianParent;
+        public float m_flMathematicalParent;
+        public float m_flSportsParent;
+
         public float m_flWithoutLogicCreative;
         public float m_flWithoutLogicLinguistic;
         public float m_flWithoutLogicTechnical;
@@ -60,6 +67,13 @@ namespace expert_system
             m_flMathematical = 0.0F;
             m_flSports       = 0.0F;
             m_flTechnical    = 0.0F;
+
+            m_flCreativeParent = 0.0F;
+            m_flHumanitarianParent = 0.0F;
+            m_flLinguisticParent = 0.0F;
+            m_flMathematicalParent = 0.0F;
+            m_flSportsParent = 0.0F;
+            m_flTechnicalParent = 0.0F;
 
             m_flWithoutLogicCreative     = 0.0f;
             m_flWithoutLogicLinguistic   = 0.0f;
@@ -174,14 +188,78 @@ namespace expert_system
             {
                 if (parentAnswer1.Checked)
                 {
+                    if (m_iCountAnswer <= 3)
+                    {
+                        ++m_flCreativeParent;
+                    }
+                    else if (m_iCountAnswer > 3 && m_iCountAnswer <= 6)
+                    {
+                        ++m_flHumanitarianParent;
+                    }
+                    else if (m_iCountAnswer > 6 && m_iCountAnswer <= 9)
+                    {
+                        ++m_flLinguisticParent;
+                    }
+                    else if (m_iCountAnswer > 9 && m_iCountAnswer <= 12)
+                    {
+                        ++m_flMathematicalParent;
+                    }
+                    else if (m_iCountAnswer > 12 && m_iCountAnswer <= 15)
+                    {
+                        ++m_flSportsParent;
+                    }
+                    else if (m_iCountAnswer > 15 && m_iCountAnswer <= 18)
+                    {
+                        ++m_flTechnicalParent;
+                    }
                     m_iArrayAnsweParent[m_iCountAnswer] = 1;
                 }
                 else if (parentAnswer2.Checked)
                 {
+                    if (m_iCountAnswer <= 3)
+                    {
+                        m_flCreativeParent += 0.7f;
+                    }
+                    else if (m_iCountAnswer > 3 && m_iCountAnswer <= 6)
+                    {
+                        m_flHumanitarianParent += 0.7f;
+                    }
+                    else if (m_iCountAnswer > 9 && m_iCountAnswer <= 12)
+                    {
+                        m_flMathematicalParent += 0.7f;
+                    }
+                    else if (m_iCountAnswer > 12 && m_iCountAnswer <= 15)
+                    {
+                        m_flSportsParent += 0.7f;
+                    }
+                    else if (m_iCountAnswer > 15 && m_iCountAnswer <= 18)
+                    {
+                        m_flTechnicalParent += 0.7f;
+                    }
                     m_iArrayAnsweParent[m_iCountAnswer] = 2;
                 }
                 else if (parentAnswer3.Checked)
                 {
+                    if (m_iCountAnswer <= 3)
+                    {
+                        m_flCreativeParent += 0.5f;
+                    }
+                    else if (m_iCountAnswer > 3 && m_iCountAnswer <= 6)
+                    {
+                        m_flHumanitarianParent += 0.5f;
+                    }
+                    else if (m_iCountAnswer > 9 && m_iCountAnswer <= 12)
+                    {
+                        m_flMathematicalParent += 0.5f;
+                    }
+                    else if (m_iCountAnswer > 12 && m_iCountAnswer <= 15)
+                    {
+                        m_flSportsParent += 0.5f;
+                    }
+                    else if (m_iCountAnswer > 15 && m_iCountAnswer <= 18)
+                    {
+                        m_flTechnicalParent += 0.5f;
+                    }
                     m_iArrayAnsweParent[m_iCountAnswer] = 3;
                 }
             }
@@ -437,12 +515,13 @@ namespace expert_system
                  }
 
                  string nameOrientation = "";
-
+                 bool writeAnswerParent = false;
                  // какого возраста пользователь
                  switch (m_iYearUser)
                  {
                      case 0:
                          {
+                             writeAnswerParent = true;   
                              nameOrientation = "preschool_parent";
                              break;
                          }
@@ -468,13 +547,6 @@ namespace expert_system
                          }
                  }
 
-                 bool writeAnswerParent = false;
-
-                 if (m_iYearUser == 0)
-                 {
-                     writeAnswerParent = true;   
-                 }
-
                  string pathFileAnswer = Path.GetFullPath(@"InfoUsers\answer_" + nameOrientation + m_strLoginUser + ".txt");
                  StreamWriter writeResultOnOrientationAnswer = new StreamWriter(pathFileAnswer, true);
 
@@ -489,8 +561,6 @@ namespace expert_system
                      {
                          writeResultOnOrientationAnswer.WriteLine(m_iArrayAnsweParent[i]);
                      }
-
-
                  }
 
                  writeResultOnOrientationAnswer.Close();
@@ -507,6 +577,13 @@ namespace expert_system
                  writeResultOnOrientationAll.WriteLine(m_flMathematical + 0.0);
                  writeResultOnOrientationAll.WriteLine(m_flSports + 0.0);
                  writeResultOnOrientationAll.WriteLine(m_flTechnical + 0.0);
+                 writeResultOnOrientationAll.WriteLine(m_strLoginUser + 0.0);
+                 writeResultOnOrientationAll.WriteLine(m_flCreativeParent + 0.0);
+                 writeResultOnOrientationAll.WriteLine(m_flHumanitarianParent + 0.0);
+                 writeResultOnOrientationAll.WriteLine(m_flLinguisticParent + 0.0);
+                 writeResultOnOrientationAll.WriteLine(m_flMathematicalParent + 0.0);
+                 writeResultOnOrientationAll.WriteLine(m_flSportsParent + 0.0);
+                 writeResultOnOrientationAll.WriteLine(m_flTechnicalParent + 0.0);
 
                  writeResultOnOrientationAll.Close();
 
@@ -520,6 +597,12 @@ namespace expert_system
                  writeResultOnOrientation.WriteLine(m_flMathematical);
                  writeResultOnOrientation.WriteLine(m_flSports);
                  writeResultOnOrientation.WriteLine(m_flTechnical);
+                 writeResultOnOrientation.WriteLine(m_flCreativeParent);
+                 writeResultOnOrientation.WriteLine(m_flHumanitarianParent);
+                 writeResultOnOrientation.WriteLine(m_flLinguisticParent);
+                 writeResultOnOrientation.WriteLine(m_flMathematicalParent);
+                 writeResultOnOrientation.WriteLine(m_flSportsParent);
+                 writeResultOnOrientation.WriteLine(m_flTechnicalParent);
                  writeResultOnOrientation.Close();
 
                  string pathFile_ = Path.GetFullPath(@"InfoUsers\" + m_strLoginUser + "result.txt");
@@ -541,6 +624,13 @@ namespace expert_system
                  {
                      writeResultOnOrientationLogic.WriteLine(arrayValueOrientation[i]);
                  }
+
+                 writeResultOnOrientationLogic.WriteLine(m_flCreativeParent);
+                 writeResultOnOrientationLogic.WriteLine(m_flHumanitarianParent);
+                 writeResultOnOrientationLogic.WriteLine(m_flLinguisticParent);
+                 writeResultOnOrientationLogic.WriteLine(m_flMathematicalParent);
+                 writeResultOnOrientationLogic.WriteLine(m_flSportsParent);
+                 writeResultOnOrientationLogic.WriteLine(m_flTechnicalParent);
 
                  writeResultOnOrientationLogic.Close();
 

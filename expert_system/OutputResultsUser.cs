@@ -144,8 +144,8 @@ namespace expert_system
                     diagram.Show();
                     return;
                 }
-              
-                FormTableFromResult formResult = new FormTableFromResult(blabla);
+
+                FormTableFromResult formResult = new FormTableFromResult("root", 0, m_strTypeTest, m_blAnswer, f_iOrientation);
                 formResult.Show();
             }
             else
@@ -157,7 +157,8 @@ namespace expert_system
                     return;
                 }
 
-                FormTableFromResult formResult = new FormTableFromResult(m_strLogin, 0, m_strTypeTest, m_blAnswer, f_iOrientation);
+                FormTableFromResult formResult = new FormTableFromResult(m_strTypeTest, m_strLogin, m_strOrientation);
+                formResult.Show();
             }
         }
 
@@ -170,10 +171,11 @@ namespace expert_system
                 if (m_blDiagram)
                 {
                     m_strOrientation = "three_class";
-                    FormOutputResultDiagramUsers diagram = new FormOutputResultDiagramUsers(m_strLogin, m_strTypeTest, m_strOrientation,999);
+                    FormOutputResultDiagramUsers diagram = new FormOutputResultDiagramUsers("root", m_strTypeTest, m_strOrientation, 999);
                     diagram.Show();
                     return;
                 }
+
 
                 FormTableFromResult formResult = new FormTableFromResult(m_strTypeTest);
                 formResult.Show();
