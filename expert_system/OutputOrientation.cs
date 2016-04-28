@@ -55,37 +55,37 @@ namespace expert_system
                             case 0:
                                 {
                                     pathFileFromOrientation = Path.GetFullPath(@"orientation\creative.txt");
-
+                                    orientation = "творческое";
                                     break;
                                 }
                             case 1:
                                 {
                                     pathFileFromOrientation = Path.GetFullPath(@"orientation\humanitarian.txt");
-
+                                    orientation = "гуманитарное";
                                     break;
                                 }
                             case 2:
                                 {
                                     pathFileFromOrientation = Path.GetFullPath(@"orientation\linguistic.txt");
-
+                                    orientation = "лингвистическое";
                                     break;
                                 }
                             case 3:
                                 {
                                     pathFileFromOrientation = Path.GetFullPath(@"orientation\mathematical.txt");
-
+                                    orientation = "математическое";
                                     break;
                                 }
                             case 4:
                                 {
                                     pathFileFromOrientation = Path.GetFullPath(@"orientation\sports.txt");
-
+                                    orientation = "спортивное";
                                     break;
                                 }
                             case 5:
                                 {
                                     pathFileFromOrientation = Path.GetFullPath(@"orientation\technical.txt");
-
+                                    orientation = "техническое";
                                     break;
                                 }
                         }

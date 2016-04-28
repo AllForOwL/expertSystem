@@ -52,7 +52,9 @@ namespace expert_system
                 for (int i = 0; i < 6; i++)
                 {
                     ++dataGridView1.RowCount;
-                    dataGridView1.Rows[rows].Cells[i].Value = readResultOnOrientationAll.ReadLine();
+                    double vv = Convert.ToDouble(readResultOnOrientationAll.ReadLine());
+                    int b = Convert.ToInt16(vv);
+                    dataGridView1.Rows[rows].Cells[i].Value = b.ToString();
                 }
                 ++rows;
                 dataGridView1.Rows[rows-1].HeaderCell.Value = rows.ToString();
@@ -61,7 +63,7 @@ namespace expert_system
             readResultOnOrientationAll.Close();   
         }
 
-        public FormTableFromResult(string loginUser, int typeTest, string strTypeTest, bool answer)
+        public FormTableFromResult(string loginUser, int typeTest, string strTypeTest, bool answer, int count)
         {
             InitializeComponent();
 
@@ -69,6 +71,16 @@ namespace expert_system
             m_iTypeTest = typeTest;
             m_strTest = strTypeTest;
             m_blAnswer = answer;
+            int preschool_or_parent = 999;
+
+            if (count == 3)
+            {
+                preschool_or_parent = 36;
+            }
+            else if (count == 4)
+            {
+                preschool_or_parent = 18;
+            }
 
             string nameOrientation = "";
 
@@ -113,13 +125,22 @@ namespace expert_system
                 
                 StreamReader readResultOnOrientationAnswer = new StreamReader(pathFileAnswer);
 
-                if (nameOrientation == "preschool_parent")
+                if (m_iTypeTest == 0)
                 {
                     dataGridView1.ColumnCount = 2;
                 }
                 else
                 {
                     dataGridView1.ColumnCount = 1;
+                }
+
+                if (m_iTypeTest == 3)
+                {
+                    preschool_or_parent = 36;
+                }
+                else if (preschool_or_parent == 4)
+                {
+                    preschool_or_parent = 18;
                 }
 
                 dataGridView1.Columns[0].HeaderCell.Value = "";
@@ -138,6 +159,12 @@ namespace expert_system
 
                 while (!readResultOnOrientationAnswer.EndOfStream)
                 {
+                    --preschool_or_parent;
+                    if (preschool_or_parent == 0)
+                    {
+                        break;
+                    }
+
                     ++dataGridView1.RowCount;
                     if (setCOuntAnswer)
                     {
@@ -223,11 +250,17 @@ namespace expert_system
                 double valueForTable = 0.0;
                 double valueForTable_2 = 0.0;
 
-                while (!readFileForFuzzy.EndOfStream)
-                {
+               while (!readFileForFuzzy.EndOfStream)
+               {
                     ++dataGridView1.RowCount;
                     for (int i = 0; i < 6; i++)
                     {
+                        --preschool_or_parent;
+                        if (preschool_or_parent == 0)
+                        {
+                            break;
+                        }
+
                         valueForTable_2 = 0.0;
                         valueFromFile = Convert.ToDouble(readFileForFuzzy.ReadLine());
                         //MessageBox.Show(valueForTable.ToString());
@@ -292,7 +325,12 @@ namespace expert_system
                     tempOrientation = readFile.ReadLine();
                     for (int i = 0; i < 6; i++)
                     {
+                        --preschool_or_parent;
                         dataGridView1.Rows[rowsInTable].Cells[i].Value = readFile.ReadLine();             
+                    }
+                    if (preschool_or_parent == 0)
+                    {
+                        break;
                     }
                     ++rowsInTable;
                 }

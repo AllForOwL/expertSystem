@@ -13,6 +13,7 @@ namespace expert_system
 {
     public partial class FormOutputResultDiagramUsers : Form
     {
+        public int m_iCount;
         public string m_strLogin;
         public string m_strOrientation;
         public string m_strTypeTest;
@@ -33,13 +34,14 @@ namespace expert_system
             m_strTypeTest = "";
         }
 
-        public FormOutputResultDiagramUsers(string login, string typeTest, string orientation)
+        public FormOutputResultDiagramUsers(string login, string typeTest, string orientation, int iCount)
         {
             InitializeComponent();
 
             m_strLogin = login;
             m_strTypeTest = typeTest;
             m_strOrientation = orientation;
+            m_iCount = iCount;
         }
 
         private void FormOutputResultDiagramUsers_Load(object sender, EventArgs e)
@@ -142,8 +144,25 @@ namespace expert_system
                     string orientation;
                     double[] arrayPoints = new double[6] { 0.0, 0.0, 0.0, 0.0, 0.0, 0.0 };
 
+                    int temp = 999;
+
+                    if (m_iCount == 3)
+                    {
+                        temp = 36;
+                    }
+                    else if (m_iCount == 4)
+                    {
+                        temp = 18;
+                    }
+
+
                     while (!readFile_.EndOfStream)
                     {
+                        --temp;
+                        if (temp == 0)
+                        {
+                            break;
+                        }
                         for (int i = 0; i < 6; i++)
                         {
                             arrayPoints[i] = Convert.ToDouble(readFile_.ReadLine());

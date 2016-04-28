@@ -489,6 +489,8 @@ namespace expert_system
                      {
                          writeResultOnOrientationAnswer.WriteLine(m_iArrayAnsweParent[i]);
                      }
+
+
                  }
 
                  writeResultOnOrientationAnswer.Close();

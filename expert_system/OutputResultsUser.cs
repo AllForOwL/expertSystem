@@ -116,32 +116,48 @@ namespace expert_system
 
         private void button1_Click(object sender, EventArgs e)
         {
+            int f_iOrientation = 0;
+
+            if (comboBox1.Text == "дошкольник")
+            {
+                m_strOrientation = "preschool";
+                f_iOrientation = 3;
+            }
+            else if (comboBox1.Text == "родитель")
+            {
+                m_strOrientation = "parent";
+                f_iOrientation = 4;
+            }
+            else if (comboBox1.Text == "дошкольник+родитель")
+            {
+                m_strOrientation = "preschool_parent";
+                f_iOrientation = 0;
+            }
+
             if (m_strLogin == "root")
             {
-                m_strTypeTest = "preschool_parent";
-
+                string blabla = "preschool_parent";
                 if (m_blDiagram)
                 {
-                    m_strOrientation = "preschool_parent";
-                    FormOutputResultDiagramUsers diagram = new FormOutputResultDiagramUsers(m_strLogin, m_strTypeTest, m_strOrientation);
+                    
+                    FormOutputResultDiagramUsers diagram = new FormOutputResultDiagramUsers(m_strLogin, m_strTypeTest, blabla, f_iOrientation);
                     diagram.Show();
                     return;
                 }
-
-                FormTableFromResult formResult = new FormTableFromResult(m_strTypeTest);
+              
+                FormTableFromResult formResult = new FormTableFromResult(blabla);
                 formResult.Show();
             }
             else
             {
                 if (m_blDiagram)
                 {
-                    m_strOrientation = "preschool_parent";
-                    FormOutputResultDiagramUsers diagram = new FormOutputResultDiagramUsers(m_strLogin, m_strTypeTest, m_strOrientation);
+                    FormOutputResultDiagramUsers diagram = new FormOutputResultDiagramUsers(m_strLogin, m_strTypeTest, m_strOrientation, f_iOrientation);
                     diagram.Show();
                     return;
                 }
 
-                FormTableFromResult formResult = new FormTableFromResult(m_strLogin, 0, m_strTypeTest, m_blAnswer);
+                FormTableFromResult formResult = new FormTableFromResult(m_strLogin, 0, m_strTypeTest, m_blAnswer, f_iOrientation);
             }
         }
 
@@ -154,7 +170,7 @@ namespace expert_system
                 if (m_blDiagram)
                 {
                     m_strOrientation = "three_class";
-                    FormOutputResultDiagramUsers diagram = new FormOutputResultDiagramUsers(m_strLogin, m_strTypeTest, m_strOrientation);
+                    FormOutputResultDiagramUsers diagram = new FormOutputResultDiagramUsers(m_strLogin, m_strTypeTest, m_strOrientation,999);
                     diagram.Show();
                     return;
                 }
@@ -167,11 +183,11 @@ namespace expert_system
                 if (m_blDiagram)
                 {
                     m_strOrientation = "three_class";
-                    FormOutputResultDiagramUsers diagram = new FormOutputResultDiagramUsers(m_strLogin, m_strTypeTest, m_strOrientation); 
+                    FormOutputResultDiagramUsers diagram = new FormOutputResultDiagramUsers(m_strLogin, m_strTypeTest, m_strOrientation, 999); 
                     diagram.Show();
                     return;
                 }
-                FormTableFromResult formResult = new FormTableFromResult(m_strLogin, 1, m_strTypeTest, m_blAnswer);
+                FormTableFromResult formResult = new FormTableFromResult(m_strLogin, 1, m_strTypeTest, m_blAnswer, 999);
             }
         }
 
@@ -184,7 +200,7 @@ namespace expert_system
                 if (m_blDiagram)
                 {
                     m_strOrientation = "five_class";
-                    FormOutputResultDiagramUsers diagram = new FormOutputResultDiagramUsers(m_strLogin, m_strTypeTest, m_strOrientation);
+                    FormOutputResultDiagramUsers diagram = new FormOutputResultDiagramUsers(m_strLogin, m_strTypeTest, m_strOrientation, 999);
                     diagram.Show();
                     return;
                 }
@@ -197,11 +213,11 @@ namespace expert_system
                 if (m_blDiagram)
                 {
                     m_strOrientation = "five_class";
-                    FormOutputResultDiagramUsers diagram = new FormOutputResultDiagramUsers(m_strLogin, m_strTypeTest, m_strOrientation);           
+                    FormOutputResultDiagramUsers diagram = new FormOutputResultDiagramUsers(m_strLogin, m_strTypeTest, m_strOrientation, 999);           
                     diagram.Show();
                     return;
                 }
-                FormTableFromResult formResult = new FormTableFromResult(m_strLogin, 2, m_strTypeTest, m_blAnswer);
+                FormTableFromResult formResult = new FormTableFromResult(m_strLogin, 2, m_strTypeTest, m_blAnswer, 999);
             }
         }
 
@@ -214,7 +230,7 @@ namespace expert_system
                 if (m_blDiagram)
                 {
                     m_strOrientation = "preschool";
-                    FormOutputResultDiagramUsers diagram = new FormOutputResultDiagramUsers(m_strLogin, m_strTypeTest, m_strOrientation);
+                    FormOutputResultDiagramUsers diagram = new FormOutputResultDiagramUsers(m_strLogin, m_strTypeTest, m_strOrientation, 999);
                     diagram.Show();
                     return;
                 }
@@ -227,11 +243,11 @@ namespace expert_system
                 if (m_blDiagram)
                 {
                     m_strOrientation = "preschool";
-                    FormOutputResultDiagramUsers diagram = new FormOutputResultDiagramUsers(m_strLogin, m_strTypeTest, m_strOrientation);                
+                    FormOutputResultDiagramUsers diagram = new FormOutputResultDiagramUsers(m_strLogin, m_strTypeTest, m_strOrientation, 999);                
                     diagram.Show();
                     return;
                 }
-                FormTableFromResult formResult = new FormTableFromResult(m_strLogin, 3, m_strTypeTest, m_blAnswer);
+                FormTableFromResult formResult = new FormTableFromResult(m_strLogin, 3, m_strTypeTest, m_blAnswer, 999);
             }
         }
 
@@ -244,7 +260,7 @@ namespace expert_system
                 if (m_blDiagram)
                 {
                     m_strOrientation = "parent";
-                    FormOutputResultDiagramUsers diagram = new FormOutputResultDiagramUsers(m_strLogin, m_strTypeTest, m_strOrientation);
+                    FormOutputResultDiagramUsers diagram = new FormOutputResultDiagramUsers(m_strLogin, m_strTypeTest, m_strOrientation, 999);
                     diagram.Show();
                     return;
                 }
@@ -257,12 +273,17 @@ namespace expert_system
                 if (m_blDiagram)
                 {
                     m_strOrientation = "parent";
-                    FormOutputResultDiagramUsers diagram = new FormOutputResultDiagramUsers(m_strLogin, m_strTypeTest, m_strOrientation);                 
+                    FormOutputResultDiagramUsers diagram = new FormOutputResultDiagramUsers(m_strLogin, m_strTypeTest, m_strOrientation, 999);                 
                     diagram.Show();
                     return;
                 }
-                FormTableFromResult formResult = new FormTableFromResult(m_strLogin, 4, m_strTypeTest, m_blAnswer);
+                FormTableFromResult formResult = new FormTableFromResult(m_strLogin, 4, m_strTypeTest, m_blAnswer, 999);
             }
+        }
+
+        private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
         }
     }
 }
