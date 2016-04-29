@@ -26,6 +26,14 @@ namespace expert_system
             m_strLogin = "root";
         }
 
+        public OutputResultsUser(string typeTest)
+        {
+            InitializeComponent();
+
+            m_strLogin = "root";
+            m_strOrientation = typeTest;
+        }
+
         public OutputResultsUser(int diagram)
         {
             InitializeComponent();
@@ -56,7 +64,7 @@ namespace expert_system
             InitializeComponent();
 
             m_strLogin = login;
-            m_strTypeTest = typeTest;
+            m_strOrientation = typeTest;
             m_blAnswer = false;
         }
 
@@ -177,7 +185,7 @@ namespace expert_system
                 }
 
 
-                FormTableFromResult formResult = new FormTableFromResult(m_strTypeTest);
+                FormTableFromResult formResult = new FormTableFromResult(m_strOrientation, m_strTypeTest);
                 formResult.Show();
             }
             else
@@ -207,7 +215,7 @@ namespace expert_system
                     return;
                 }
 
-                FormTableFromResult formResult = new FormTableFromResult(m_strTypeTest);
+                FormTableFromResult formResult = new FormTableFromResult(m_strOrientation, m_strTypeTest);
                 formResult.Show();
             }
             else
@@ -237,7 +245,7 @@ namespace expert_system
                     return;
                 }
 
-                FormTableFromResult formResult = new FormTableFromResult(m_strTypeTest);
+                FormTableFromResult formResult = new FormTableFromResult(m_strOrientation, m_strTypeTest);
                 formResult.Show();
             }
             else
@@ -267,7 +275,7 @@ namespace expert_system
                     return;
                 }
 
-                FormTableFromResult formResult = new FormTableFromResult(m_strTypeTest);
+                FormTableFromResult formResult = new FormTableFromResult(m_strOrientation, m_strTypeTest);
                 formResult.Show();
             }
             else

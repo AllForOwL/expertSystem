@@ -41,7 +41,6 @@ namespace expert_system
             while (!readResult.EndOfStream)
             {
                 maxValue = 0;
-                orientation = readResult.ReadLine();
                 for (int i = 0; i < 6; i++)
                 {
                     tempValue = Convert.ToDouble(readResult.ReadLine());

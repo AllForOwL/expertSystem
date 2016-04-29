@@ -298,18 +298,19 @@ namespace expert_system
 
         }
 
-        public FormTableFromResult(string strTypeTest)
+        public FormTableFromResult(string strTypeTest, string orientation)
         {
             InitializeComponent();
 
             m_strTest = strTypeTest;
+            m_strOrientation = orientation;
 
             ++dataGridView1.ColumnCount;
             dataGridView1.RowHeadersWidth = 50;
 
             int columnCount = dataGridView1.ColumnCount;
 
-            string pathFileAll = Path.GetFullPath(@"InfoUsers\Allresult_" + strTypeTest + ".txt");
+            string pathFileAll = Path.GetFullPath(@"InfoUsers\Allresult_" + m_strOrientation + ".txt");
 
             if (!File.Exists(pathFileAll))
             {
@@ -328,12 +329,51 @@ namespace expert_system
                 ++dataGridView1.RowCount;
                 dataGridView1.Rows[rows].Cells[6].Value = readResultOnOrientationAll.ReadLine();
 
+                double valueFromFile = 0.0;
+                double valueForTable_2 = 0.0;
+
                 for (int i = 0; i < 6; i++)
                 {
                     ++dataGridView1.RowCount;
                     double vv = Convert.ToDouble(readResultOnOrientationAll.ReadLine());
-                    int b = Convert.ToInt16(vv);
-                    dataGridView1.Rows[rows].Cells[i].Value = b.ToString();
+                    valueFromFile = Convert.ToInt16(vv);
+
+                    if (m_strTest == "нечеткая модель")
+                    {
+                        if (valueFromFile >= 0.0 && valueFromFile < 1.0)
+                        {
+                            valueForTable_2 = 0.0;
+                            dataGridView1.Rows[rows].Cells[i].Value = valueForTable_2.ToString();
+                        }
+                        else if (valueFromFile >= 1.0 && valueFromFile < 2.0)
+                        {
+                            valueForTable_2 = 0.2;
+                            dataGridView1.Rows[rows].Cells[i].Value = valueForTable_2.ToString();
+                        }
+                        else if (valueFromFile >= 2.0 && valueFromFile < 3.0)
+                        {
+                            valueForTable_2 = 0.4;
+                            dataGridView1.Rows[rows].Cells[i].Value = valueForTable_2.ToString();
+                        }
+                        else if (valueFromFile >= 3.0 && valueFromFile < 4.0)
+                        {
+                            valueForTable_2 = 0.6;
+                            dataGridView1.Rows[rows].Cells[i].Value = valueForTable_2.ToString();
+                        }
+                        else if (valueFromFile >= 4.0 && valueFromFile < 5.0)
+                        {
+                            valueForTable_2 = 0.8;
+                            dataGridView1.Rows[rows].Cells[i].Value = valueForTable_2.ToString();
+                        }
+                        else if (valueFromFile >= 5.0)
+                        {
+                            valueForTable_2 = 1.0;
+                            dataGridView1.Rows[rows].Cells[i].Value = valueForTable_2.ToString();
+                        }
+
+                        valueFromFile = 0.0;
+                        valueForTable_2 = 0.0;
+                    }
                 }
                 ++rows;
                 dataGridView1.Rows[rows-1].HeaderCell.Value = rows.ToString();

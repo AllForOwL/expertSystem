@@ -60,6 +60,7 @@
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Ребёнок";
             this.groupBox1.Visible = false;
+            this.groupBox1.Enter += new System.EventHandler(this.groupBox1_Enter);
             // 
             // childAnswer5
             // 

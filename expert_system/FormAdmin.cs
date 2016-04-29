@@ -20,7 +20,9 @@ namespace expert_system
 
         private void button1_Click(object sender, EventArgs e)
         {
-            OutputResultsUser result = new OutputResultsUser();
+            string strresult_ = comboBox1.Text;
+
+            OutputResultsUser result = new OutputResultsUser(strresult_);
             result.Show();
         }
 

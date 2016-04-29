@@ -547,7 +547,7 @@ namespace expert_system
                          }
                  }
 
-                 string pathFileAnswer = Path.GetFullPath(@"InfoUsers\answer_" + nameOrientation + m_strLoginUser + ".txt");
+                 /*string pathFileAnswer = Path.GetFullPath(@"InfoUsers\answer_" + nameOrientation + m_strLoginUser + ".txt");
                  StreamWriter writeResultOnOrientationAnswer = new StreamWriter(pathFileAnswer, true);
 
                  for (int i = 0; i < 36; i++)
@@ -564,10 +564,10 @@ namespace expert_system
                  }
 
                  writeResultOnOrientationAnswer.Close();
-
+                 */
                  // запись результатоа без логики в файл
 
-                 string pathFileAll = Path.GetFullPath(@"InfoUsers\Allresult_" + nameOrientation + ".txt");
+                 /*string pathFileAll = Path.GetFullPath(@"InfoUsers\Allresult_" + nameOrientation + ".txt");
                  StreamWriter writeResultOnOrientationAll = new StreamWriter(pathFileAll, true);
 
                  writeResultOnOrientationAll.WriteLine(m_strLoginUser + 0.0);
@@ -578,18 +578,28 @@ namespace expert_system
                  writeResultOnOrientationAll.WriteLine(m_flSports + 0.0);
                  writeResultOnOrientationAll.WriteLine(m_flTechnical + 0.0);
                  writeResultOnOrientationAll.WriteLine(m_strLoginUser + 0.0);
-                 writeResultOnOrientationAll.WriteLine(m_flCreativeParent + 0.0);
-                 writeResultOnOrientationAll.WriteLine(m_flHumanitarianParent + 0.0);
-                 writeResultOnOrientationAll.WriteLine(m_flLinguisticParent + 0.0);
-                 writeResultOnOrientationAll.WriteLine(m_flMathematicalParent + 0.0);
-                 writeResultOnOrientationAll.WriteLine(m_flSportsParent + 0.0);
-                 writeResultOnOrientationAll.WriteLine(m_flTechnicalParent + 0.0);
 
                  writeResultOnOrientationAll.Close();
+                  */
+
+                /* if (writeAnswerParent)
+                 {
+                     string pathFileAll2 = Path.GetFullPath(@"InfoUsers\Allresult_" + nameOrientation + "parent.txt");
+                     StreamWriter writeResultOnOrientationAll2 = new StreamWriter(pathFileAll2, true);
+
+                     writeResultOnOrientationAll2.WriteLine(m_flCreativeParent + 0.0);
+                     writeResultOnOrientationAll2.WriteLine(m_flHumanitarianParent + 0.0);
+                     writeResultOnOrientationAll2.WriteLine(m_flLinguisticParent + 0.0);
+                     writeResultOnOrientationAll2.WriteLine(m_flMathematicalParent + 0.0);
+                     writeResultOnOrientationAll2.WriteLine(m_flSportsParent + 0.0);
+                     writeResultOnOrientationAll2.WriteLine(m_flTechnicalParent + 0.0);
+
+                     writeResultOnOrientationAll2.Close();
+                 }
+                 */
 
                  string pathFile = Path.GetFullPath(@"InfoUsers\" + m_strLoginUser + "result_" + nameOrientation + ".txt");
                  StreamWriter writeResultOnOrientation = new StreamWriter(pathFile, true);
-                 writeResultOnOrientation.WriteLine(bigOrientation);
 
                  writeResultOnOrientation.WriteLine(m_flCreative);
                  writeResultOnOrientation.WriteLine(m_flHumanitarian);
@@ -597,15 +607,25 @@ namespace expert_system
                  writeResultOnOrientation.WriteLine(m_flMathematical);
                  writeResultOnOrientation.WriteLine(m_flSports);
                  writeResultOnOrientation.WriteLine(m_flTechnical);
-                 writeResultOnOrientation.WriteLine(m_flCreativeParent);
-                 writeResultOnOrientation.WriteLine(m_flHumanitarianParent);
-                 writeResultOnOrientation.WriteLine(m_flLinguisticParent);
-                 writeResultOnOrientation.WriteLine(m_flMathematicalParent);
-                 writeResultOnOrientation.WriteLine(m_flSportsParent);
-                 writeResultOnOrientation.WriteLine(m_flTechnicalParent);
+
                  writeResultOnOrientation.Close();
 
-                 string pathFile_ = Path.GetFullPath(@"InfoUsers\" + m_strLoginUser + "result.txt");
+                 if (writeAnswerParent)
+                 {
+                     string pathFileAll3 = Path.GetFullPath(@"InfoUsers\" + m_strLoginUser + "result_" + nameOrientation + "parent.txt");
+                     StreamWriter writeResultOnOrientationAll3 = new StreamWriter(pathFileAll3, true);
+
+                     writeResultOnOrientationAll3.WriteLine(m_flCreativeParent + 0.0);
+                     writeResultOnOrientationAll3.WriteLine(m_flHumanitarianParent + 0.0);
+                     writeResultOnOrientationAll3.WriteLine(m_flLinguisticParent + 0.0);
+                     writeResultOnOrientationAll3.WriteLine(m_flMathematicalParent + 0.0);
+                     writeResultOnOrientationAll3.WriteLine(m_flSportsParent + 0.0);
+                     writeResultOnOrientationAll3.WriteLine(m_flTechnicalParent + 0.0);
+
+                     writeResultOnOrientationAll3.Close();
+                 }
+
+                 /*string pathFile_ = Path.GetFullPath(@"InfoUsers\" + m_strLoginUser + "result.txt");
                  StreamWriter writeResultOnOrientation_ = new StreamWriter(pathFile_, true);
 
                  writeResultOnOrientation_.WriteLine(m_flCreative);
@@ -615,24 +635,6 @@ namespace expert_system
                  writeResultOnOrientation_.WriteLine(m_flSports);
                  writeResultOnOrientation_.WriteLine(m_flTechnical);
                  writeResultOnOrientation_.Close();
-
-                 // запись результатов для определения значения нечёткой логики в файл
-                 string pathFile2 = Path.GetFullPath(@"InfoUsers\" + m_strLoginUser + nameOrientation + "result_from_logic.txt");
-                 StreamWriter writeResultOnOrientationLogic = new StreamWriter(pathFile2, true);
-
-                 for (int i = 0; i < 6; i++)
-                 {
-                     writeResultOnOrientationLogic.WriteLine(arrayValueOrientation[i]);
-                 }
-
-                 writeResultOnOrientationLogic.WriteLine(m_flCreativeParent);
-                 writeResultOnOrientationLogic.WriteLine(m_flHumanitarianParent);
-                 writeResultOnOrientationLogic.WriteLine(m_flLinguisticParent);
-                 writeResultOnOrientationLogic.WriteLine(m_flMathematicalParent);
-                 writeResultOnOrientationLogic.WriteLine(m_flSportsParent);
-                 writeResultOnOrientationLogic.WriteLine(m_flTechnicalParent);
-
-                 writeResultOnOrientationLogic.Close();
 
                  string pathFile4 = Path.GetFullPath(@"InfoUsers\" + m_strLoginUser + "result_from_logic.txt");
                  StreamWriter writeResultOnOrientationLogic4 = new StreamWriter(pathFile4, true);
@@ -645,32 +647,7 @@ namespace expert_system
                  writeResultOnOrientationLogic4.WriteLine(m_flTechnical);
 
                  writeResultOnOrientationLogic4.Close();
-
-                 /*pathFile = Path.GetFullPath(@"InfoUsers\result_" + m_strLoginUser + "_temp.txt");
-                 StreamWriter writeResult = new StreamWriter(pathFile, false);
-
-                 writeResult.WriteLine(m_flCreative);
-                 writeResult.WriteLine(m_flHumanitarian);
-                 writeResult.WriteLine(m_flLinguistic);
-                 writeResult.WriteLine(m_flMathematical);
-                 writeResult.WriteLine(m_flSports);
-                 writeResult.WriteLine(m_flTechnical);
-               
-                 writeResult.Close();*/
-
-                 /*pathFile = Path.GetFullPath(@"InfoUsers\result_" + m_strLoginUser + ".txt");
-
-                 StreamWriter writeResult3 = new StreamWriter(pathFile, true);
-
-                 writeResult3.WriteLine(m_flCreative);
-                 writeResult3.WriteLine(m_flHumanitarian);
-                 writeResult3.WriteLine(m_flLinguistic);
-                 writeResult3.WriteLine(m_flMathematical);
-                 writeResult3.WriteLine(m_flSports);
-                 writeResult3.WriteLine(m_flTechnical);
-
-                 writeResult3.Close();*/
-
+                 */
                  OutputOrientation orientation = new OutputOrientation(m_strLoginUser, nameOrientation);
                  orientation.Show();
 
@@ -704,6 +681,11 @@ namespace expert_system
 
             childAnswer1.Checked = true;
             parentAnswer1.Checked = true;
+
+        }
+
+        private void groupBox1_Enter(object sender, EventArgs e)
+        {
 
         }  
     }
