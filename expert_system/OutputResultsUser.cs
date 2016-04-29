@@ -206,65 +206,85 @@ namespace expert_system
 
         private void button2_Click(object sender, EventArgs e)
         {
-            if (m_strLogin == "root")
+            if (m_blAnswer)
             {
-                m_strTypeTest = "three_class";
-
-                if (m_blDiagram)
-                {
-                    m_strOrientation = "three_class";
-                    FormOutputResultDiagramUsers diagram = new FormOutputResultDiagramUsers("root", m_strTypeTest, m_strOrientation, 999);
-                    diagram.Show();
-                    return;
-                }
-
                 m_strOrientation = "three_class";
-                FormTableFromResult formResult = new FormTableFromResult(m_strOrientation, m_strTypeTest);
-                formResult.Show();
+
+                FormOutputAnswer answer = new FormOutputAnswer(m_strLogin, m_strOrientation);
+                answer.Show();
             }
             else
             {
-                m_strOrientation = "three_class";
-                if (m_blDiagram)
+                if (m_strLogin == "root")
                 {
-                    FormOutputResultDiagramUsers diagram = new FormOutputResultDiagramUsers(m_strLogin, m_strTypeTest, m_strOrientation, 999); 
-                    diagram.Show();
-                    return;
+                    m_strTypeTest = "three_class";
+
+                    if (m_blDiagram)
+                    {
+                        m_strOrientation = "three_class";
+                        FormOutputResultDiagramUsers diagram = new FormOutputResultDiagramUsers("root", m_strTypeTest, m_strOrientation, 999);
+                        diagram.Show();
+                        return;
+                    }
+
+                    m_strOrientation = "three_class";
+                    FormTableFromResult formResult = new FormTableFromResult(m_strOrientation, m_strTypeTest);
+                    formResult.Show();
                 }
-                FormTableFromResult formResult = new FormTableFromResult(m_strTypeTest/*четкая или нечеткая*/, m_strLogin, m_strOrientation/*возраст*/);
-                formResult.Show();
+                else
+                {
+                    m_strOrientation = "three_class";
+                    if (m_blDiagram)
+                    {
+                        FormOutputResultDiagramUsers diagram = new FormOutputResultDiagramUsers(m_strLogin, m_strTypeTest, m_strOrientation, 999);
+                        diagram.Show();
+                        return;
+                    }
+                    FormTableFromResult formResult = new FormTableFromResult(m_strTypeTest/*четкая или нечеткая*/, m_strLogin, m_strOrientation/*возраст*/);
+                    formResult.Show();
+                }
             }
         }
 
         private void button3_Click(object sender, EventArgs e)
         {
-            m_strOrientation = "five_class";
-            if (m_strLogin == "root")
+            if (m_blAnswer)
             {
-                m_strTypeTest = "five_class";
+                m_strOrientation = "five_class";
 
-                if (m_blDiagram)
-                {
-                   
-                    FormOutputResultDiagramUsers diagram = new FormOutputResultDiagramUsers(m_strLogin, m_strTypeTest, m_strOrientation, 999);
-                    diagram.Show();
-                    return;
-                }
-
-                FormTableFromResult formResult = new FormTableFromResult(m_strOrientation, m_strTypeTest);
-                formResult.Show();
+                FormOutputAnswer answer = new FormOutputAnswer(m_strLogin, m_strOrientation);
+                answer.Show();
             }
             else
             {
-                if (m_blDiagram)
+                m_strOrientation = "five_class";
+                if (m_strLogin == "root")
                 {
-                    m_strOrientation = "five_class";
-                    FormOutputResultDiagramUsers diagram = new FormOutputResultDiagramUsers(m_strLogin, m_strTypeTest, m_strOrientation, 999);           
-                    diagram.Show();
-                    return;
+                    m_strTypeTest = "five_class";
+
+                    if (m_blDiagram)
+                    {
+
+                        FormOutputResultDiagramUsers diagram = new FormOutputResultDiagramUsers(m_strLogin, m_strTypeTest, m_strOrientation, 999);
+                        diagram.Show();
+                        return;
+                    }
+
+                    FormTableFromResult formResult = new FormTableFromResult(m_strOrientation, m_strTypeTest);
+                    formResult.Show();
                 }
-                FormTableFromResult formResult = new FormTableFromResult(m_strTypeTest/*четкая или нечеткая*/, m_strLogin, m_strOrientation/*возраст*/);
-                formResult.Show();
+                else
+                {
+                    if (m_blDiagram)
+                    {
+                        m_strOrientation = "five_class";
+                        FormOutputResultDiagramUsers diagram = new FormOutputResultDiagramUsers(m_strLogin, m_strTypeTest, m_strOrientation, 999);
+                        diagram.Show();
+                        return;
+                    }
+                    FormTableFromResult formResult = new FormTableFromResult(m_strTypeTest/*четкая или нечеткая*/, m_strLogin, m_strOrientation/*возраст*/);
+                    formResult.Show();
+                }
             }
         }
 
