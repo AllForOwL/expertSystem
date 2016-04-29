@@ -625,6 +625,31 @@ namespace expert_system
                      writeResultOnOrientationAll3.Close();
                  }
 
+                 string pathFileForAnswer = Path.GetFullPath(@"InfoUsers\" + m_strLoginUser + "answer_" + nameOrientation + ".txt");
+
+                 StreamWriter writeAnswer = new StreamWriter(pathFileForAnswer, true);
+
+                 for (int i = 0; i < 36; i++)
+                 {
+                     writeAnswer.WriteLine(m_iArrayAnswer[i]);
+                 }
+
+                 writeAnswer.Close();
+
+                 if (writeAnswerParent)
+                 {
+                     string pathFileForAnswerParent = Path.GetFullPath(@"InfoUsers\" + m_strLoginUser + "answer_" + nameOrientation + "parent.txt");
+
+                     StreamWriter writeAnswerParentFile = new StreamWriter(pathFileForAnswerParent, true);
+
+                     for (int i = 0; i < 18; i++)
+                     {
+                         writeAnswerParentFile.WriteLine(m_iArrayAnsweParent[i]);
+                     }
+                     
+                     writeAnswerParentFile.Close();
+                 }
+
                  /*string pathFile_ = Path.GetFullPath(@"InfoUsers\" + m_strLoginUser + "result.txt");
                  StreamWriter writeResultOnOrientation_ = new StreamWriter(pathFile_, true);
 

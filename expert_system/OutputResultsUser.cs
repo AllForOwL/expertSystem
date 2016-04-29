@@ -59,6 +59,14 @@ namespace expert_system
             m_strTypeTest = typeTest;
         }
 
+        public OutputResultsUser(string login, bool answer)
+        {
+            InitializeComponent();
+
+            m_strLogin = login;
+            m_blAnswer = true;
+        }
+
         public OutputResultsUser(string login, string typeTest)
         {
             InitializeComponent();
@@ -74,7 +82,7 @@ namespace expert_system
 
             m_strLogin = login;
             m_strTypeTest = result;
-            m_blDiagram = true;
+            m_blAnswer = true;
         }
 
         public OutputResultsUser(string login, string result, bool answer, bool diagram)
@@ -124,49 +132,75 @@ namespace expert_system
 
         private void button1_Click(object sender, EventArgs e)
         {
-            int f_iOrientation = 0;
+            if (m_blAnswer)
+            {
+                int f_iOrientation = 0; ;
 
-            if (comboBox1.Text == "дошкольник")
-            {
-                m_strOrientation = "preschool";
-                f_iOrientation = 0;
-            }
-            else if (comboBox1.Text == "родитель")
-            {
-                m_strOrientation = "parent";
-                f_iOrientation = 1;
-            }
-            else if (comboBox1.Text == "дошкольник+родитель")
-            {
-                m_strOrientation = "preschool_parent";
-                f_iOrientation = 2;
-            }
-
-            if (m_strLogin == "root")
-            {
-                string blabla = "preschool_parent";
-                if (m_blDiagram)
+                if (comboBox1.Text == "дошкольник")
                 {
-                    
-                    FormOutputResultDiagramUsers diagram = new FormOutputResultDiagramUsers(m_strLogin, m_strTypeTest, blabla, f_iOrientation);
-                    diagram.Show();
-                    return;
+                    m_strOrientation = "preschool";
+                    f_iOrientation = 0;
+                }
+                else if (comboBox1.Text == "родитель")
+                {
+                    m_strOrientation = "parent";
+                    f_iOrientation = 1;
+                }
+                else if (comboBox1.Text == "дошкольник+родитель")
+                {
+                    m_strOrientation = "preschool_parent";
+                    f_iOrientation = 2;
                 }
 
-                FormTableFromResult formResult = new FormTableFromResult("root", 0, m_strTypeTest, m_blAnswer, f_iOrientation);
-                formResult.Show();
+                FormOutputAnswer answer = new FormOutputAnswer(m_strLogin, f_iOrientation);
+                answer.Show();
             }
             else
             {
-                if (m_blDiagram)
+                int f_iOrientation = 0;
+
+                if (comboBox1.Text == "дошкольник")
                 {
-                    FormOutputResultDiagramUsers diagram = new FormOutputResultDiagramUsers(m_strLogin, m_strTypeTest, m_strOrientation, f_iOrientation);
-                    diagram.Show();
-                    return;
+                    m_strOrientation = "preschool";
+                    f_iOrientation = 0;
+                }
+                else if (comboBox1.Text == "родитель")
+                {
+                    m_strOrientation = "parent";
+                    f_iOrientation = 1;
+                }
+                else if (comboBox1.Text == "дошкольник+родитель")
+                {
+                    m_strOrientation = "preschool_parent";
+                    f_iOrientation = 2;
                 }
 
-                FormTableFromResult formResult = new FormTableFromResult(m_strTypeTest/*четкая - нечеткая*/, m_strLogin, f_iOrientation/*возраст(родитель или дошкольник)*/);
-                formResult.Show();
+                if (m_strLogin == "root")
+                {
+                    string blabla = "preschool_parent";
+                    if (m_blDiagram)
+                    {
+
+                        FormOutputResultDiagramUsers diagram = new FormOutputResultDiagramUsers(m_strLogin, m_strTypeTest, blabla, f_iOrientation);
+                        diagram.Show();
+                        return;
+                    }
+
+                    FormTableFromResult formResult = new FormTableFromResult("root", 0, m_strTypeTest, m_blAnswer, f_iOrientation);
+                    formResult.Show();
+                }
+                else
+                {
+                    if (m_blDiagram)
+                    {
+                        FormOutputResultDiagramUsers diagram = new FormOutputResultDiagramUsers(m_strLogin, m_strTypeTest, m_strOrientation, f_iOrientation);
+                        diagram.Show();
+                        return;
+                    }
+
+                    FormTableFromResult formResult = new FormTableFromResult(m_strTypeTest/*четкая - нечеткая*/, m_strLogin, f_iOrientation/*возраст(родитель или дошкольник)*/);
+                    formResult.Show();
+                }
             }
         }
 

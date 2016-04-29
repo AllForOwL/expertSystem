@@ -144,7 +144,7 @@ namespace expert_system
         {
             string result = cmbResult.Text;
 
-            OutputResultsUser outputResult = new OutputResultsUser(m_strLoginUser, result, true, false);
+            OutputResultsUser outputResult = new OutputResultsUser(m_strLoginUser, true);
             outputResult.Show();
         }
     }
