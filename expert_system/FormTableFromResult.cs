@@ -21,6 +21,73 @@ namespace expert_system
         string m_strOrientation;
         int m_iOrientation;
 
+        public FormTableFromResult(string typeTests, string login, string orientation)
+        {
+            InitializeComponent();
+
+            string pathFile = Path.GetFullPath(@"InfoUsers\" + login + "result_" + orientation + ".txt");
+
+            if (!File.Exists(pathFile))
+            {
+                MessageBox.Show("Тест не был пройден!");
+                return;
+            }
+
+            StreamReader readResult = new StreamReader(pathFile);
+
+            if (typeTests == "без нечеткой модели")
+            {
+                ++dataGridView1.RowCount;
+                int countRows = 0;
+                double valueFromFile = 0.0;
+                while (!readResult.EndOfStream)
+                {
+                    for (int i = 0; i < 6; i++)
+                    {
+                        valueFromFile = Convert.ToDouble(readResult.ReadLine());
+                        dataGridView1.Rows[countRows].Cells[i].Value = valueFromFile.ToString();
+                    }
+                    ++dataGridView1.RowCount;
+                    ++countRows;
+                }
+            }
+            else //  нечеткая модель
+            {
+                ++dataGridView1.RowCount;
+                int countRows = 0;
+                double valueFromFile = 0.0;
+                while (!readResult.EndOfStream)
+                {
+                    for (int i = 0; i < 6; i++)
+                    {
+                        valueFromFile = Convert.ToDouble(readResult.ReadLine());
+
+                        if (valueFromFile >= 0 && valueFromFile < 2)
+                        {
+                            valueFromFile = 0.3;
+                        }
+                        else if (valueFromFile >= 2 && valueFromFile < 4)
+                        {
+                            valueFromFile = 0.6;
+                        }
+                        else if (valueFromFile >= 4 && valueFromFile < 5)
+                        {
+                            valueFromFile = 0.9;
+                        }
+                        else if (valueFromFile >=5  && valueFromFile <=6)
+                        {
+                            valueFromFile = 1.0;
+                        }
+                        dataGridView1.Rows[countRows].Cells[i].Value = valueFromFile.ToString();
+                    }
+                    ++dataGridView1.RowCount;
+                    ++countRows;
+                }
+            }
+                
+            readResult.Close();
+        }
+
         public FormTableFromResult(string typeTests, string login, int orientation)
         {
             InitializeComponent();
@@ -287,284 +354,6 @@ namespace expert_system
                 readResult.Close();
 
             }
-        }
-
-        public FormTableFromResult(string typeTest, string login, string orientation)
-        {
-            InitializeComponent();
-
-            m_strLogin = login;
-            m_strTest = typeTest;
-            m_strOrientation = orientation;
-
-            if (m_strTest == "без нечеткой модели")
-            {
-                string pathFile = Path.GetFullPath(@"InfoUsers\" + m_strLogin + "result_preschool_parent.txt");
-
-                if (!File.Exists(pathFile))
-                {
-                    MessageBox.Show("ТЕст не был пройден");
-                    return;
-                }
-
-                StreamReader readResult = new StreamReader(pathFile);
-                int countRows = 0;
-
-                if (orientation == "preschool")
-                {
-                    while (!readResult.EndOfStream)
-                    {
-                        ++dataGridView1.RowCount;
-                        string temp_ = readResult.ReadLine();
-                        for (int i = 0; i < 6; i++)
-                        {
-                            dataGridView1.Rows[countRows].Cells[i].Value = readResult.ReadLine();
-                        }
-                        for (int i = 0; i < 6; i++)
-                        {
-                            string temp = readResult.ReadLine();
-                        }
-
-                        ++countRows;
-                    }
-                }
-                else if (orientation == "parent")
-                {
-                    while (!readResult.EndOfStream)
-                    {
-                        ++dataGridView1.RowCount;
-                        string temp_ = readResult.ReadLine();
-                        for (int i = 0; i < 6; i++)
-                        {
-                            string temp = readResult.ReadLine();
-                        }
-                        for (int i = 0; i < 6; i++)
-                        {
-                            dataGridView1.Rows[countRows].Cells[i].Value = readResult.ReadLine();
-                        }
-
-                        ++countRows;
-                    }
-                }
-                else
-                {
-                    while (!readResult.EndOfStream)
-                    {
-                         
-                        ++dataGridView1.RowCount;
-
-                        string str = readResult.ReadLine();
-
-                        for (int i = 0; i < 6; i++)
-                        {
-                            dataGridView1.Rows[countRows].Cells[i].Value = readResult.ReadLine();
-                        }
-                        ++countRows;
-                        for (int i = 0; i < 6; i++)
-                        {
-                            dataGridView1.Rows[countRows].Cells[i].Value = readResult.ReadLine();
-                        }
-
-                        ++countRows;
-                    }
-                }
-
-                readResult.Close();
-            }
-            else if (m_strTest == "нечеткая модель" || m_strTest == "Matlab")
-            {
-
-                int rowsInTable = 1;
-                int rowsAll = 0;
-                int cells = 0;
-
-                int countAllAnswer = 0;
-                int countAnswer = 0;
-                string strAnswer = " ";
-                bool setCOuntAnswer = true;
-
-
-                double valueFromFile;
-                double valueForTable = 0.0;
-                double valueForTable_2 = 0.0;
-
-
-                int countAnswer_ = 99999;
-
-                string pathFile = Path.GetFullPath(@"InfoUsers\" + m_strLogin + "result_preschool_parent.txt");
-
-                if (!File.Exists(pathFile))
-                {
-                    MessageBox.Show("ТЕст не был пройден");
-                    return;
-                }
-
-                StreamReader readResult = new StreamReader(pathFile);
-                int countRows = 0;
-
-                if (orientation == "preschool")
-                {
-                    while (!readResult.EndOfStream)
-                    {
-                        ++dataGridView1.RowCount;
-                        string temp__ = readResult.ReadLine();
-                        for (int i = 0; i < 6; i++)
-                        {
-                            valueForTable_2 = 0.0;
-                            valueFromFile = Convert.ToDouble(readResult.ReadLine());
-                            //MessageBox.Show(valueForTable.ToString());
-
-                            if (valueFromFile >= 0.0 && valueFromFile < 1.0)
-                            {
-                                valueForTable_2 = 0.0;
-                                dataGridView1.Rows[countRows].Cells[i].Value = valueForTable_2.ToString();
-                            }
-                            else if (valueFromFile >= 1.0 && valueFromFile < 2.0)
-                            {
-                                valueForTable_2 = 0.2;
-                                dataGridView1.Rows[countRows].Cells[i].Value = valueForTable_2.ToString();
-                            }
-                            else if (valueFromFile >= 2.0 && valueFromFile < 3.0)
-                            {
-                                valueForTable_2 = 0.4;
-                                dataGridView1.Rows[countRows].Cells[i].Value = valueForTable_2.ToString();
-                            }
-                            else if (valueFromFile >= 3.0 && valueFromFile < 4.0)
-                            {
-                                valueForTable_2 = 0.6;
-                                dataGridView1.Rows[countRows].Cells[i].Value = valueForTable_2.ToString();
-                            }
-                            else if (valueFromFile >= 4.0 && valueFromFile < 5.0)
-                            {
-                                valueForTable_2 = 0.8;
-                                dataGridView1.Rows[countRows].Cells[i].Value = valueForTable_2.ToString();
-                            }
-                            else if (valueFromFile >= 5.0)
-                            {
-                                valueForTable_2 = 1.0;
-                                dataGridView1.Rows[rowsInTable].Cells[i].Value = valueForTable_2.ToString();
-                            }
-                        }
-                        valueForTable = 0;
-                        ++countRows;
-
-                        for (int i = 0; i < 6; i++)
-                        {
-                            string temp = readResult.ReadLine();
-                        }
-                    }
-                }
-                else if (orientation == "parent")
-                {
-                    while (!readResult.EndOfStream)
-                    {
-                        ++dataGridView1.RowCount;
-                        string temp_ = readResult.ReadLine();
-                        for (int i = 0; i < 6; i++)
-                        {
-                            string temp = readResult.ReadLine();
-                        }
-                            ++dataGridView1.RowCount;
-                            for (int i = 0; i < 6; i++)
-                            {
-                                valueForTable_2 = 0.0;
-                                valueFromFile = Convert.ToDouble(readResult.ReadLine());
-                                //MessageBox.Show(valueForTable.ToString());
-
-                                if (valueFromFile >= 0.0 && valueFromFile < 1.0)
-                                {
-                                    valueForTable_2 = 0.0;
-                                    dataGridView1.Rows[rowsInTable].Cells[i].Value = valueForTable_2.ToString();
-                                }
-                                else if (valueFromFile >= 1.0 && valueFromFile < 2.0)
-                                {
-                                    valueForTable_2 = 0.2;
-                                    dataGridView1.Rows[rowsInTable].Cells[i].Value = valueForTable_2.ToString();
-                                }
-                                else if (valueFromFile >= 2.0 && valueFromFile < 3.0)
-                                {
-                                    valueForTable_2 = 0.4;
-                                    dataGridView1.Rows[rowsInTable].Cells[i].Value = valueForTable_2.ToString();
-                                }
-                                else if (valueFromFile >= 3.0 && valueFromFile < 4.0)
-                                {
-                                    valueForTable_2 = 0.6;
-                                    dataGridView1.Rows[rowsInTable].Cells[i].Value = valueForTable_2.ToString();
-                                }
-                                else if (valueFromFile >= 4.0 && valueFromFile < 5.0)
-                                {
-                                    valueForTable_2 = 0.8;
-                                    dataGridView1.Rows[rowsInTable].Cells[i].Value = valueForTable_2.ToString();
-                                }
-                                else if (valueFromFile >= 5.0)
-                                {
-                                    valueForTable_2 = 1.0;
-                                    dataGridView1.Rows[rowsInTable].Cells[i].Value = valueForTable_2.ToString();
-                                }
-            
-                            valueForTable = 0;
-                            ++countRows;
-                        }
-                    }
-                }
-                else
-                {
-                    int readStr = 0;
-
-                    while (!readResult.EndOfStream)
-                    {
-                        if (readStr == 0)
-                        {
-                            string str = readResult.ReadLine();
-                            readStr = 2;
-                        }
-                        --readStr;
-                            ++dataGridView1.RowCount;
-                            for (int i = 0; i < 6; i++)
-                            {
-                                valueForTable_2 = 0.0;
-                                valueFromFile = Convert.ToDouble(readResult.ReadLine());
-                                //MessageBox.Show(valueForTable.ToString());
-
-                                if (valueFromFile >= 0.0 && valueFromFile < 1.0)
-                                {
-                                    valueForTable_2 = 0.0;
-                                    dataGridView1.Rows[countRows].Cells[i].Value = valueForTable_2.ToString();
-                                }
-                                else if (valueFromFile >= 1.0 && valueFromFile < 2.0)
-                                {
-                                    valueForTable_2 = 0.2;
-                                    dataGridView1.Rows[countRows].Cells[i].Value = valueForTable_2.ToString();
-                                }
-                                else if (valueFromFile >= 2.0 && valueFromFile < 3.0)
-                                {
-                                    valueForTable_2 = 0.4;
-                                    dataGridView1.Rows[countRows].Cells[i].Value = valueForTable_2.ToString();
-                                }
-                                else if (valueFromFile >= 3.0 && valueFromFile < 4.0)
-                                {
-                                    valueForTable_2 = 0.6;
-                                    dataGridView1.Rows[countRows].Cells[i].Value = valueForTable_2.ToString();
-                                }
-                                else if (valueFromFile >= 4.0 && valueFromFile < 5.0)
-                                {
-                                    valueForTable_2 = 0.8;
-                                    dataGridView1.Rows[countRows].Cells[i].Value = valueForTable_2.ToString();
-                                }
-                                else if (valueFromFile >= 5.0)
-                                {
-                                    valueForTable_2 = 1.0;
-                                    dataGridView1.Rows[countRows].Cells[i].Value = valueForTable_2.ToString();
-                                }
-                            valueForTable = 0;
-                        }
-                            ++countRows;
-                    }
-                }
-
-                readResult.Close();
-            }
-
         }
 
         public FormTableFromResult(string strTypeTest, string orientation)

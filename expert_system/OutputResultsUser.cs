@@ -184,32 +184,34 @@ namespace expert_system
                     return;
                 }
 
-
+                m_strOrientation = "three_class";
                 FormTableFromResult formResult = new FormTableFromResult(m_strOrientation, m_strTypeTest);
                 formResult.Show();
             }
             else
             {
+                m_strOrientation = "three_class";
                 if (m_blDiagram)
                 {
-                    m_strOrientation = "three_class";
                     FormOutputResultDiagramUsers diagram = new FormOutputResultDiagramUsers(m_strLogin, m_strTypeTest, m_strOrientation, 999); 
                     diagram.Show();
                     return;
                 }
-                FormTableFromResult formResult = new FormTableFromResult(m_strLogin, 1, m_strTypeTest, m_blAnswer, 999);
+                FormTableFromResult formResult = new FormTableFromResult(m_strTypeTest/*четкая или нечеткая*/, m_strLogin, m_strOrientation/*возраст*/);
+                formResult.Show();
             }
         }
 
         private void button3_Click(object sender, EventArgs e)
         {
+            m_strOrientation = "five_class";
             if (m_strLogin == "root")
             {
                 m_strTypeTest = "five_class";
 
                 if (m_blDiagram)
                 {
-                    m_strOrientation = "five_class";
+                   
                     FormOutputResultDiagramUsers diagram = new FormOutputResultDiagramUsers(m_strLogin, m_strTypeTest, m_strOrientation, 999);
                     diagram.Show();
                     return;
@@ -227,12 +229,14 @@ namespace expert_system
                     diagram.Show();
                     return;
                 }
-                FormTableFromResult formResult = new FormTableFromResult(m_strLogin, 2, m_strTypeTest, m_blAnswer, 999);
+                FormTableFromResult formResult = new FormTableFromResult(m_strTypeTest/*четкая или нечеткая*/, m_strLogin, m_strOrientation/*возраст*/);
+                formResult.Show();
             }
         }
 
         private void button4_Click(object sender, EventArgs e)
         {
+            m_strOrientation = "five_class";
             if (m_strLogin == "root")
             {
                 m_strTypeTest = "preschool";
@@ -257,7 +261,8 @@ namespace expert_system
                     diagram.Show();
                     return;
                 }
-                FormTableFromResult formResult = new FormTableFromResult(m_strLogin, 3, m_strTypeTest, m_blAnswer, 999);
+                FormTableFromResult formResult = new FormTableFromResult(m_strTypeTest/*четкая или нечеткая*/, m_strLogin, m_strOrientation/*возраст*/);
+                formResult.Show();
             }
         }
 
@@ -287,7 +292,9 @@ namespace expert_system
                     diagram.Show();
                     return;
                 }
-                FormTableFromResult formResult = new FormTableFromResult(m_strLogin, 4, m_strTypeTest, m_blAnswer, 999);
+
+                FormTableFromResult formResult = new FormTableFromResult(m_strTypeTest/*четкая или нечеткая*/, m_strLogin, m_strOrientation/*возраст*/);
+                formResult.Show();
             }
         }
 
