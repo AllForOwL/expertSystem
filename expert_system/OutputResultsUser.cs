@@ -64,7 +64,7 @@ namespace expert_system
             InitializeComponent();
 
             m_strLogin = login;
-            m_strOrientation = typeTest;
+            m_strTypeTest = typeTest;
             m_blAnswer = false;
         }
 
@@ -129,17 +129,17 @@ namespace expert_system
             if (comboBox1.Text == "дошкольник")
             {
                 m_strOrientation = "preschool";
-                f_iOrientation = 3;
+                f_iOrientation = 0;
             }
             else if (comboBox1.Text == "родитель")
             {
                 m_strOrientation = "parent";
-                f_iOrientation = 4;
+                f_iOrientation = 1;
             }
             else if (comboBox1.Text == "дошкольник+родитель")
             {
                 m_strOrientation = "preschool_parent";
-                f_iOrientation = 0;
+                f_iOrientation = 2;
             }
 
             if (m_strLogin == "root")
@@ -165,7 +165,7 @@ namespace expert_system
                     return;
                 }
 
-                FormTableFromResult formResult = new FormTableFromResult(m_strTypeTest, m_strLogin, m_strOrientation);
+                FormTableFromResult formResult = new FormTableFromResult(m_strTypeTest/*четкая - нечеткая*/, m_strLogin, f_iOrientation/*возраст(родитель или дошкольник)*/);
                 formResult.Show();
             }
         }
