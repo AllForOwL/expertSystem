@@ -44,7 +44,7 @@ namespace expert_system
 
             readuser.Close();
 
-            OutputResultsUser outputResult = new OutputResultsUser(user, strresult_, true);
+            OutputResultsUser outputResult = new OutputResultsUser(true, strresult_);
             outputResult.Show();
         }
 

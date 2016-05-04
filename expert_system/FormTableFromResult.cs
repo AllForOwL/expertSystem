@@ -494,6 +494,7 @@ namespace expert_system
                 }
             }
             }
+
         public FormTableFromResult(string strTypeTest, string orientation)
         {
             InitializeComponent();
