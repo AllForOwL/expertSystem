@@ -21,15 +21,31 @@ namespace expert_system
         private void button1_Click(object sender, EventArgs e)
         {
             string strresult_ = comboBox1.Text;
+            string user;
 
-            OutputResultsUser result = new OutputResultsUser(strresult_);
-            result.Show();
+            StreamReader readuser = new StreamReader(Path.GetFullPath(@"InfoUsers\AllUsers.txt"));
+
+            user = readuser.ReadLine();
+            
+            readuser.Close();
+
+            OutputResultsUser outputResult = new OutputResultsUser("root", strresult_);
+            outputResult.Show();
         }
 
         private void button3_Click(object sender, EventArgs e)
         {
-            OutputResultsUser result = new OutputResultsUser(true, comboBox1.SelectedText);
-            result.Show();
+            string strresult_ = comboBox1.Text;
+            string user;
+
+            StreamReader readuser = new StreamReader(Path.GetFullPath(@"InfoUsers\AllUsers.txt"));
+
+            user = readuser.ReadLine();
+
+            readuser.Close();
+
+            OutputResultsUser outputResult = new OutputResultsUser(user, strresult_, true);
+            outputResult.Show();
         }
 
         private void button2_Click(object sender, EventArgs e)

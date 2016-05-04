@@ -31,7 +31,7 @@ namespace expert_system
             InitializeComponent();
 
             m_strLogin = "root";
-            m_strOrientation = typeTest;
+            m_strTypeTest = typeTest;
         }
 
         public OutputResultsUser(int diagram)
@@ -186,7 +186,7 @@ namespace expert_system
 
             if (m_blDiagram)
             {
-                FormOutputResultDiagramUsers answer = new FormOutputResultDiagramUsers( m_strLogin,m_strTypeTest, m_strOrientation);
+                FormOutputResultDiagramUsers answer = new FormOutputResultDiagramUsers(m_strLogin, m_strTypeTest, m_strOrientation);
                 answer.Show();
             }
             else if (m_blAnswer)

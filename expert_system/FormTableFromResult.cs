@@ -8,6 +8,8 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.IO;
+using System.Collections;
+
 
 namespace expert_system
 {
@@ -25,67 +27,95 @@ namespace expert_system
         {
             InitializeComponent();
 
-            string pathFile = Path.GetFullPath(@"InfoUsers\" + login + "result_" + orientation + ".txt");
+            ArrayList f_arrlistUsers = new ArrayList();
+            int countRows = 0;
 
-            if (!File.Exists(pathFile))
+            if (login == "root")
             {
-                MessageBox.Show("Тест не был пройден!");
-                return;
-            }
+                string pathFileLocal = Path.GetFullPath(@"InfoUsers\AllUsers.txt");
 
-            StreamReader readResult = new StreamReader(pathFile);
+                StreamReader readResultlocal = new StreamReader(pathFileLocal);
 
-            if (typeTests == "без нечеткой модели")
-            {
-                ++dataGridView1.RowCount;
-                int countRows = 0;
-                double valueFromFile = 0.0;
-                while (!readResult.EndOfStream)
+                string tempValue = "";
+
+                while (!readResultlocal.EndOfStream)
                 {
-                    for (int i = 0; i < 6; i++)
-                    {
-                        valueFromFile = Convert.ToDouble(readResult.ReadLine());
-                        dataGridView1.Rows[countRows].Cells[i].Value = valueFromFile.ToString();
-                    }
-                    ++dataGridView1.RowCount;
-                    ++countRows;
+                    tempValue = readResultlocal.ReadLine();
+                    f_arrlistUsers.Add(readResultlocal.ReadLine());
+                    tempValue = readResultlocal.ReadLine();
                 }
-            }
-            else //  нечеткая модель
-            {
-                ++dataGridView1.RowCount;
-                int countRows = 0;
-                double valueFromFile = 0.0;
-                while (!readResult.EndOfStream)
-                {
-                    for (int i = 0; i < 6; i++)
-                    {
-                        valueFromFile = Convert.ToDouble(readResult.ReadLine());
 
-                        if (valueFromFile >= 0 && valueFromFile < 2)
-                        {
-                            valueFromFile = 0.3;
-                        }
-                        else if (valueFromFile >= 2 && valueFromFile < 4)
-                        {
-                            valueFromFile = 0.6;
-                        }
-                        else if (valueFromFile >= 4 && valueFromFile < 5)
-                        {
-                            valueFromFile = 0.9;
-                        }
-                        else if (valueFromFile >=5  && valueFromFile <=6)
-                        {
-                            valueFromFile = 1.0;
-                        }
-                        dataGridView1.Rows[countRows].Cells[i].Value = valueFromFile.ToString();
-                    }
-                    ++dataGridView1.RowCount;
-                    ++countRows;
-                }
+                readResultlocal.Close();
             }
-                
-            readResult.Close();
+            else
+            {
+                f_arrlistUsers.Add(login);
+            }
+
+            for (int countUsers = 0; countUsers < f_arrlistUsers.Count; countUsers++)
+            {
+                string pathFile = Path.GetFullPath(@"InfoUsers\" + f_arrlistUsers[countUsers] + "result_" + orientation + ".txt");
+
+                if (!File.Exists(pathFile))
+                {
+                //    MessageBox.Show("Тест не был пройден!");
+                    return;
+                }
+
+                StreamReader readResult = new StreamReader(pathFile);
+
+                if (typeTests == "без нечеткой модели")
+                {
+                    ++dataGridView1.RowCount;
+                    double valueFromFile = 0.0;
+                    while (!readResult.EndOfStream)
+                    {
+                        for (int i = 0; i < 6; i++)
+                        {
+                            valueFromFile = Math.Round(Convert.ToDouble(readResult.ReadLine()), 2);
+                            dataGridView1.Rows[countRows].Cells[i].Value = valueFromFile.ToString();
+                        }
+
+                        ++dataGridView1.RowCount;
+                        ++countRows;
+                    }
+                }
+                else //  нечеткая модель
+                {
+                    ++dataGridView1.RowCount;
+                    double valueFromFile = 0.0;
+                    while (!readResult.EndOfStream)
+                    {
+                        for (int i = 0; i < 6; i++)
+                        {
+                            valueFromFile = Convert.ToDouble(readResult.ReadLine());
+
+                            if (valueFromFile >= 0 && valueFromFile < 2)
+                            {
+                                valueFromFile = 0.3;
+                            }
+                            else if (valueFromFile >= 2 && valueFromFile < 4)
+                            {
+                                valueFromFile = 0.6;
+                            }
+                            else if (valueFromFile >= 4 && valueFromFile < 5)
+                            {
+                                valueFromFile = 0.9;
+                            }
+                            else if (valueFromFile >= 5 && valueFromFile <= 6)
+                            {
+                                valueFromFile = 1.0;
+                            }
+                            dataGridView1.Rows[countRows].Cells[i].Value = valueFromFile.ToString();
+                        }
+
+                        ++dataGridView1.RowCount;
+                        ++countRows;
+                    }
+                }
+
+                readResult.Close();
+            }
         }
 
         public FormTableFromResult(string typeTests, string login, int orientation)
@@ -93,269 +123,377 @@ namespace expert_system
             InitializeComponent();
 
             string pathFile;
-            
-            // определяем кого показывать результат(дошкольник, родитель, или обоих)
-            if (orientation == 0)   // докшкольник
+
+                // определяем кого показывать результат(дошкольник, родитель, или обоих)
+            if (orientation == 0)   // дошкольник
             {
-                pathFile = Path.GetFullPath(@"InfoUsers\" + login + "result_preschool_parent.txt");
+                ArrayList f_arrlistUsers = new ArrayList();
+                int countRows = 0;
 
-                if (!File.Exists(pathFile))
+                if (login == "root")
                 {
-                    MessageBox.Show("Тест не был пройден!");
-                    return;
-                }
+                    string pathFileLocal = Path.GetFullPath(@"InfoUsers\AllUsers.txt");
 
-                StreamReader readResult = new StreamReader(pathFile);
+                    StreamReader readResultlocal = new StreamReader(pathFileLocal);
 
-                if (typeTests == "без нечеткой модели")
-                {
-                    ++dataGridView1.RowCount;
-                    int countRows = 0;
-                    double valueFromFile = 0.0;
-                    while (!readResult.EndOfStream)
+                    string tempValue = "";
+
+                    while (!readResultlocal.EndOfStream)
                     {
-                        for (int i = 0; i < 6; i++)
-                        {
-                            valueFromFile = Convert.ToDouble(readResult.ReadLine());
-                            dataGridView1.Rows[countRows].Cells[i].Value = valueFromFile.ToString();
-                        }
-                        ++dataGridView1.RowCount;
-                        ++countRows;
+                        tempValue = readResultlocal.ReadLine();
+                        f_arrlistUsers.Add(readResultlocal.ReadLine());
+                        tempValue = readResultlocal.ReadLine();
                     }
+
+                    readResultlocal.Close();
                 }
-                else // дошкольник + нечеткая модель
+                else
                 {
-                    ++dataGridView1.RowCount;
-                    int countRows = 0;
-                    double valueFromFile = 0.0;
-                    while (!readResult.EndOfStream)
-                    {
-                        for (int i = 0; i < 6; i++)
-                        {
-                            valueFromFile = Convert.ToDouble(readResult.ReadLine());
-
-                            if (valueFromFile >= 0 && valueFromFile < 2)
-                            {
-                                valueFromFile = 0.3;
-                            }
-                            else if (valueFromFile >= 2 && valueFromFile < 4)
-                            {
-                                valueFromFile = 0.6;
-                            }
-                            else if (valueFromFile >= 4 && valueFromFile < 5)
-                            {
-                                valueFromFile = 0.9;
-                            }
-                            else if (valueFromFile >=5  && valueFromFile <=6)
-                            {
-                                valueFromFile = 1.0;
-                            }
-                            dataGridView1.Rows[countRows].Cells[i].Value = valueFromFile.ToString();
-                        }
-                        ++dataGridView1.RowCount;
-                        ++countRows;
-                    }
+                    f_arrlistUsers.Add(login);
                 }
-                
-                readResult.Close();
 
+                for (int countUser = 0; countUser < f_arrlistUsers.Count; countUser++)
+                {
+                    pathFile = Path.GetFullPath(@"InfoUsers\" + f_arrlistUsers[countUser] + "result_preschool_parent.txt");
+
+                    if (!File.Exists(pathFile))
+                    {
+                        MessageBox.Show("Тест не был пройден!");
+                        return;
+                    }
+
+                    StreamReader readResult = new StreamReader(pathFile);
+
+                    if (typeTests == "без нечеткой модели")
+                    {
+                        ++dataGridView1.RowCount;
+                        
+                        double valueFromFile = 0.0;
+                        while (!readResult.EndOfStream)
+                        {
+                            for (int i = 0; i < 6; i++)
+                            {
+                                valueFromFile = Convert.ToDouble(readResult.ReadLine());
+                                dataGridView1.Rows[countRows].Cells[i].Value = valueFromFile.ToString();
+                            }
+
+                            ++dataGridView1.RowCount;
+                            ++countRows;
+                        }
+                    }
+                    else // дошкольник + нечеткая модель
+                    {
+                        ++dataGridView1.RowCount;
+                        double valueFromFile = 0.0;
+                        while (!readResult.EndOfStream)
+                        {
+                            for (int i = 0; i < 6; i++)
+                            {
+                                valueFromFile = Convert.ToDouble(readResult.ReadLine());
+
+                                if (valueFromFile >= 0 && valueFromFile < 2)
+                                {
+                                    valueFromFile = 0.3;
+                                }
+                                else if (valueFromFile >= 2 && valueFromFile < 4)
+                                {
+                                    valueFromFile = 0.6;
+                                }
+                                else if (valueFromFile >= 4 && valueFromFile < 5)
+                                {
+                                    valueFromFile = 0.9;
+                                }
+                                else
+                                {
+                                    valueFromFile = 1.0;
+                                }
+                                dataGridView1.Rows[countRows].Cells[i].Value = valueFromFile.ToString();
+                            }
+
+                            ++dataGridView1.RowCount;
+                            ++countRows;
+                        }
+                    }
+
+                    readResult.Close();
+                }
             }
             else if (orientation == 1) // родитель
             {
-                pathFile = Path.GetFullPath(@"InfoUsers\" + login + "result_preschool_parentparent.txt");
-                
-                if (!File.Exists(pathFile))
-                {
-                    MessageBox.Show("Тест не был пройден!");
-                    return;
-                }
+                ArrayList f_arrlistUsers = new ArrayList();
+                int countRows = 0;
 
-                StreamReader readResult = new StreamReader(pathFile);
-
-                if (typeTests == "без нечеткой модели")
+                if (login == "root")
                 {
-                    ++dataGridView1.RowCount;
-                    int countRows = 0;
-                    double valueFromFile = 0.0;
-                    while (!readResult.EndOfStream)
+                    string pathFileLocal = Path.GetFullPath(@"InfoUsers\AllUsers.txt");
+
+                    StreamReader readResultlocal = new StreamReader(pathFileLocal);
+
+                    string tempValue = "";
+
+                    while (!readResultlocal.EndOfStream)
                     {
-                        for (int i = 0; i < 6; i++)
-                        {
-                            valueFromFile = Convert.ToDouble(readResult.ReadLine());
-                            dataGridView1.Rows[countRows].Cells[i].Value = valueFromFile.ToString();
-                        }
-                        ++dataGridView1.RowCount;
-                        ++countRows;
+                        tempValue = readResultlocal.ReadLine();
+                        f_arrlistUsers.Add(readResultlocal.ReadLine());
+                        tempValue = readResultlocal.ReadLine();
                     }
+
+                    readResultlocal.Close();
                 }
-                else // дошкольник + нечеткая модель
+                else
                 {
-                    ++dataGridView1.RowCount;
-                    int countRows = 0;
-                    double valueFromFile = 0.0;
-                    while (!readResult.EndOfStream)
-                    {
-                        for (int i = 0; i < 6; i++)
-                        {
-                            valueFromFile = Convert.ToDouble(readResult.ReadLine());
-
-                            if (valueFromFile >= 0 && valueFromFile < 2)
-                            {
-                                valueFromFile = 0.3;
-                            }
-                            else if (valueFromFile >= 2 && valueFromFile < 4)
-                            {
-                                valueFromFile = 0.6;
-                            }
-                            else if (valueFromFile >= 4 && valueFromFile < 5)
-                            {
-                                valueFromFile = 0.9;
-                            }
-                            else if (valueFromFile >= 5 && valueFromFile <= 6)
-                            {
-                                valueFromFile = 1.0;
-                            }
-                            dataGridView1.Rows[countRows].Cells[i].Value = valueFromFile.ToString();
-                        }
-                        ++dataGridView1.RowCount;
-                        ++countRows;
-                    }
+                    f_arrlistUsers.Add(login);
                 }
 
-                readResult.Close();
+                for (int countUsers = 0; countUsers < f_arrlistUsers.Count; countUsers++)
+                {
+
+                    pathFile = Path.GetFullPath(@"InfoUsers\" + f_arrlistUsers[countUsers] + "result_preschool_parentparent.txt");
+
+                    if (!File.Exists(pathFile))
+                    {
+                        MessageBox.Show("Тест не был пройден!");
+                        return;
+                    }
+
+                    StreamReader readResult = new StreamReader(pathFile);
+
+                    if (typeTests == "без нечеткой модели")
+                    {
+                        ++dataGridView1.RowCount;
+                        double valueFromFile = 0.0;
+                        while (!readResult.EndOfStream)
+                        {
+                            for (int i = 0; i < 6; i++)
+                            {
+                                valueFromFile = Math.Round(Convert.ToDouble(readResult.ReadLine()),2);
+                                dataGridView1.Rows[countRows].Cells[i].Value = valueFromFile.ToString();
+                            }
+
+                            ++dataGridView1.RowCount;
+                            ++countRows;
+                        }
+                    }
+                    else // дошкольник + нечеткая модель
+                    {
+                        ++dataGridView1.RowCount;
+                        double valueFromFile = 0.0;
+                        while (!readResult.EndOfStream)
+                        {
+                            for (int i = 0; i < 6; i++)
+                            {
+                                valueFromFile = Convert.ToDouble(readResult.ReadLine());
+
+                                if (valueFromFile >= 0 && valueFromFile < 2)
+                                {
+                                    valueFromFile = 0.3;
+                                }
+                                else if (valueFromFile >= 2 && valueFromFile < 4)
+                                {
+                                    valueFromFile = 0.6;
+                                }
+                                else if (valueFromFile >= 4 && valueFromFile < 5)
+                                {
+                                    valueFromFile = 0.9;
+                                }
+                                else
+                                {
+                                    valueFromFile = 1.0;
+                                }
+                                dataGridView1.Rows[countRows].Cells[i].Value = valueFromFile.ToString();
+                            }
+
+                            ++dataGridView1.RowCount;
+                            ++countRows;
+                        }
+                    }
+
+                    readResult.Close();
+                }
 
             }
             else // дошкольник+родитель
             {
-
+                ArrayList f_arrlistUsers = new ArrayList();
                 int countRows = 0;
-                pathFile = Path.GetFullPath(@"InfoUsers\" + login + "result_preschool_parent.txt");
 
-                if (!File.Exists(pathFile))
+                if (login == "root")
                 {
-                    MessageBox.Show("Тест не был пройден!");
-                    return;
-                }
+                    string pathFileLocal = Path.GetFullPath(@"InfoUsers\AllUsers.txt");
 
-                StreamReader readResult = new StreamReader(pathFile);
+                    StreamReader readResultlocal = new StreamReader(pathFileLocal);
 
-                if (typeTests == "без нечеткой модели")
-                {
-                    ++dataGridView1.RowCount;
-                   
-                    double valueFromFile = 0.0;
-                    while (!readResult.EndOfStream)
+                    string tempValue = "";
+
+                    while (!readResultlocal.EndOfStream)
                     {
-                        for (int i = 0; i < 6; i++)
-                        {
-                            valueFromFile = Convert.ToDouble(readResult.ReadLine());
-                            dataGridView1.Rows[countRows].Cells[i].Value = valueFromFile.ToString();
-                        }
-                        ++dataGridView1.RowCount;
-                        ++countRows;
+                        tempValue = readResultlocal.ReadLine();
+                        f_arrlistUsers.Add(readResultlocal.ReadLine());
+                        tempValue = readResultlocal.ReadLine();
                     }
+
+                    readResultlocal.Close();
                 }
-                else // дошкольник + нечеткая модель
+                else
                 {
-                    ++dataGridView1.RowCount;
-                   
-                    double valueFromFile = 0.0;
-                    while (!readResult.EndOfStream)
+                    f_arrlistUsers.Add(login);
+                }
+
+                for (int countUser = 0; countUser < f_arrlistUsers.Count; countUser++)
+                {
+                    pathFile = Path.GetFullPath(@"InfoUsers\" + f_arrlistUsers[countUser] + "result_preschool_parent.txt");
+
+                    if (!File.Exists(pathFile))
                     {
-                        for (int i = 0; i < 6; i++)
-                        {
-                            valueFromFile = Convert.ToDouble(readResult.ReadLine());
-
-                            if (valueFromFile >= 0 && valueFromFile < 2)
-                            {
-                                valueFromFile = 0.3;
-                            }
-                            else if (valueFromFile >= 2 && valueFromFile < 4)
-                            {
-                                valueFromFile = 0.6;
-                            }
-                            else if (valueFromFile >= 4 && valueFromFile < 5)
-                            {
-                                valueFromFile = 0.9;
-                            }
-                            else if (valueFromFile >= 5 && valueFromFile <= 6)
-                            {
-                                valueFromFile = 1.0;
-                            }
-                            dataGridView1.Rows[countRows].Cells[i].Value = valueFromFile.ToString();
-                        }
-                        ++dataGridView1.RowCount;
-                        ++countRows;
+                        MessageBox.Show("Тест не был пройден!");
+                        return;
                     }
-                }
 
-                readResult.Close();
+                    StreamReader readResult = new StreamReader(pathFile);
 
-                pathFile = Path.GetFullPath(@"InfoUsers\" + login + "result_preschool_parentparent.txt");
-                
-                if (!File.Exists(pathFile))
-                {
-                    MessageBox.Show("Тест не был пройден!");
-                    return;
-                }
-
-                readResult = new StreamReader(pathFile);
-
-                if (typeTests == "без нечеткой модели")
-                {
-                    ++dataGridView1.RowCount;
-                    
-                    double valueFromFile = 0.0;
-                    while (!readResult.EndOfStream)
+                    if (typeTests == "без нечеткой модели")
                     {
-                        for (int i = 0; i < 6; i++)
-                        {
-                            valueFromFile = Convert.ToDouble(readResult.ReadLine());
-                            dataGridView1.Rows[countRows].Cells[i].Value = valueFromFile.ToString();
-                        }
                         ++dataGridView1.RowCount;
-                        ++countRows;
+
+                        double valueFromFile = 0.0;
+                        while (!readResult.EndOfStream)
+                        {
+                            for (int i = 0; i < 6; i++)
+                            {
+                                valueFromFile = Math.Round(Convert.ToDouble(readResult.ReadLine()), 2);
+                                dataGridView1.Rows[countRows].Cells[i].Value = valueFromFile.ToString();
+                            }
+
+                            ++dataGridView1.RowCount;
+                            ++countRows;
+                        }
                     }
-                }
-                else // дошкольник + нечеткая модель
-                {
-                    ++dataGridView1.RowCount;
-                    
-                    double valueFromFile = 0.0;
-                    while (!readResult.EndOfStream)
+                    else // дошкольник + нечеткая модель
                     {
-                        for (int i = 0; i < 6; i++)
-                        {
-                            valueFromFile = Convert.ToDouble(readResult.ReadLine());
-
-                            if (valueFromFile >= 0 && valueFromFile < 2)
-                            {
-                                valueFromFile = 0.3;
-                            }
-                            else if (valueFromFile >= 2 && valueFromFile < 4)
-                            {
-                                valueFromFile = 0.6;
-                            }
-                            else if (valueFromFile >= 4 && valueFromFile < 5)
-                            {
-                                valueFromFile = 0.9;
-                            }
-                            else if (valueFromFile >= 5 && valueFromFile <= 6)
-                            {
-                                valueFromFile = 1.0;
-                            }
-                            dataGridView1.Rows[countRows].Cells[i].Value = valueFromFile.ToString();
-                        }
                         ++dataGridView1.RowCount;
-                        ++countRows;
+                        double valueFromFile = 0.0;
+                        while (!readResult.EndOfStream)
+                        {
+                            for (int i = 0; i < 6; i++)
+                            {
+                                valueFromFile = Convert.ToDouble(readResult.ReadLine());
+
+                                if (valueFromFile >= 0 && valueFromFile < 2)
+                                {
+                                    valueFromFile = 0.3;
+                                }
+                                else if (valueFromFile >= 2 && valueFromFile < 4)
+                                {
+                                    valueFromFile = 0.6;
+                                }
+                                else if (valueFromFile >= 4 && valueFromFile < 5)
+                                {
+                                    valueFromFile = 0.9;
+                                }
+                                else
+                                {
+                                    valueFromFile = 1.0;
+                                }
+                                dataGridView1.Rows[countRows].Cells[i].Value = valueFromFile.ToString();
+                            }
+
+                            ++dataGridView1.RowCount;
+                            ++countRows;
+                        }
                     }
+
+                    readResult.Close();
                 }
 
-                readResult.Close();
+                if (login == "root")
+                {
+                    string pathFileLocal = Path.GetFullPath(@"InfoUsers\AllUsers.txt");
 
+                    StreamReader readResultlocal = new StreamReader(pathFileLocal);
+
+                    string tempValue = "";
+
+                    while (!readResultlocal.EndOfStream)
+                    {
+                        tempValue = readResultlocal.ReadLine();
+                        f_arrlistUsers.Add(readResultlocal.ReadLine());
+                        tempValue = readResultlocal.ReadLine();
+                    }
+
+                    readResultlocal.Close();
+                }
+                else
+                {
+                    f_arrlistUsers.Add(login);
+                }
+
+                for (int countUsers = 0; countUsers < f_arrlistUsers.Count; countUsers++)
+                {
+
+                    pathFile = Path.GetFullPath(@"InfoUsers\" + f_arrlistUsers[countUsers] + "result_preschool_parentparent.txt");
+
+                    if (!File.Exists(pathFile))
+                    {
+                        MessageBox.Show("Тест не был пройден!");
+                        return;
+                    }
+
+                    StreamReader readResult = new StreamReader(pathFile);
+
+                    if (typeTests == "без нечеткой модели")
+                    {
+                        ++dataGridView1.RowCount;
+                        double valueFromFile = 0.0;
+                        while (!readResult.EndOfStream)
+                        {
+                            for (int i = 0; i < 6; i++)
+                            {
+                                valueFromFile = Convert.ToDouble(readResult.ReadLine());
+                                dataGridView1.Rows[countRows].Cells[i].Value = valueFromFile.ToString();
+                            }
+
+                            ++dataGridView1.RowCount;
+                            ++countRows;
+                        }
+                    }
+                    else // дошкольник + нечеткая модель
+                    {
+                        ++dataGridView1.RowCount;
+                        double valueFromFile = 0.0;
+                        while (!readResult.EndOfStream)
+                        {
+                            for (int i = 0; i < 6; i++)
+                            {
+                                valueFromFile = Convert.ToDouble(readResult.ReadLine());
+
+                                if (valueFromFile >= 0 && valueFromFile < 2)
+                                {
+                                    valueFromFile = 0.3;
+                                }
+                                else if (valueFromFile >= 2 && valueFromFile < 4)
+                                {
+                                    valueFromFile = 0.6;
+                                }
+                                else if (valueFromFile >= 4 && valueFromFile < 5)
+                                {
+                                    valueFromFile = 0.9;
+                                }
+                                else
+                                {
+                                    valueFromFile = 1.0;
+                                }
+                                dataGridView1.Rows[countRows].Cells[i].Value = valueFromFile.ToString();
+                            }
+
+                            ++dataGridView1.RowCount;
+                            ++countRows;
+                        }
+                    }
+
+                    readResult.Close();
+                }
             }
-        }
-
+            }
         public FormTableFromResult(string strTypeTest, string orientation)
         {
             InitializeComponent();

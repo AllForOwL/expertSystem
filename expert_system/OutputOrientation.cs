@@ -109,7 +109,7 @@ namespace expert_system
 
         private void button1_Click(object sender, EventArgs e)
         {
-            FormOutputResultDiagramUsers endResult = new FormOutputResultDiagramUsers(m_strLogin, m_strOrientation);
+            FormOutputResultDiagramUsers endResult = new FormOutputResultDiagramUsers(m_strLogin, "без нечеткой модели", m_strOrientation);
             endResult.Show();
         }
     }
