@@ -247,7 +247,6 @@ namespace expert_system
 
                 for (int countUsers = 0; countUsers < f_arrlistUsers.Count; countUsers++)
                 {
-
                     pathFile = Path.GetFullPath(@"InfoUsers\" + f_arrlistUsers[countUsers] + "result_preschool_parentparent.txt");
 
                     if (!File.Exists(pathFile))
@@ -316,6 +315,7 @@ namespace expert_system
             {
                 ArrayList f_arrlistUsers = new ArrayList();
                 int countRows = 0;
+                int differenceRows = 0;
 
                 if (login == "root")
                 {
@@ -368,7 +368,7 @@ namespace expert_system
                             ++countRows;
                         }
                     }
-                    else // дошкольник + нечеткая модель
+                    else // дошкольник + родитель нечеткая модель
                     {
                         ++dataGridView1.RowCount;
                         double valueFromFile = 0.0;
@@ -407,6 +407,7 @@ namespace expert_system
 
                 if (login == "root")
                 {
+                    f_arrlistUsers.Clear();
                     string pathFileLocal = Path.GetFullPath(@"InfoUsers\AllUsers.txt");
 
                     StreamReader readResultlocal = new StreamReader(pathFileLocal);
@@ -424,12 +425,12 @@ namespace expert_system
                 }
                 else
                 {
+                    f_arrlistUsers.Clear();
                     f_arrlistUsers.Add(login);
                 }
 
                 for (int countUsers = 0; countUsers < f_arrlistUsers.Count; countUsers++)
                 {
-
                     pathFile = Path.GetFullPath(@"InfoUsers\" + f_arrlistUsers[countUsers] + "result_preschool_parentparent.txt");
 
                     if (!File.Exists(pathFile))
@@ -440,6 +441,8 @@ namespace expert_system
 
                     StreamReader readResult = new StreamReader(pathFile);
 
+                    differenceRows = countRows - differenceRows;
+
                     if (typeTests == "без нечеткой модели")
                     {
                         ++dataGridView1.RowCount;
@@ -448,12 +451,14 @@ namespace expert_system
                         {
                             for (int i = 0; i < 6; i++)
                             {
-                                valueFromFile = Convert.ToDouble(readResult.ReadLine());
-                                dataGridView1.Rows[countRows].Cells[i].Value = valueFromFile.ToString();
+                                valueFromFile = Math.Round(Convert.ToDouble(readResult.ReadLine()), 2);
+                                valueFromFile += Convert.ToDouble(dataGridView1.Rows[countRows-differenceRows].Cells[i].Value);
+                                dataGridView1.Rows[countRows - differenceRows].Cells[i].Value = valueFromFile.ToString();
                             }
 
+                            --differenceRows;
                             ++dataGridView1.RowCount;
-                            ++countRows;
+                            //++countRows;
                         }
                     }
                     else // дошкольник + нечеткая модель
@@ -465,16 +470,17 @@ namespace expert_system
                             for (int i = 0; i < 6; i++)
                             {
                                 valueFromFile = Convert.ToDouble(readResult.ReadLine());
+                                valueFromFile += Convert.ToDouble(dataGridView1.Rows[countRows - differenceRows].Cells[i].Value);
 
-                                if (valueFromFile >= 0 && valueFromFile < 2)
+                                if (valueFromFile >= 0 && valueFromFile < 4)
                                 {
                                     valueFromFile = 0.3;
                                 }
-                                else if (valueFromFile >= 2 && valueFromFile < 4)
+                                else if (valueFromFile >= 4 && valueFromFile < 8)
                                 {
                                     valueFromFile = 0.6;
                                 }
-                                else if (valueFromFile >= 4 && valueFromFile < 5)
+                                else if (valueFromFile >= 8 && valueFromFile < 13)
                                 {
                                     valueFromFile = 0.9;
                                 }
@@ -482,14 +488,15 @@ namespace expert_system
                                 {
                                     valueFromFile = 1.0;
                                 }
-                                dataGridView1.Rows[countRows].Cells[i].Value = valueFromFile.ToString();
+                                dataGridView1.Rows[countRows - differenceRows].Cells[i].Value = valueFromFile.ToString();
                             }
 
+                            --differenceRows;
                             ++dataGridView1.RowCount;
-                            ++countRows;
+                           // ++countRows;
                         }
                     }
-
+                    differenceRows = countRows;
                     readResult.Close();
                 }
             }

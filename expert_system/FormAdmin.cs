@@ -21,6 +21,11 @@ namespace expert_system
         private void button1_Click(object sender, EventArgs e)
         {
             string strresult_ = comboBox1.Text;
+            if (strresult_ == "")
+            {
+                MessageBox.Show("Выберите тип вывода результата");
+                return;
+            }
             string user;
 
             StreamReader readuser = new StreamReader(Path.GetFullPath(@"InfoUsers\AllUsers.txt"));
@@ -36,6 +41,11 @@ namespace expert_system
         private void button3_Click(object sender, EventArgs e)
         {
             string strresult_ = comboBox1.Text;
+            if (strresult_ == "")
+            {
+                MessageBox.Show("Выберите тип вывода результата");
+                return;
+            }
             string user;
 
             StreamReader readuser = new StreamReader(Path.GetFullPath(@"InfoUsers\AllUsers.txt"));
