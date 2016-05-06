@@ -32,6 +32,8 @@ namespace expert_system
 
             if (login == "root")
             {
+                ++dataGridView1.ColumnCount;
+
                 string pathFileLocal = Path.GetFullPath(@"InfoUsers\AllUsers.txt");
 
                 StreamReader readResultlocal = new StreamReader(pathFileLocal);
@@ -76,6 +78,7 @@ namespace expert_system
                             dataGridView1.Rows[countRows].Cells[i].Value = valueFromFile.ToString();
                         }
 
+                        dataGridView1.Rows[countRows].Cells[6].Value = f_arrlistUsers[countUsers];
                         ++dataGridView1.RowCount;
                         ++countRows;
                     }
@@ -92,23 +95,28 @@ namespace expert_system
 
                             if (valueFromFile >= 0 && valueFromFile < 2)
                             {
-                                valueFromFile = 0.3;
+                                valueFromFile = 0.2;
                             }
-                            else if (valueFromFile >= 2 && valueFromFile < 4)
+                            else if (valueFromFile >= 2 && valueFromFile < 3)
+                            {
+                                valueFromFile = 0.4;
+                            }
+                            else if (valueFromFile >= 3 && valueFromFile < 4)
                             {
                                 valueFromFile = 0.6;
                             }
                             else if (valueFromFile >= 4 && valueFromFile < 5)
                             {
-                                valueFromFile = 0.9;
+                                valueFromFile = 0.8;
                             }
-                            else if (valueFromFile >= 5 && valueFromFile <= 6)
+                            else
                             {
                                 valueFromFile = 1.0;
                             }
                             dataGridView1.Rows[countRows].Cells[i].Value = valueFromFile.ToString();
                         }
 
+                        dataGridView1.Rows[countRows].Cells[6].Value = f_arrlistUsers[countUsers];
                         ++dataGridView1.RowCount;
                         ++countRows;
                     }
@@ -132,6 +140,8 @@ namespace expert_system
 
                 if (login == "root")
                 {
+                    ++dataGridView1.ColumnCount;
+
                     string pathFileLocal = Path.GetFullPath(@"InfoUsers\AllUsers.txt");
 
                     StreamReader readResultlocal = new StreamReader(pathFileLocal);
@@ -177,6 +187,11 @@ namespace expert_system
                                 dataGridView1.Rows[countRows].Cells[i].Value = valueFromFile.ToString();
                             }
 
+                            if (login == "root")
+                            {
+                                dataGridView1.Rows[countRows].Cells[6].Value = f_arrlistUsers[countUser];
+                            }
+
                             ++dataGridView1.RowCount;
                             ++countRows;
                         }
@@ -193,15 +208,19 @@ namespace expert_system
 
                                 if (valueFromFile >= 0 && valueFromFile < 2)
                                 {
-                                    valueFromFile = 0.3;
+                                    valueFromFile = 0.2;
                                 }
-                                else if (valueFromFile >= 2 && valueFromFile < 4)
+                                else if (valueFromFile >= 2 && valueFromFile < 3)
+                                {
+                                    valueFromFile = 0.4;
+                                }
+                                else if (valueFromFile >= 3 && valueFromFile < 4)
                                 {
                                     valueFromFile = 0.6;
                                 }
                                 else if (valueFromFile >= 4 && valueFromFile < 5)
                                 {
-                                    valueFromFile = 0.9;
+                                    valueFromFile = 0.8;
                                 }
                                 else
                                 {
@@ -210,6 +229,10 @@ namespace expert_system
                                 dataGridView1.Rows[countRows].Cells[i].Value = valueFromFile.ToString();
                             }
 
+                            if (login == "root")
+                            {
+                                dataGridView1.Rows[countRows].Cells[6].Value = f_arrlistUsers[countUser];
+                            }
                             ++dataGridView1.RowCount;
                             ++countRows;
                         }
@@ -225,6 +248,8 @@ namespace expert_system
 
                 if (login == "root")
                 {
+                    ++dataGridView1.ColumnCount;
+
                     string pathFileLocal = Path.GetFullPath(@"InfoUsers\AllUsers.txt");
 
                     StreamReader readResultlocal = new StreamReader(pathFileLocal);
@@ -269,6 +294,10 @@ namespace expert_system
                                 dataGridView1.Rows[countRows].Cells[i].Value = valueFromFile.ToString();
                             }
 
+                            if (login == "root")
+                            {
+                                dataGridView1.Rows[countRows].Cells[6].Value = f_arrlistUsers[countUsers];
+                            }
                             ++dataGridView1.RowCount;
                             ++countRows;
                         }
@@ -285,23 +314,31 @@ namespace expert_system
 
                                 if (valueFromFile >= 0 && valueFromFile < 2)
                                 {
-                                    valueFromFile = 0.3;
+                                    valueFromFile = 0.2;
                                 }
-                                else if (valueFromFile >= 2 && valueFromFile < 4)
+                                else if (valueFromFile >= 2 && valueFromFile < 3)
+                                {
+                                    valueFromFile = 0.4;
+                                }
+                                else if (valueFromFile >= 3 && valueFromFile < 4)
                                 {
                                     valueFromFile = 0.6;
                                 }
                                 else if (valueFromFile >= 4 && valueFromFile < 5)
                                 {
-                                    valueFromFile = 0.9;
+                                    valueFromFile = 0.8;
                                 }
                                 else
                                 {
                                     valueFromFile = 1.0;
                                 }
-                                dataGridView1.Rows[countRows].Cells[i].Value = valueFromFile.ToString();
+                                dataGridView1.Rows[countRows].Cells[i].Value = valueFromFile.ToString();   
                             }
 
+                            if (login == "root")
+                            {
+                                dataGridView1.Rows[countRows].Cells[6].Value = f_arrlistUsers[countUsers];
+                            }
                             ++dataGridView1.RowCount;
                             ++countRows;
                         }
@@ -319,6 +356,8 @@ namespace expert_system
 
                 if (login == "root")
                 {
+                    ++dataGridView1.ColumnCount;
+
                     string pathFileLocal = Path.GetFullPath(@"InfoUsers\AllUsers.txt");
 
                     StreamReader readResultlocal = new StreamReader(pathFileLocal);
@@ -361,7 +400,12 @@ namespace expert_system
                             for (int i = 0; i < 6; i++)
                             {
                                 valueFromFile = Math.Round(Convert.ToDouble(readResult.ReadLine()), 2);
-                                dataGridView1.Rows[countRows].Cells[i].Value = valueFromFile.ToString();
+                                dataGridView1.Rows[countRows].Cells[i].Value = valueFromFile.ToString();    
+                            }
+
+                            if (login == "root")
+                            {
+                                dataGridView1.Rows[countRows].Cells[6].Value = f_arrlistUsers[countUser];
                             }
 
                             ++dataGridView1.RowCount;
@@ -394,7 +438,12 @@ namespace expert_system
                                 {
                                     valueFromFile = 1.0;
                                 }
-                                dataGridView1.Rows[countRows].Cells[i].Value = valueFromFile.ToString();
+                                dataGridView1.Rows[countRows].Cells[i].Value = valueFromFile.ToString();  
+                            }
+
+                            if (login == "root")
+                            {
+                                dataGridView1.Rows[countRows].Cells[6].Value = f_arrlistUsers[countUser];
                             }
 
                             ++dataGridView1.RowCount;
@@ -407,6 +456,8 @@ namespace expert_system
 
                 if (login == "root")
                 {
+                    ++dataGridView1.ColumnCount;
+
                     f_arrlistUsers.Clear();
                     string pathFileLocal = Path.GetFullPath(@"InfoUsers\AllUsers.txt");
 
@@ -452,8 +503,24 @@ namespace expert_system
                             for (int i = 0; i < 6; i++)
                             {
                                 valueFromFile = Math.Round(Convert.ToDouble(readResult.ReadLine()), 2);
-                                valueFromFile += Convert.ToDouble(dataGridView1.Rows[countRows-differenceRows].Cells[i].Value);
-                                dataGridView1.Rows[countRows - differenceRows].Cells[i].Value = valueFromFile.ToString();
+                                double temp_valueFromFile = Convert.ToDouble(dataGridView1.Rows[countRows-differenceRows].Cells[i].Value);
+
+                                double difference_result = Math.Abs(valueFromFile - temp_valueFromFile);
+
+                                if (difference_result >= 2 && difference_result < 3)
+                                {
+                                    --valueFromFile;
+                                }
+                                else if (difference_result >= 1 && difference_result < 2)
+                                {
+                                    valueFromFile -= 2;
+                                }
+                                else if (difference_result >= 0 && difference_result < 1)
+                                {
+                                    valueFromFile -= 3;
+                                }
+
+                                dataGridView1.Rows[countRows - differenceRows].Cells[i].Value = valueFromFile.ToString(); 
                             }
 
                             --differenceRows;
@@ -470,19 +537,38 @@ namespace expert_system
                             for (int i = 0; i < 6; i++)
                             {
                                 valueFromFile = Convert.ToDouble(readResult.ReadLine());
-                                valueFromFile += Convert.ToDouble(dataGridView1.Rows[countRows - differenceRows].Cells[i].Value);
+                                double temp_valueFromFile = Convert.ToDouble(dataGridView1.Rows[countRows - differenceRows].Cells[i].Value);
 
-                                if (valueFromFile >= 0 && valueFromFile < 4)
+                                double difference_result = Math.Abs(valueFromFile - temp_valueFromFile);
+
+                                if (difference_result >= 2 && difference_result < 3)
                                 {
-                                    valueFromFile = 0.3;
+                                    --valueFromFile;
                                 }
-                                else if (valueFromFile >= 4 && valueFromFile < 8)
+                                else if (difference_result >= 1 && difference_result < 2)
+                                {
+                                    valueFromFile -= 2;
+                                }
+                                else if (difference_result >= 0 && difference_result < 1)
+                                {
+                                    valueFromFile -= 3;
+                                }
+
+                                if (valueFromFile >= 0 && valueFromFile < 2)
+                                {
+                                    valueFromFile = 0.2;
+                                }
+                                else if (valueFromFile >= 2 && valueFromFile < 3)
+                                {
+                                    valueFromFile = 0.4;
+                                }
+                                else if (valueFromFile >= 3 && valueFromFile < 4)
                                 {
                                     valueFromFile = 0.6;
                                 }
-                                else if (valueFromFile >= 8 && valueFromFile < 13)
+                                else if (valueFromFile >= 4 && valueFromFile < 5)
                                 {
-                                    valueFromFile = 0.9;
+                                    valueFromFile = 0.8;
                                 }
                                 else
                                 {
