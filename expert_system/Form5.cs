@@ -42,7 +42,6 @@ namespace expert_system
         {
             StreamReader readResult = new StreamReader(Path.GetFullPath(@"InfoUsers\" + m_strLoginUser + ".txt"));
 
-            readResult.ReadLine();
             m_strFIOChild = readResult.ReadLine();
             m_strYears    = readResult.ReadLine();
 
