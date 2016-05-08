@@ -81,7 +81,7 @@ namespace expert_system
                         {
                             for (int i = 0; i < 6; i++)
                             {
-                                valueFromFile = Convert.ToDouble(readResult.ReadLine());
+                                valueFromFile = Math.Round(Convert.ToDouble(readResult.ReadLine()), 2);
                                 chart1.Series[i].Points.Add(valueFromFile);
                             }
                             ++countRows;
@@ -98,20 +98,25 @@ namespace expert_system
 
                                 if (valueFromFile >= 0 && valueFromFile < 2)
                                 {
-                                    valueFromFile = 0.3;
+                                    valueFromFile = 0.2;
                                 }
-                                else if (valueFromFile >= 2 && valueFromFile < 4)
+                                else if (valueFromFile >= 2 && valueFromFile < 3)
+                                {
+                                    valueFromFile = 0.4;
+                                }
+                                else if (valueFromFile >= 3 && valueFromFile < 4)
                                 {
                                     valueFromFile = 0.6;
                                 }
                                 else if (valueFromFile >= 4 && valueFromFile < 5)
                                 {
-                                    valueFromFile = 0.9;
+                                    valueFromFile = 0.8;
                                 }
-                                else if (valueFromFile >= 5 && valueFromFile <= 6)
+                                else
                                 {
                                     valueFromFile = 1.0;
                                 }
+
                                 chart1.Series[i].Points.Add(valueFromFile);
                             }
                             ++countRows;
@@ -170,7 +175,7 @@ namespace expert_system
                         {
                             for (int i = 0; i < 6; i++)
                             {
-                                valueFromFile = Convert.ToDouble(readResult.ReadLine());
+                                valueFromFile = Math.Round(Convert.ToDouble(readResult.ReadLine()), 2);
                                 chart1.Series[i].Points.Add(valueFromFile);
                             }
                             ++countRows;
@@ -187,17 +192,21 @@ namespace expert_system
 
                                 if (valueFromFile >= 0 && valueFromFile < 2)
                                 {
-                                    valueFromFile = 0.3;
+                                    valueFromFile = 0.2;
                                 }
-                                else if (valueFromFile >= 2 && valueFromFile < 4)
+                                else if (valueFromFile >= 2 && valueFromFile < 3)
+                                {
+                                    valueFromFile = 0.4;
+                                }
+                                else if (valueFromFile >= 3 && valueFromFile < 4)
                                 {
                                     valueFromFile = 0.6;
                                 }
                                 else if (valueFromFile >= 4 && valueFromFile < 5)
                                 {
-                                    valueFromFile = 0.9;
+                                    valueFromFile = 0.8;
                                 }
-                                else if (valueFromFile >= 5 && valueFromFile <= 6)
+                                else
                                 {
                                     valueFromFile = 1.0;
                                 }
@@ -238,6 +247,8 @@ namespace expert_system
                     f_arrlistUsers.Add(login);
                 }
 
+                double[] arrayResultPreschool = new double[24];
+
                 for (int countUser = 0; countUser < f_arrlistUsers.Count; countUser++)
                 {
                     pathFile = Path.GetFullPath(@"InfoUsers\" + f_arrlistUsers[countUser] + "result_preschool_parent.txt");
@@ -252,13 +263,17 @@ namespace expert_system
 
                     if (typeTests == "без нечеткой модели")
                     {
+                        int iter = 0;
                         double valueFromFile = 0.0;
                         while (!readResult.EndOfStream)
                         {
                             for (int i = 0; i < 6; i++)
                             {
                                 valueFromFile = Math.Round(Convert.ToDouble(readResult.ReadLine()), 2);
+                                arrayResultPreschool[iter] = valueFromFile;
                                 chart1.Series[i].Points.Add(valueFromFile);
+
+                                ++iter;
                             }
 
                             ++countRows;
@@ -266,29 +281,37 @@ namespace expert_system
                     }
                     else // дошкольник + нечеткая модель
                     {
+                        int iter = 0;
                         double valueFromFile = 0.0;
                         while (!readResult.EndOfStream)
                         {
                             for (int i = 0; i < 6; i++)
                             {
-                                valueFromFile = Convert.ToDouble(readResult.ReadLine());
+                                valueFromFile = Math.Round(Convert.ToDouble(readResult.ReadLine()), 2);
+                                arrayResultPreschool[iter] = valueFromFile;
 
                                 if (valueFromFile >= 0 && valueFromFile < 2)
                                 {
-                                    valueFromFile = 0.3;
+                                    valueFromFile = 0.2;
                                 }
-                                else if (valueFromFile >= 2 && valueFromFile < 4)
+                                else if (valueFromFile >= 2 && valueFromFile < 3)
+                                {
+                                    valueFromFile = 0.4;
+                                }
+                                else if (valueFromFile >= 3 && valueFromFile < 4)
                                 {
                                     valueFromFile = 0.6;
                                 }
                                 else if (valueFromFile >= 4 && valueFromFile < 5)
                                 {
-                                    valueFromFile = 0.9;
+                                    valueFromFile = 0.8;
                                 }
-                                else
+                                else if (valueFromFile >= 5)
                                 {
                                     valueFromFile = 1.0;
                                 }
+
+                                ++iter;
                                 chart1.Series[i].Points.Add(valueFromFile);
                             }
                             ++countRows;
@@ -335,42 +358,71 @@ namespace expert_system
 
                     if (typeTests == "без нечеткой модели")
                     {
+                        int iter = 0;
                         double valueFromFile = 0.0;
                         while (!readResult.EndOfStream)
                         {
                             for (int i = 0; i < 6; i++)
                             {
-                                valueFromFile = Convert.ToDouble(readResult.ReadLine());
+                                valueFromFile = Math.Round(Convert.ToDouble(readResult.ReadLine()), 2);
+                                valueFromFile += arrayResultPreschool[iter];
                                 chart1.Series[i].Points.Add(valueFromFile);
+
+                                ++iter;
                             }
                             ++countRows;
                         }
                     }
-                    else // дошкольник + нечеткая модель
+                    else // дошкольник + parent нечеткая модель
                     {
+                        int iter = 0;
                         double valueFromFile = 0.0;
                         while (!readResult.EndOfStream)
                         {
                             for (int i = 0; i < 6; i++)
                             {
                                 valueFromFile = Convert.ToDouble(readResult.ReadLine());
+                                valueFromFile += arrayResultPreschool[iter];
 
-                                if (valueFromFile >= 0 && valueFromFile < 2)
+                                if (valueFromFile >= 0 && valueFromFile < 1)
                                 {
                                     valueFromFile = 0.3;
                                 }
-                                else if (valueFromFile >= 2 && valueFromFile < 4)
+                                else if (valueFromFile >= 2 && valueFromFile < 3)
                                 {
                                     valueFromFile = 0.6;
+                                }
+                                else if (valueFromFile >= 3 && valueFromFile < 4)
+                                {
+                                    valueFromFile = 0.8;
                                 }
                                 else if (valueFromFile >= 4 && valueFromFile < 5)
                                 {
                                     valueFromFile = 0.9;
                                 }
-                                else
+                                else if (valueFromFile >= 5 && valueFromFile < 6)
                                 {
                                     valueFromFile = 1.0;
                                 }
+                                else if (valueFromFile >= 6 && valueFromFile < 7)
+                                {
+                                    valueFromFile = 0.6;
+                                }
+                                else if (valueFromFile >= 7 && valueFromFile < 8)
+                                {
+                                    valueFromFile = 0.7;
+                                }
+                                else if (valueFromFile >= 8 && valueFromFile < 9)
+                                {
+                                    valueFromFile = 0.8;
+                                }
+                                else if (valueFromFile >= 9)
+                                {
+                                    valueFromFile = 1.0;
+                                }
+
+
+                                ++iter;
                                 chart1.Series[i].Points.Add(valueFromFile);
                             }
 
@@ -457,17 +509,21 @@ namespace expert_system
 
                             if (valueFromFile >= 0 && valueFromFile < 2)
                             {
-                                valueFromFile = 0.3;
+                                valueFromFile = 0.2;
                             }
-                            else if (valueFromFile >= 2 && valueFromFile < 4)
+                            else if (valueFromFile >= 2 && valueFromFile < 3)
+                            {
+                                valueFromFile = 0.4;
+                            }
+                            else if (valueFromFile >= 3 && valueFromFile < 4)
                             {
                                 valueFromFile = 0.6;
                             }
                             else if (valueFromFile >= 4 && valueFromFile < 5)
                             {
-                                valueFromFile = 0.9;
+                                valueFromFile = 0.8;
                             }
-                            else if (valueFromFile >= 5 && valueFromFile <= 6)
+                            else
                             {
                                 valueFromFile = 1.0;
                             }

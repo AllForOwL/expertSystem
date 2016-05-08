@@ -60,8 +60,7 @@ namespace expert_system
 
                 if (!File.Exists(pathFile))
                 {
-                //    MessageBox.Show("Тест не был пройден!");
-                    return;
+                    continue;
                 }
 
                 StreamReader readResult = new StreamReader(pathFile);
@@ -168,8 +167,7 @@ namespace expert_system
 
                     if (!File.Exists(pathFile))
                     {
-                        MessageBox.Show("Тест не был пройден!");
-                        return;
+                        continue;
                     }
 
                     StreamReader readResult = new StreamReader(pathFile);
@@ -183,7 +181,7 @@ namespace expert_system
                         {
                             for (int i = 0; i < 6; i++)
                             {
-                                valueFromFile = Convert.ToDouble(readResult.ReadLine());
+                                valueFromFile = Math.Round(Convert.ToDouble(readResult.ReadLine()), 2);
                                 dataGridView1.Rows[countRows].Cells[i].Value = valueFromFile.ToString();
                             }
 
@@ -276,8 +274,7 @@ namespace expert_system
 
                     if (!File.Exists(pathFile))
                     {
-                        MessageBox.Show("Тест не был пройден!");
-                        return;
+                        continue;
                     }
 
                     StreamReader readResult = new StreamReader(pathFile);
@@ -302,7 +299,7 @@ namespace expert_system
                             ++countRows;
                         }
                     }
-                    else // дошкольник + нечеткая модель
+                    else // родитель + нечеткая модель
                     {
                         ++dataGridView1.RowCount;
                         double valueFromFile = 0.0;
@@ -312,26 +309,23 @@ namespace expert_system
                             {
                                 valueFromFile = Convert.ToDouble(readResult.ReadLine());
 
-                                if (valueFromFile >= 0 && valueFromFile < 2)
+                                if (valueFromFile >= 0 && valueFromFile < 1)
                                 {
-                                    valueFromFile = 0.2;
+                                    valueFromFile = 0.3;
                                 }
-                                else if (valueFromFile >= 2 && valueFromFile < 3)
-                                {
-                                    valueFromFile = 0.4;
-                                }
-                                else if (valueFromFile >= 3 && valueFromFile < 4)
+                                else if (valueFromFile >= 1 && valueFromFile < 2)
                                 {
                                     valueFromFile = 0.6;
                                 }
-                                else if (valueFromFile >= 4 && valueFromFile < 5)
+                                else if (valueFromFile >= 2 && valueFromFile < 3)
                                 {
                                     valueFromFile = 0.8;
                                 }
-                                else
+                                else if (valueFromFile >= 3)
                                 {
                                     valueFromFile = 1.0;
                                 }
+
                                 dataGridView1.Rows[countRows].Cells[i].Value = valueFromFile.ToString();   
                             }
 
@@ -384,8 +378,7 @@ namespace expert_system
 
                     if (!File.Exists(pathFile))
                     {
-                        MessageBox.Show("Тест не был пройден!");
-                        return;
+                        continue;
                     }
 
                     StreamReader readResult = new StreamReader(pathFile);
@@ -424,17 +417,21 @@ namespace expert_system
 
                                 if (valueFromFile >= 0 && valueFromFile < 2)
                                 {
-                                    valueFromFile = 0.3;
+                                    valueFromFile = 0.2;
                                 }
-                                else if (valueFromFile >= 2 && valueFromFile < 4)
+                                else if (valueFromFile >= 2 && valueFromFile < 3)
+                                {
+                                    valueFromFile = 0.4;
+                                }
+                                else if (valueFromFile >= 3 && valueFromFile < 4)
                                 {
                                     valueFromFile = 0.6;
                                 }
                                 else if (valueFromFile >= 4 && valueFromFile < 5)
                                 {
-                                    valueFromFile = 0.9;
+                                    valueFromFile = 0.8;
                                 }
-                                else
+                                else if (valueFromFile >= 5)
                                 {
                                     valueFromFile = 1.0;
                                 }
@@ -486,8 +483,7 @@ namespace expert_system
 
                     if (!File.Exists(pathFile))
                     {
-                        MessageBox.Show("Тест не был пройден!");
-                        return;
+                        continue;
                     }
 
                     StreamReader readResult = new StreamReader(pathFile);
@@ -503,21 +499,43 @@ namespace expert_system
                             for (int i = 0; i < 6; i++)
                             {
                                 valueFromFile = Math.Round(Convert.ToDouble(readResult.ReadLine()), 2);
-                                double temp_valueFromFile = Convert.ToDouble(dataGridView1.Rows[countRows-differenceRows].Cells[i].Value);
+                                valueFromFile += Convert.ToDouble(dataGridView1.Rows[countRows - differenceRows].Cells[i].Value);
 
-                                double difference_result = Math.Abs(valueFromFile - temp_valueFromFile);
-
-                                if (difference_result >= 2 && difference_result < 3)
+                                if (valueFromFile >= 0 && valueFromFile < 1)
                                 {
-                                    --valueFromFile;
+                                    valueFromFile = 0.5;
                                 }
-                                else if (difference_result >= 1 && difference_result < 2)
+                                else if (valueFromFile >= 2 && valueFromFile < 3)
                                 {
-                                    valueFromFile -= 2;
+                                    valueFromFile = 1.0;
                                 }
-                                else if (difference_result >= 0 && difference_result < 1)
+                                else if (valueFromFile >= 3 && valueFromFile < 4)
                                 {
-                                    valueFromFile -= 3;
+                                    valueFromFile = 1.5;
+                                }
+                                else if (valueFromFile >= 4 && valueFromFile < 5)
+                                {
+                                    valueFromFile = 2.5;
+                                }
+                                else if (valueFromFile >= 5 && valueFromFile < 6)
+                                {
+                                    valueFromFile = 3.5;
+                                }
+                                else if (valueFromFile >= 6 && valueFromFile < 7)
+                                {
+                                    valueFromFile = 4.5;
+                                }
+                                else if (valueFromFile >= 7 && valueFromFile < 8)
+                                {
+                                    valueFromFile = 8.5;
+                                }
+                                else if (valueFromFile >= 8 && valueFromFile < 9)
+                                {
+                                    valueFromFile = 9.5;
+                                }
+                                else if (valueFromFile >= 9)
+                                {
+                                    valueFromFile = 10.0;
                                 }
 
                                 dataGridView1.Rows[countRows - differenceRows].Cells[i].Value = valueFromFile.ToString(); 
@@ -528,7 +546,7 @@ namespace expert_system
                             //++countRows;
                         }
                     }
-                    else // дошкольник + нечеткая модель
+                    else // дошкольник + родитель нечеткая модель
                     {
                         ++dataGridView1.RowCount;
                         double valueFromFile = 0.0;
@@ -536,41 +554,47 @@ namespace expert_system
                         {
                             for (int i = 0; i < 6; i++)
                             {
-                                valueFromFile = Convert.ToDouble(readResult.ReadLine());
+                                valueFromFile = Math.Round(Convert.ToDouble(readResult.ReadLine()), 2);
                                 valueFromFile += Convert.ToDouble(dataGridView1.Rows[countRows - differenceRows].Cells[i].Value);
 
                       //          double difference_result = Math.Abs(valueFromFile - temp_valueFromFile);
 
-
-                                if (valueFromFile >= 0 && valueFromFile < 2)
-                                {
-                                    valueFromFile = 0.1;
-                                }
-                                else if (valueFromFile >= 2 && valueFromFile < 4)
+                                if (valueFromFile >= 0 && valueFromFile < 1)
                                 {
                                     valueFromFile = 0.3;
                                 }
-                                else if (valueFromFile >= 4 && valueFromFile < 6)
+                                else if (valueFromFile >= 2 && valueFromFile < 3)
                                 {
-                                    valueFromFile = 0.5;
+                                    valueFromFile = 0.6;
                                 }
-                                else if (valueFromFile >= 6 && valueFromFile < 7)
-                                {
-                                    valueFromFile = 0.7;
-                                }
-                                else if (valueFromFile >= 7 && valueFromFile < 8)
+                                else if (valueFromFile >= 3 && valueFromFile < 4)
                                 {
                                     valueFromFile = 0.8;
                                 }
-                                else if (valueFromFile >= 8 && valueFromFile < 9)
+                                else if (valueFromFile >= 4 && valueFromFile < 5)
                                 {
                                     valueFromFile = 0.9;
                                 }
-                                else
+                                else if (valueFromFile >= 5 && valueFromFile < 6)
                                 {
                                     valueFromFile = 1.0;
                                 }
-
+                                else if (valueFromFile >= 6 && valueFromFile < 7)
+                                {
+                                    valueFromFile = 0.6;
+                                }
+                                else if (valueFromFile >= 7 && valueFromFile < 8)
+                                {
+                                    valueFromFile = 0.7;
+                                }
+                                else if (valueFromFile >= 8 && valueFromFile < 9)
+                                {
+                                    valueFromFile = 0.8;
+                                }
+                                else if (valueFromFile >= 9)
+                                {
+                                    valueFromFile = 1.0;
+                                }
 
                                 dataGridView1.Rows[countRows - differenceRows].Cells[i].Value = valueFromFile.ToString();
                             }
@@ -705,9 +729,8 @@ namespace expert_system
                     for (int i = 0; i < 6; i++)
                     {
                         ++dataGridView1.RowCount;
-                        double vv = Convert.ToDouble(readResultOnOrientationAll.ReadLine());
-                        int b = Convert.ToInt16(vv);
-                        dataGridView1.Rows[rows].Cells[i].Value = b.ToString();
+                        double valueFromFile = Math.Round(Convert.ToDouble(readResultOnOrientationAll.ReadLine()), 2);
+                        dataGridView1.Rows[rows].Cells[i].Value = valueFromFile.ToString();
                     }
                     ++rows;
                     dataGridView1.Rows[rows - 1].HeaderCell.Value = rows.ToString();
