@@ -28,11 +28,12 @@ namespace expert_system
             }
             string user;
 
-            StreamReader readuser = new StreamReader(Path.GetFullPath(@"InfoUsers\AllUsers.txt"));
-
-            user = readuser.ReadLine();
+           // StreamReader readuser = new StreamReader(Path.GetFullPath(@"InfoUsers\AllUsers.txt"));
             
-            readuser.Close();
+            //readuser.ReadLine();
+            //user = readuser.ReadLine();
+            
+            //readuser.Close();
 
             OutputResultsUser outputResult = new OutputResultsUser("root", strresult_);
             outputResult.Show();
@@ -48,12 +49,12 @@ namespace expert_system
             }
             string user;
 
-            StreamReader readuser = new StreamReader(Path.GetFullPath(@"InfoUsers\AllUsers.txt"));
+            /*StreamReader readuser = new StreamReader(Path.GetFullPath(@"InfoUsers\AllUsers.txt"));
 
             user = readuser.ReadLine();
 
             readuser.Close();
-
+            */
             OutputResultsUser outputResult = new OutputResultsUser(true, strresult_);
             outputResult.Show();
         }

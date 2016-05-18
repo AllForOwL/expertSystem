@@ -184,32 +184,46 @@ namespace expert_system
 
         private void button1_Click(object sender, EventArgs e)
         {
+
+            bool b_creative = false;
+            bool b_humanitarian = false;
+            bool b_linguistic = false;
+            bool b_mathematical = false;
+            bool b_sport = false;
+            bool b_technical = false;
+
             if (m_iYearUser == 0 && m_iCountAnswer < 18)
             {
                 if (parentAnswer1.Checked)
                 {
                     if (m_iCountAnswer <= 3)
                     {
+                        b_creative = true;
                         ++m_flCreativeParent;
                     }
                     else if (m_iCountAnswer > 3 && m_iCountAnswer <= 6)
                     {
+                        b_humanitarian = true;
                         ++m_flHumanitarianParent;
                     }
                     else if (m_iCountAnswer > 6 && m_iCountAnswer <= 9)
                     {
+                        b_linguistic = true;
                         ++m_flLinguisticParent;
                     }
                     else if (m_iCountAnswer > 9 && m_iCountAnswer <= 12)
                     {
+                        b_mathematical = true;
                         ++m_flMathematicalParent;
                     }
                     else if (m_iCountAnswer > 12 && m_iCountAnswer <= 15)
                     {
+                        b_sport = true;
                         ++m_flSportsParent;
                     }
                     else if (m_iCountAnswer > 15 && m_iCountAnswer <= 18)
                     {
+                        b_technical = true;
                         ++m_flTechnicalParent;
                     }
                     m_iArrayAnsweParent[m_iCountAnswer] = 1;
@@ -297,7 +311,7 @@ namespace expert_system
                 {
  
                 }
-                else if (childAnswer1.Checked)
+                else if (childAnswer1.Checked && b_creative != true)
                 {
                     m_flCreative += 1.0F;
                     ++m_flWithoutLogicCreative;
@@ -326,7 +340,7 @@ namespace expert_system
                 {
 
                 }
-                else if (childAnswer1.Checked)
+                else if (childAnswer1.Checked && b_linguistic != true)
                 {
                     m_flLinguistic += 1.0F;
                     ++m_flWithoutLogicLinguistic;
@@ -355,7 +369,7 @@ namespace expert_system
                 {
 
                 }
-                else if (childAnswer1.Checked)
+                else if (childAnswer1.Checked && b_technical != true)
                 {
                     m_flTechnical += 1.0F;
                     ++m_flWithoutLogicTechnical;
@@ -384,7 +398,7 @@ namespace expert_system
                 {
 
                 }
-                else if (childAnswer1.Checked)
+                else if (childAnswer1.Checked && b_humanitarian != true)
                 {
                     m_flHumanitarian += 1.0F;
                     ++m_flWithoutLogicHumanitarian;
@@ -413,7 +427,7 @@ namespace expert_system
                 {
 
                 }
-                else if (childAnswer1.Checked)
+                else if (childAnswer1.Checked && b_mathematical != true)
                 {
                     m_flMathematical += 1.0F;
                     ++m_flWithoutLogicMathematical;
@@ -439,7 +453,7 @@ namespace expert_system
                 {
 
                 }
-                else if (childAnswer1.Checked)
+                else if (childAnswer1.Checked && b_sport != true)
                 {
                     m_flSports += 1.0F;
                     ++m_flWithoutLogicSports;

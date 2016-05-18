@@ -27,6 +27,8 @@ namespace expert_system
         {
             InitializeComponent();
 
+            ++dataGridView1.ColumnCount;
+
             ArrayList f_arrlistUsers = new ArrayList();
             int countRows = 0;
 
@@ -128,7 +130,9 @@ namespace expert_system
         public FormTableFromResult(string typeTests, string login, int orientation)
         {
             InitializeComponent();
-
+            
+            ++dataGridView1.ColumnCount;
+            
             string pathFile;
 
                 // определяем кого показывать результат(дошкольник, родитель, или обоих)
@@ -163,7 +167,7 @@ namespace expert_system
 
                 for (int countUser = 0; countUser < f_arrlistUsers.Count; countUser++)
                 {
-                    pathFile = Path.GetFullPath(@"InfoUsers\" + f_arrlistUsers[countUser] + "result_preschool_parent.txt");
+                    pathFile = Path.GetFullPath(@"InfoUsers\" + f_arrlistUsers[countUser] + "result_preschool.txt");
 
                     if (!File.Exists(pathFile))
                     {
@@ -405,7 +409,6 @@ namespace expert_system
                             ++countRows;
                         }
                     }
-                    else // дошкольник + родитель нечеткая модель
                     {
                         ++dataGridView1.RowCount;
                         double valueFromFile = 0.0;
@@ -415,7 +418,7 @@ namespace expert_system
                             {
                                 valueFromFile = Convert.ToDouble(readResult.ReadLine());
 
-                                if (valueFromFile >= 0 && valueFromFile < 2)
+                                /*if (valueFromFile >= 0 && valueFromFile < 2)
                                 {
                                     valueFromFile = 0.2;
                                 }
@@ -427,14 +430,14 @@ namespace expert_system
                                 {
                                     valueFromFile = 0.6;
                                 }
-                                else if (valueFromFile >= 4 && valueFromFile < 5)
+                                else if (valueFromFile >= 4 && valueFromFile <= 5)
                                 {
                                     valueFromFile = 0.8;
                                 }
-                                else if (valueFromFile >= 5)
+                                else if (valueFromFile >= 6)
                                 {
                                     valueFromFile = 1.0;
-                                }
+                                }*/
                                 dataGridView1.Rows[countRows].Cells[i].Value = valueFromFile.ToString();  
                             }
 
@@ -501,42 +504,43 @@ namespace expert_system
                                 valueFromFile = Math.Round(Convert.ToDouble(readResult.ReadLine()), 2);
                                 valueFromFile += Convert.ToDouble(dataGridView1.Rows[countRows - differenceRows].Cells[i].Value);
 
-                                if (valueFromFile >= 0 && valueFromFile < 1)
-                                {
-                                    valueFromFile = 0.5;
-                                }
-                                else if (valueFromFile >= 2 && valueFromFile < 3)
-                                {
-                                    valueFromFile = 1.0;
-                                }
-                                else if (valueFromFile >= 3 && valueFromFile < 4)
+                                if (valueFromFile >= 0 && valueFromFile < 2)
                                 {
                                     valueFromFile = 1.5;
                                 }
-                                else if (valueFromFile >= 4 && valueFromFile < 5)
+                                else if (valueFromFile >= 2 && valueFromFile < 3)
                                 {
                                     valueFromFile = 2.5;
                                 }
-                                else if (valueFromFile >= 5 && valueFromFile < 6)
+                                else if (valueFromFile >= 3 && valueFromFile < 4)
                                 {
                                     valueFromFile = 3.5;
                                 }
-                                else if (valueFromFile >= 6 && valueFromFile < 7)
+                                else if (valueFromFile >= 4 && valueFromFile <= 5)
                                 {
                                     valueFromFile = 4.5;
                                 }
-                                else if (valueFromFile >= 7 && valueFromFile < 8)
+                                if (valueFromFile >= 5 && valueFromFile <= 6)
                                 {
-                                    valueFromFile = 8.5;
+                                    valueFromFile = 5.2;
                                 }
-                                else if (valueFromFile >= 8 && valueFromFile < 9)
+                                else if (valueFromFile >= 6 && valueFromFile <= 7)
                                 {
-                                    valueFromFile = 9.5;
+                                    valueFromFile = 6.4;
+                                }
+                                else if (valueFromFile >= 7 && valueFromFile <= 8)
+                                {
+                                    valueFromFile = 7.6;
+                                }
+                                else if (valueFromFile >= 8 && valueFromFile <= 9)
+                                {
+                                    valueFromFile = 8.8;
                                 }
                                 else if (valueFromFile >= 9)
                                 {
-                                    valueFromFile = 10.0;
+                                    valueFromFile = 9.0;
                                 }
+
 
                                 dataGridView1.Rows[countRows - differenceRows].Cells[i].Value = valueFromFile.ToString(); 
                             }
@@ -557,27 +561,26 @@ namespace expert_system
                                 valueFromFile = Math.Round(Convert.ToDouble(readResult.ReadLine()), 2);
                                 valueFromFile += Convert.ToDouble(dataGridView1.Rows[countRows - differenceRows].Cells[i].Value);
 
-                      //          double difference_result = Math.Abs(valueFromFile - temp_valueFromFile);
 
-                                if (valueFromFile >= 0 && valueFromFile < 1)
+                                if (valueFromFile >= 0 && valueFromFile < 2)
                                 {
-                                    valueFromFile = 0.3;
+                                    valueFromFile = 0.1;
                                 }
                                 else if (valueFromFile >= 2 && valueFromFile < 3)
                                 {
-                                    valueFromFile = 0.6;
+                                    valueFromFile = 0.2;
                                 }
                                 else if (valueFromFile >= 3 && valueFromFile < 4)
                                 {
-                                    valueFromFile = 0.8;
+                                    valueFromFile = 0.3;
                                 }
                                 else if (valueFromFile >= 4 && valueFromFile < 5)
                                 {
-                                    valueFromFile = 0.9;
+                                    valueFromFile = 0.4;
                                 }
-                                else if (valueFromFile >= 5 && valueFromFile < 6)
+                                if (valueFromFile >= 5 && valueFromFile < 6)
                                 {
-                                    valueFromFile = 1.0;
+                                    valueFromFile = 0.5;
                                 }
                                 else if (valueFromFile >= 6 && valueFromFile < 7)
                                 {
@@ -595,6 +598,8 @@ namespace expert_system
                                 {
                                     valueFromFile = 1.0;
                                 }
+
+                                
 
                                 dataGridView1.Rows[countRows - differenceRows].Cells[i].Value = valueFromFile.ToString();
                             }
