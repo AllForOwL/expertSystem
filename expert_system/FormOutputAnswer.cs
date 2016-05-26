@@ -104,9 +104,9 @@ namespace expert_system
 
             string pathFile;
 
-            if (m_iOrientation == 0)
+            if (m_iOrientation == 1)
             {
-                pathFile = Path.GetFullPath(@"InfoUsers\" + m_strLogin + "answer_preschool_parent.txt");
+                pathFile = Path.GetFullPath(@"tests\preschool_child\parent.txt");
 
                 if (!File.Exists(pathFile))
                 {
@@ -122,38 +122,23 @@ namespace expert_system
 
                 int countRows = 0;
                 int countAnswer = 1;
-                int valueFromFile;
+                string valueFromFile;
 
                 while (!readAnswer.EndOfStream)
                 {
-                    valueFromFile = Convert.ToInt32(readAnswer.ReadLine());
+                    valueFromFile = readAnswer.ReadLine();
+                    valueFromFile = readAnswer.ReadLine();
 
-                    if (valueFromFile == 1)
-                    {
-                        gridOutputAnswer.Rows[countRows].Cells[0].Value = "да";
-                    }
-                    else if (valueFromFile == 2)
-                    {
-                        gridOutputAnswer.Rows[countRows].Cells[0].Value = "скорее да";
-                    }
-                    else if (valueFromFile == 3)
-                    {
-                        gridOutputAnswer.Rows[countRows].Cells[0].Value = "не знаю";
-                    }
-                    else if (valueFromFile == 4)
-                    {
-                        gridOutputAnswer.Rows[countRows].Cells[0].Value = "скорее нет";
-                    }
-                    else if (valueFromFile == 5)
-                    {
-                        gridOutputAnswer.Rows[countRows].Cells[0].Value = "нет";
-                    }
+                    gridOutputAnswer.Rows[countRows].Cells[0].Value = valueFromFile;
+
+                    valueFromFile = readAnswer.ReadLine();
+                    valueFromFile = readAnswer.ReadLine();
 
                     gridOutputAnswer.Rows[countRows].HeaderCell.Value = countAnswer.ToString();
                     ++countRows;
                     ++gridOutputAnswer.RowCount;
 
-                    if (countAnswer < 36)
+                    if (countAnswer < 18)
                     {
                         ++countAnswer;
                     }
@@ -162,12 +147,11 @@ namespace expert_system
                         countAnswer = 0;
                     }
                 }
-
                 readAnswer.Close();
             }
-            else if (m_iOrientation == 1)
+            else if (m_iOrientation == 0)
             {
-                pathFile = Path.GetFullPath(@"InfoUsers\" + m_strLogin + "answer_preschool_parentparent.txt");
+                pathFile = Path.GetFullPath(@"InfoUsers\" + m_strLogin + "answer_preschool_parent.txt");
 
                 if (!File.Exists(pathFile))
                 {

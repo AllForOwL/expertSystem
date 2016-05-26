@@ -13,6 +13,12 @@ namespace expert_system
 {
     public partial class FormUser : Form
     {
+        string CNT_PRESCHOOL_PARENT = "preschool_parent";
+        string CNT_PARENT           = "parent";
+        string CNT_PRESCHOOL        = "preschool";
+        string CNT_THREE_CLASS      = "three_class";
+        string CNT_FIVE_CLASS       = "five_class";
+
         enum typeTest 
         { 
             preschool_parent = 0, 
@@ -64,35 +70,35 @@ namespace expert_system
             {
                 case (int)typeTest.preschool_parent:
                     {
-                        FormTest formTest = new FormTest((int)typeTest.preschool_parent, m_strLoginUser);
+                        FormTest formTest = new FormTest(CNT_PRESCHOOL_PARENT, m_strLoginUser);
                         formTest.Show();
 
                     break;
                     }
                 case (int)typeTest.three_class:
                     {
-                        FormTest formTest = new FormTest((int)typeTest.three_class, m_strLoginUser);
+                        FormTest formTest = new FormTest(CNT_THREE_CLASS, m_strLoginUser);
                         formTest.Show();
 
                     break;
                     }
                 case (int)typeTest.five_class:
                     {
-                        FormTest formTest = new FormTest((int)typeTest.five_class, m_strLoginUser);
+                        FormTest formTest = new FormTest(CNT_FIVE_CLASS, m_strLoginUser);
                         formTest.Show();
 
                     break;
                     }
                 case (int)typeTest.preschool:
                     {
-                        FormTest formTest = new FormTest((int)typeTest.preschool, m_strLoginUser);
+                        FormTest formTest = new FormTest(CNT_PRESCHOOL, m_strLoginUser);
                         formTest.Show();
 
                     break;
                     }
                 case (int)typeTest.parent:
                     {
-                        FormTest formTest = new FormTest((int)typeTest.parent, m_strLoginUser);
+                        FormTest formTest = new FormTest(CNT_PARENT, m_strLoginUser);
                         formTest.Show();
 
                     break;

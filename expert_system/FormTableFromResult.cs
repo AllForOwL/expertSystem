@@ -167,7 +167,7 @@ namespace expert_system
 
                 for (int countUser = 0; countUser < f_arrlistUsers.Count; countUser++)
                 {
-                    pathFile = Path.GetFullPath(@"InfoUsers\" + f_arrlistUsers[countUser] + "result_preschool.txt");
+                    pathFile = Path.GetFullPath(@"InfoUsers\" + f_arrlistUsers[countUser] + "result_preschool_parent.txt");
 
                     if (!File.Exists(pathFile))
                     {
@@ -482,7 +482,7 @@ namespace expert_system
 
                 for (int countUsers = 0; countUsers < f_arrlistUsers.Count; countUsers++)
                 {
-                    pathFile = Path.GetFullPath(@"InfoUsers\" + f_arrlistUsers[countUsers] + "result_preschool_parentparent.txt");
+                    pathFile = Path.GetFullPath(@"InfoUsers\" + f_arrlistUsers[countUsers] + "result_preschool_parent.txt");
 
                     if (!File.Exists(pathFile))
                     {

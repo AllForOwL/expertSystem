@@ -8,174 +8,169 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.IO;
 using System.Text;
+using System.Collections;
 
 namespace expert_system
 {
     public partial class FormTest : Form
     {
-        public bool  m_banswerChild;
-        public bool  m_banswerParent;
-        public float m_flCreative;
-        public float m_flLinguistic;
-        public float m_flTechnical;
-        public float m_flHumanitarian;
-        public float m_flMathematical;
-        public float m_flSports;
+        const string CNT_PRESCHOOL_PARENT = "preschool_parent";
+        const string CNT_PARENT           = "parent";
+        const string CNT_PRESCHOOL        = "preschool";
+        const string CNT_THREE_CLASS      = "three_class";
+        const string CNT_FIVE_CLASS       = "five_class";
 
-        public float m_flCreativeParent;
-        public float m_flLinguisticParent;
-        public float m_flTechnicalParent;
-        public float m_flHumanitarianParent;
-        public float m_flMathematicalParent;
-        public float m_flSportsParent;
+        const int CNT_COUNT_QUESTION_CHILD  = 36;
+        const int CNT_COUNT_QUESTION_PARENT = 18;
+        const int CNT_COUNT_ORIENTATION     = 6;
+        const int CNT_COUNT_ANSWER_CHILD    = 6;
+        const int CNT_COUNT_ANSWER_PARENT   = 4;
 
-        public float m_flWithoutLogicCreative;
-        public float m_flWithoutLogicLinguistic;
-        public float m_flWithoutLogicTechnical;
-        public float m_flWithoutLogicHumanitarian;
-        public float m_flWithoutLogicMathematical;
-        public float m_flWithoutLogicSports;
+        const int CNT_CREATIVE     = 0;
+        const int CNT_HUMANITARIAN = 1;
+        const int CNT_LINGUISTIC   = 2;
+        const int CNT_MATHEMATICAL = 3;
+        const int CNT_TECHNICAL    = 4;
+        const int CNT_SPORT        = 5;
 
-        public int m_iYearUser;
-        public string m_strLoginUser;
+        string PATH_TO_RESULT_USER;
+        string PATH_TO_ANSWER_USER;
+        string PATH_TO_QUESTION_CHILD;
+        string PATH_TO_QUESTION_PARENT;
 
-        public string[] m_arrayAnswerChild  = new string[216];
-        public string[,] m_arrayAnswerParent = new string[5, 18];
-        public int m_iCountQuestion;
+        string m_strAge;
+        string m_strLogin;
 
-        public int [] m_iArrayAnswer = new int[216];
-        public int [] m_iArrayAnsweParent = new int[18];
-        public int m_iCountAnswer;
+        string [,] m_arrstrQuestionChild;
+        string [,] m_arrstrQuestionParent;
+
+        int m_iCountQuestion;
+
+        double [] m_arriCalculateForChild;
+        double [] m_arriCalculateForParent;
+
+        string [] m_arrstrAnswerChild;
+        string [] m_arrstrAnswerParent;
 
         public FormTest()
         {
             InitializeComponent();
         }
 
-        public FormTest(int yearUser, string loginUser)
+        public FormTest(string age, string loginUser)
         {
             InitializeComponent();
 
-            m_iCountAnswer = 0;
-            m_iYearUser = yearUser;
-            m_strLoginUser = loginUser;
             m_iCountQuestion = 0;
 
-            m_flCreative     = 0.0F;
-            m_flHumanitarian = 0.0F;
-            m_flLinguistic   = 0.0F;
-            m_flMathematical = 0.0F;
-            m_flSports       = 0.0F;
-            m_flTechnical    = 0.0F;
+            m_strAge   = age;
+            m_strLogin = loginUser;
 
-            m_flCreativeParent = 0.0F;
-            m_flHumanitarianParent = 0.0F;
-            m_flLinguisticParent = 0.0F;
-            m_flMathematicalParent = 0.0F;
-            m_flSportsParent = 0.0F;
-            m_flTechnicalParent = 0.0F;
+        // { задаем путь для сохранения результатов и ответов
+            PATH_TO_RESULT_USER    = Path.GetFullPath(@"InfoUsers\" + m_strLogin + "_" + m_strAge + "_result.txt");
+            PATH_TO_ANSWER_USER    = Path.GetFullPath(@"InfoUsers\" + m_strLogin + "_" + m_strAge + "_answer.txt");
+        // } задаем путь для сохранения результатов и ответов
+        
+        // { задаем путь для вопросов
+            if (m_strAge == CNT_PRESCHOOL_PARENT)
+            {
+                PATH_TO_QUESTION_CHILD  = Path.GetFullPath(@"tests\preschool_parent\child.txt");
+                PATH_TO_QUESTION_PARENT = Path.GetFullPath(@"tests\preschool_parent\parent.txt");
+            }
+            else if (m_strAge == CNT_THREE_CLASS)
+            {
+                PATH_TO_QUESTION_CHILD  = Path.GetFullPath(@"tests\three_class\child.txt");
+                PATH_TO_QUESTION_PARENT = ""; 
+            }
+            else if (m_strAge == CNT_FIVE_CLASS)
+            {
+                PATH_TO_QUESTION_CHILD = Path.GetFullPath(@"tests\five_class\child.txt");
+                PATH_TO_QUESTION_PARENT = "";
+            }
+            else if (m_strAge == CNT_PRESCHOOL)
+            {
+                PATH_TO_QUESTION_CHILD  = Path.GetFullPath(@"tests\preschool_parent\child.txt");
+                PATH_TO_QUESTION_PARENT = "";
+            }
+            else if (m_strAge == CNT_PARENT)
+            {
+                PATH_TO_QUESTION_PARENT = Path.GetFullPath(@"tests\preschool_parent\parent.txt");
+                PATH_TO_QUESTION_CHILD  = "";
+            }
+       // } задаем путь для вопросов
 
-            m_flWithoutLogicCreative     = 0.0f;
-            m_flWithoutLogicLinguistic   = 0.0f;
-            m_flWithoutLogicTechnical    = 0.0f;
-            m_flWithoutLogicHumanitarian = 0.0f;
-            m_flWithoutLogicMathematical = 0.0f;
-            m_flWithoutLogicSports       = 0.0f;
+       // { определяем проходит ли тест дошкольник + родитель или кто то один их них
+            if (PATH_TO_QUESTION_PARENT != "" && PATH_TO_QUESTION_CHILD != "")
+            {
+                m_arrstrQuestionChild    = new string [CNT_COUNT_QUESTION_CHILD,  CNT_COUNT_ANSWER_CHILD];
+                m_arrstrQuestionParent   = new string [CNT_COUNT_QUESTION_PARENT, CNT_COUNT_ANSWER_PARENT];
 
-            m_banswerChild  = false;
-            m_banswerParent = false;
+                m_arriCalculateForChild  = new double [CNT_COUNT_ORIENTATION];
+                m_arriCalculateForParent = new double [CNT_COUNT_ORIENTATION];
 
+                m_arrstrAnswerChild      = new string [CNT_COUNT_QUESTION_CHILD];
+                m_arrstrAnswerParent     = new string [CNT_COUNT_QUESTION_PARENT];
+            }
+            else if (PATH_TO_QUESTION_CHILD != "")
+            {
+                m_arrstrQuestionChild   = new string [CNT_COUNT_QUESTION_CHILD, CNT_COUNT_ANSWER_CHILD];
+
+                m_arriCalculateForChild = new double [CNT_COUNT_ORIENTATION];
+
+                m_arrstrAnswerChild     = new string [CNT_COUNT_QUESTION_CHILD];
+
+            }
+            else
+            {
+                m_arrstrQuestionParent   = new string [CNT_COUNT_QUESTION_PARENT, CNT_COUNT_ANSWER_PARENT];
+
+                m_arriCalculateForParent = new double [CNT_COUNT_ORIENTATION];
+
+                m_arrstrAnswerParent     = new string [CNT_COUNT_QUESTION_PARENT];
+            }
+      // { определяем проходит ли тест дошкольник + родитель или кто то один их них
+
+            ReadQuestionAndAnswer(); // read questions and answers for child and parent
+
+      // { show question and answer
+            if (PATH_TO_QUESTION_PARENT != "" && PATH_TO_QUESTION_CHILD != "")
+            {
+                this.questionChild.Text = m_arrstrQuestionChild[m_iCountQuestion, 0];
+                this.childAnswer1.Text = m_arrstrQuestionChild[m_iCountQuestion, 1];
+                this.childAnswer2.Text = m_arrstrQuestionChild[m_iCountQuestion, 2];
+                this.childAnswer3.Text = m_arrstrQuestionChild[m_iCountQuestion, 3];
+                this.childAnswer4.Text = m_arrstrQuestionChild[m_iCountQuestion, 4];
+                this.childAnswer5.Text = m_arrstrQuestionChild[m_iCountQuestion, 5];
+
+                this.questionParent.Text = m_arrstrQuestionParent[m_iCountQuestion, 0];
+                this.parentAnswer1.Text = m_arrstrQuestionParent[m_iCountQuestion, 1];
+                this.parentAnswer2.Text = m_arrstrQuestionParent[m_iCountQuestion, 2];
+                this.parentAnswer3.Text = m_arrstrQuestionParent[m_iCountQuestion, 3];
+            }
+            else if (PATH_TO_QUESTION_CHILD != "")  // read file from question and answer for child
+            {
+                this.questionChild.Text = m_arrstrQuestionChild[m_iCountQuestion, 0];
+                this.childAnswer1.Text = m_arrstrQuestionChild[m_iCountQuestion, 1];
+                this.childAnswer2.Text = m_arrstrQuestionChild[m_iCountQuestion, 2];
+                this.childAnswer3.Text = m_arrstrQuestionChild[m_iCountQuestion, 3];
+                this.childAnswer4.Text = m_arrstrQuestionChild[m_iCountQuestion, 4];
+                this.childAnswer5.Text = m_arrstrQuestionChild[m_iCountQuestion, 5];
+            }
+            else                                   //read file from question and answer for parent
+            {
+                this.questionParent.Text = m_arrstrQuestionParent[m_iCountQuestion, 0];
+                this.parentAnswer1.Text = m_arrstrQuestionParent[m_iCountQuestion, 1];
+                this.parentAnswer2.Text = m_arrstrQuestionParent[m_iCountQuestion, 2];
+                this.parentAnswer3.Text = m_arrstrQuestionParent[m_iCountQuestion, 3];
+            }
+       // } show question and answer
+
+            ++m_iCountQuestion;
         }
-
+ 
         private void Form3_Load(object sender, EventArgs e)
         {
-            childAnswer1.Checked = true;
-
-            parentAnswer1.Checked = true;
-
-            string questionsChild = "";
-            string questionsParent = "";
-
-            switch (m_iYearUser)
-            {
-                case 0:
-                    {
-                        questionsChild  = Path.GetFullPath(@"tests\preschool_child\child.txt");
-                        questionsParent = Path.GetFullPath(@"tests\preschool_child\parent.txt");
-
-                    break;
-                    }
-                case 1:
-                    {
-                        questionsChild  = Path.GetFullPath(@"tests\three_class\child.txt");
-
-                    break;
-                    }
-                case 2:
-                    {
-                        questionsChild  = Path.GetFullPath(@"tests\five_class\child.txt");
-
-                    break;
-                    }
-                case 3:
-                    {
-                        questionsChild  = Path.GetFullPath(@"tests\preschool_child\child.txt");
-
-                    break;
-                    }
-                case 4:
-                    {
-                        questionsParent  = Path.GetFullPath(@"tests\preschool_child\parent.txt");
-
-                    break;
-                    }
-            }
-
-            int numberLineInFile = 0;
-
-            if (m_iYearUser != 4)
-            {
-                StreamReader readFileChildQuestions = new StreamReader(questionsChild, false);
-
-                for (int rows = 0; rows < 216; rows++)
-                {
-                    m_arrayAnswerChild[rows] = readFileChildQuestions.ReadLine();
-                }
-
-                readFileChildQuestions.Close();
-
-                groupBox1.Visible = true;
-
-                questionChild.Text = m_arrayAnswerChild[m_iCountQuestion];
-                childAnswer1.Text = m_arrayAnswerChild[m_iCountQuestion+1];
-                childAnswer2.Text = m_arrayAnswerChild[m_iCountQuestion+2];
-                childAnswer3.Text = m_arrayAnswerChild[m_iCountQuestion+3];
-                childAnswer4.Text = m_arrayAnswerChild[m_iCountQuestion+4];
-                childAnswer5.Text = m_arrayAnswerChild[m_iCountQuestion+5];
-            }
-
-            if (m_iYearUser == 0 || m_iYearUser == 4)
-            {
-                StreamReader readFileParentQuestions = new StreamReader(questionsParent, false);
-
-                numberLineInFile = 0;
-                while (numberLineInFile != 18)
-                {
-                    for (int rows = 0; rows < 4; rows++)
-                    {
-                        m_arrayAnswerParent[rows, numberLineInFile] = readFileParentQuestions.ReadLine();
-                    }
-                    ++numberLineInFile;
-                }
-                readFileParentQuestions.Close();
-
-                groupBox2.Visible = true;
-
-                questionParent.Text = m_arrayAnswerParent[0, m_iCountQuestion];
-                parentAnswer1.Text = m_arrayAnswerParent[1, m_iCountQuestion];
-                parentAnswer2.Text = m_arrayAnswerParent[2, m_iCountQuestion];
-                parentAnswer3.Text = m_arrayAnswerParent[3, m_iCountQuestion];
-            }
+          
         }
 
         private void radioButton1_CheckedChanged(object sender, EventArgs e)
@@ -184,548 +179,370 @@ namespace expert_system
 
         private void button1_Click(object sender, EventArgs e)
         {
-
-            bool b_creative = false;
-            bool b_humanitarian = false;
-            bool b_linguistic = false;
-            bool b_mathematical = false;
-            bool b_sport = false;
-            bool b_technical = false;
-
-            if (m_iYearUser == 0 && m_iCountAnswer < 18)
-            {
-                if (parentAnswer1.Checked)
-                {
-                    if (m_iCountAnswer <= 3)
-                    {
-                        b_creative = true;
-                        ++m_flCreativeParent;
-                    }
-                    else if (m_iCountAnswer > 3 && m_iCountAnswer <= 6)
-                    {
-                        b_humanitarian = true;
-                        ++m_flHumanitarianParent;
-                    }
-                    else if (m_iCountAnswer > 6 && m_iCountAnswer <= 9)
-                    {
-                        b_linguistic = true;
-                        ++m_flLinguisticParent;
-                    }
-                    else if (m_iCountAnswer > 9 && m_iCountAnswer <= 12)
-                    {
-                        b_mathematical = true;
-                        ++m_flMathematicalParent;
-                    }
-                    else if (m_iCountAnswer > 12 && m_iCountAnswer <= 15)
-                    {
-                        b_sport = true;
-                        ++m_flSportsParent;
-                    }
-                    else if (m_iCountAnswer > 15 && m_iCountAnswer <= 18)
-                    {
-                        b_technical = true;
-                        ++m_flTechnicalParent;
-                    }
-                    m_iArrayAnsweParent[m_iCountAnswer] = 1;
-                }
-                else if (parentAnswer2.Checked)
-                {
-                    if (m_iCountAnswer <= 3)
-                    {
-                        m_flCreativeParent += 0.7f;
-                    }
-                    else if (m_iCountAnswer > 3 && m_iCountAnswer <= 6)
-                    {
-                        m_flHumanitarianParent += 0.7f;
-                    }
-                    else if (m_iCountAnswer > 9 && m_iCountAnswer <= 12)
-                    {
-                        m_flMathematicalParent += 0.7f;
-                    }
-                    else if (m_iCountAnswer > 12 && m_iCountAnswer <= 15)
-                    {
-                        m_flSportsParent += 0.7f;
-                    }
-                    else if (m_iCountAnswer > 15 && m_iCountAnswer <= 18)
-                    {
-                        m_flTechnicalParent += 0.7f;
-                    }
-                    m_iArrayAnsweParent[m_iCountAnswer] = 2;
-                }
-                else if (parentAnswer3.Checked)
-                {
-                    if (m_iCountAnswer <= 3)
-                    {
-                        m_flCreativeParent += 0.5f;
-                    }
-                    else if (m_iCountAnswer > 3 && m_iCountAnswer <= 6)
-                    {
-                        m_flHumanitarianParent += 0.5f;
-                    }
-                    else if (m_iCountAnswer > 9 && m_iCountAnswer <= 12)
-                    {
-                        m_flMathematicalParent += 0.5f;
-                    }
-                    else if (m_iCountAnswer > 12 && m_iCountAnswer <= 15)
-                    {
-                        m_flSportsParent += 0.5f;
-                    }
-                    else if (m_iCountAnswer > 15 && m_iCountAnswer <= 18)
-                    {
-                        m_flTechnicalParent += 0.5f;
-                    }
-                    m_iArrayAnsweParent[m_iCountAnswer] = 3;
-                }
-            }
-
-            if (childAnswer1.Checked)
-            {
-                m_iArrayAnswer[m_iCountAnswer] = 1; 
-            }
-            else if (childAnswer2.Checked)
-            {
-                m_iArrayAnswer[m_iCountAnswer] = 2;
-            }
-            else if (childAnswer3.Checked)
-            {
-                m_iArrayAnswer[m_iCountAnswer] = 3;
-            }
-            else if (childAnswer4.Checked)
-            {
-                m_iArrayAnswer[m_iCountAnswer] = 4;
-            }
-            else if (childAnswer5.Checked)
-            {
-                m_iArrayAnswer[m_iCountAnswer] = 5;
-            }
-
-            ++m_iCountAnswer;
-
-            // если вопрос в творческом направлении
-             if (
-                (m_iCountQuestion >= 0 && m_iCountQuestion < 18) ||
-                (m_iCountQuestion >= 108 && m_iCountQuestion <126)
-                )
-            {
-                if (childAnswer5.Checked)
-                {
- 
-                }
-                else if (childAnswer1.Checked && b_creative != true)
-                {
-                    m_flCreative += 1.0F;
-                    ++m_flWithoutLogicCreative;
-                }
-                else if (childAnswer2.Checked)
-                {
-                    m_flCreative += 0.7F;
-                    m_flWithoutLogicCreative += 0.7f;
-                }
-                else if (childAnswer3.Checked)
-                {
-                    m_flCreative += 0.5F;
-                }
-                else if (childAnswer4.Checked)
-                {
-                    m_flCreative += 0.3F;
-                }
-            }
-                 // если вопрос в лингвистическом направлении
-            else if (
-                (m_iCountQuestion >= 18 && m_iCountQuestion < 36) ||
-                (m_iCountQuestion >= 126 && m_iCountQuestion < 144)
-                )
-            {
-                if (childAnswer5.Checked)
-                {
-
-                }
-                else if (childAnswer1.Checked && b_linguistic != true)
-                {
-                    m_flLinguistic += 1.0F;
-                    ++m_flWithoutLogicLinguistic;
-                }
-                else if (childAnswer2.Checked)
-                {
-                    m_flLinguistic += 0.7F;
-                    m_flWithoutLogicLinguistic += 0.7f;
-                }
-                else if (childAnswer3.Checked)
-                {
-                    m_flLinguistic += 0.5F;
-                }
-                else if (childAnswer4.Checked)
-                {
-                    m_flLinguistic += 0.3F;
-                }
-            }
-                 // если вопрос в техническом направлении
-            else if (
-                (m_iCountQuestion >= 36 && m_iCountQuestion < 54) ||
-                (m_iCountQuestion >= 144 && m_iCountQuestion < 162)
-                )
-            {
-                if (childAnswer5.Checked)
-                {
-
-                }
-                else if (childAnswer1.Checked && b_technical != true)
-                {
-                    m_flTechnical += 1.0F;
-                    ++m_flWithoutLogicTechnical;
-                }
-                else if (childAnswer2.Checked)
-                {
-                    m_flTechnical += 0.7F;
-                    m_flWithoutLogicTechnical += 0.7f;
-                }
-                else if (childAnswer3.Checked)
-                {
-                    m_flTechnical += 0.5F;
-                }
-                else if (childAnswer4.Checked)
-                {
-                    m_flTechnical += 0.3F;
-                }
-            }
-                 // если вопрос в гуманитарном направлении
-            else if (
-                (m_iCountQuestion >= 54 && m_iCountQuestion < 72) ||
-                (m_iCountQuestion >= 180 && m_iCountQuestion < 196)
-                )
-            {
-                if (childAnswer5.Checked)
-                {
-
-                }
-                else if (childAnswer1.Checked && b_humanitarian != true)
-                {
-                    m_flHumanitarian += 1.0F;
-                    ++m_flWithoutLogicHumanitarian;
-                }
-                else if (childAnswer2.Checked)
-                {
-                    m_flHumanitarian += 0.7F;
-                    m_flWithoutLogicHumanitarian += 0.7f;
-                }
-                else if (childAnswer3.Checked)
-                {
-                    m_flHumanitarian += 0.5F;
-                }
-                else if (childAnswer4.Checked)
-                {
-                    m_flHumanitarian += 0.3F;
-                }
-            }
-                 // если вопрос в математическом направлении
-            else if (
-                (m_iCountQuestion >= 72 && m_iCountQuestion < 90) ||
-                (m_iCountQuestion >= 196 && m_iCountQuestion < 214)
-                )
-            {
-                if (childAnswer5.Checked)
-                {
-
-                }
-                else if (childAnswer1.Checked && b_mathematical != true)
-                {
-                    m_flMathematical += 1.0F;
-                    ++m_flWithoutLogicMathematical;
-                }
-                else if (childAnswer2.Checked)
-                {
-                    m_flMathematical += 0.7F;
-                    m_flWithoutLogicMathematical += 0.7f;
-                }
-                else if (childAnswer3.Checked)
-                {
-                    m_flMathematical += 0.5F;
-                }
-                else if (childAnswer4.Checked)
-                {
-                    m_flMathematical += 0.3F;
-                }
-            }
-                 // если вопрос в спортивном направлении
-            else 
-            {
-                if (childAnswer5.Checked)
-                {
-
-                }
-                else if (childAnswer1.Checked && b_sport != true)
-                {
-                    m_flSports += 1.0F;
-                    ++m_flWithoutLogicSports;
-                }
-                else if (childAnswer2.Checked)
-                {
-                    m_flSports += 0.7F;
-                    m_flWithoutLogicSports += 0.7f;
-                }
-                else if (childAnswer3.Checked)
-                {
-                    m_flSports += 0.5F;
-                }
-                else if (childAnswer4.Checked)
-                {
-                    m_flSports += 0.3F;
-                }
-            }
-
-             if (m_iCountQuestion >= 210)
-             {
-                 float[] arrayValueOrientation = new float[6];
-
-                 arrayValueOrientation[0] = m_flWithoutLogicCreative;
-                 arrayValueOrientation[1] = m_flWithoutLogicHumanitarian;
-                 arrayValueOrientation[2] = m_flWithoutLogicLinguistic;
-                 arrayValueOrientation[3] = m_flWithoutLogicMathematical;
-                 arrayValueOrientation[4] = m_flWithoutLogicSports;
-                 arrayValueOrientation[5] = m_flWithoutLogicTechnical;
-
-                 float max = arrayValueOrientation[0];
-                 int numberElement = 0;
-                 string bigOrientation = "творческий";
-
-                 for (int i = 1; i < 6; i++)
-                 {
-                     if (arrayValueOrientation[i] > max)
-                     {
-                         max = arrayValueOrientation[i];
-                         numberElement = i;
-                     }
-                 }
-
-                 // определяем приоритетное направление
-                 switch (numberElement)
-                 {
-                     case 1:
-                         {
-                             bigOrientation = "гуманитарный";
-                             break;
-                         }
-                     case 2:
-                         {
-                             bigOrientation = "лингвистический";
-                             break;
-                         }
-                     case 3:
-                         {
-                             bigOrientation = "математический";
-                             break;
-                         }
-                     case 4:
-                         {
-                             bigOrientation = "спортивный";
-                             break;
-                         }
-                     case 5:
-                         {
-                             bigOrientation = "технический";
-                             break;
-                         }
-
-                 }
-
-                 string nameOrientation = "";
-                 bool writeAnswerParent = false;
-                 // какого возраста пользователь
-                 switch (m_iYearUser)
-                 {
-                     case 0:
-                         {
-                             writeAnswerParent = true;   
-                             nameOrientation = "preschool_parent";
-                             break;
-                         }
-                     case 1:
-                         {
-                             nameOrientation = "three_class";
-                             break;
-                         }
-                     case 2:
-                         {
-                             nameOrientation = "five_class";
-                             break;
-                         }
-                     case 3:
-                         {
-                             nameOrientation = "preschool";
-                             break;
-                         }
-                     case 4:
-                         {
-                             nameOrientation = "parent";
-                             break;
-                         }
-                 }
-
-                 /*string pathFileAnswer = Path.GetFullPath(@"InfoUsers\answer_" + nameOrientation + m_strLoginUser + ".txt");
-                 StreamWriter writeResultOnOrientationAnswer = new StreamWriter(pathFileAnswer, true);
-
-                 for (int i = 0; i < 36; i++)
-                 {
-                     writeResultOnOrientationAnswer.WriteLine(m_iArrayAnswer[i]);
-                 }
-
-                 if (writeAnswerParent)
-                 {
-                     for (int i = 0; i < 18; i++)
-                     {
-                         writeResultOnOrientationAnswer.WriteLine(m_iArrayAnsweParent[i]);
-                     }
-                 }
-
-                 writeResultOnOrientationAnswer.Close();
-                 */
-                 // запись результатоа без логики в файл
-
-                 /*string pathFileAll = Path.GetFullPath(@"InfoUsers\Allresult_" + nameOrientation + ".txt");
-                 StreamWriter writeResultOnOrientationAll = new StreamWriter(pathFileAll, true);
-
-                 writeResultOnOrientationAll.WriteLine(m_strLoginUser + 0.0);
-                 writeResultOnOrientationAll.WriteLine(m_flCreative + 0.0);
-                 writeResultOnOrientationAll.WriteLine(m_flHumanitarian + 0.0);
-                 writeResultOnOrientationAll.WriteLine(m_flLinguistic + 0.0);
-                 writeResultOnOrientationAll.WriteLine(m_flMathematical + 0.0);
-                 writeResultOnOrientationAll.WriteLine(m_flSports + 0.0);
-                 writeResultOnOrientationAll.WriteLine(m_flTechnical + 0.0);
-                 writeResultOnOrientationAll.WriteLine(m_strLoginUser + 0.0);
-
-                 writeResultOnOrientationAll.Close();
-                  */
-
-                /* if (writeAnswerParent)
-                 {
-                     string pathFileAll2 = Path.GetFullPath(@"InfoUsers\Allresult_" + nameOrientation + "parent.txt");
-                     StreamWriter writeResultOnOrientationAll2 = new StreamWriter(pathFileAll2, true);
-
-                     writeResultOnOrientationAll2.WriteLine(m_flCreativeParent + 0.0);
-                     writeResultOnOrientationAll2.WriteLine(m_flHumanitarianParent + 0.0);
-                     writeResultOnOrientationAll2.WriteLine(m_flLinguisticParent + 0.0);
-                     writeResultOnOrientationAll2.WriteLine(m_flMathematicalParent + 0.0);
-                     writeResultOnOrientationAll2.WriteLine(m_flSportsParent + 0.0);
-                     writeResultOnOrientationAll2.WriteLine(m_flTechnicalParent + 0.0);
-
-                     writeResultOnOrientationAll2.Close();
-                 }
-                 */
-
-                 string pathFile = Path.GetFullPath(@"InfoUsers\" + m_strLoginUser + "result_" + nameOrientation + ".txt");
-                 StreamWriter writeResultOnOrientation = new StreamWriter(pathFile, true);
-
-                 writeResultOnOrientation.WriteLine(m_flCreative);
-                 writeResultOnOrientation.WriteLine(m_flHumanitarian);
-                 writeResultOnOrientation.WriteLine(m_flLinguistic);
-                 writeResultOnOrientation.WriteLine(m_flMathematical);
-                 writeResultOnOrientation.WriteLine(m_flSports);
-                 writeResultOnOrientation.WriteLine(m_flTechnical);
-
-                 writeResultOnOrientation.Close();
-
-                 if (writeAnswerParent)
-                 {
-                     string pathFileAll3 = Path.GetFullPath(@"InfoUsers\" + m_strLoginUser + "result_" + nameOrientation + "parent.txt");
-                     StreamWriter writeResultOnOrientationAll3 = new StreamWriter(pathFileAll3, true);
-
-                     writeResultOnOrientationAll3.WriteLine(m_flCreativeParent + 0.0);
-                     writeResultOnOrientationAll3.WriteLine(m_flHumanitarianParent + 0.0);
-                     writeResultOnOrientationAll3.WriteLine(m_flLinguisticParent + 0.0);
-                     writeResultOnOrientationAll3.WriteLine(m_flMathematicalParent + 0.0);
-                     writeResultOnOrientationAll3.WriteLine(m_flSportsParent + 0.0);
-                     writeResultOnOrientationAll3.WriteLine(m_flTechnicalParent + 0.0);
-
-                     writeResultOnOrientationAll3.Close();
-                 }
-
-                 string pathFileForAnswer = Path.GetFullPath(@"InfoUsers\" + m_strLoginUser + "answer_" + nameOrientation + ".txt");
-
-                 StreamWriter writeAnswer = new StreamWriter(pathFileForAnswer, true);
-
-                 for (int i = 0; i < 36; i++)
-                 {
-                     writeAnswer.WriteLine(m_iArrayAnswer[i]);
-                 }
-
-                 writeAnswer.Close();
-
-                 if (writeAnswerParent)
-                 {
-                     string pathFileForAnswerParent = Path.GetFullPath(@"InfoUsers\" + m_strLoginUser + "answer_" + nameOrientation + "parent.txt");
-
-                     StreamWriter writeAnswerParentFile = new StreamWriter(pathFileForAnswerParent, true);
-
-                     for (int i = 0; i < 18; i++)
-                     {
-                         writeAnswerParentFile.WriteLine(m_iArrayAnsweParent[i]);
-                     }
-                     
-                     writeAnswerParentFile.Close();
-                 }
-
-                 /*string pathFile_ = Path.GetFullPath(@"InfoUsers\" + m_strLoginUser + "result.txt");
-                 StreamWriter writeResultOnOrientation_ = new StreamWriter(pathFile_, true);
-
-                 writeResultOnOrientation_.WriteLine(m_flCreative);
-                 writeResultOnOrientation_.WriteLine(m_flHumanitarian);
-                 writeResultOnOrientation_.WriteLine(m_flLinguistic);
-                 writeResultOnOrientation_.WriteLine(m_flMathematical);
-                 writeResultOnOrientation_.WriteLine(m_flSports);
-                 writeResultOnOrientation_.WriteLine(m_flTechnical);
-                 writeResultOnOrientation_.Close();
-
-                 string pathFile4 = Path.GetFullPath(@"InfoUsers\" + m_strLoginUser + "result_from_logic.txt");
-                 StreamWriter writeResultOnOrientationLogic4 = new StreamWriter(pathFile4, true);
-
-                 writeResultOnOrientationLogic4.WriteLine(m_flCreative);
-                 writeResultOnOrientationLogic4.WriteLine(m_flHumanitarian);
-                 writeResultOnOrientationLogic4.WriteLine(m_flLinguistic);
-                 writeResultOnOrientationLogic4.WriteLine(m_flMathematical);
-                 writeResultOnOrientationLogic4.WriteLine(m_flSports);
-                 writeResultOnOrientationLogic4.WriteLine(m_flTechnical);
-
-                 writeResultOnOrientationLogic4.Close();
-                 */
-                 OutputOrientation orientation = new OutputOrientation(m_strLoginUser, nameOrientation);
-                 orientation.Show();
-
-                 return;
-             }
-
-            // отвел ли родител и ребёнок
-            m_banswerChild = false;
-            m_banswerParent = false;
-
-            // если последний вопро
-
-            m_iCountQuestion+=6;
-
-            questionChild.Text = m_arrayAnswerChild[m_iCountQuestion];
-            childAnswer1.Text = m_arrayAnswerChild[m_iCountQuestion + 1];
-            childAnswer2.Text = m_arrayAnswerChild[m_iCountQuestion + 2];
-            childAnswer3.Text = m_arrayAnswerChild[m_iCountQuestion + 3];
-            childAnswer4.Text = m_arrayAnswerChild[m_iCountQuestion + 4];
-            childAnswer5.Text = m_arrayAnswerChild[m_iCountQuestion + 5];
-
-
-
-            if (m_iCountAnswer <= 17)
-            {
-                questionParent.Text = m_arrayAnswerParent[0, m_iCountAnswer];
-                parentAnswer1.Text = m_arrayAnswerParent[1, m_iCountAnswer];
-                parentAnswer2.Text = m_arrayAnswerParent[2, m_iCountAnswer];
-                parentAnswer3.Text = m_arrayAnswerParent[3, m_iCountAnswer];
-            }
-
-            childAnswer1.Checked = true;
-            parentAnswer1.Checked = true;
-
+            ShowQuesitonAndAnswer();
         }
 
         private void groupBox1_Enter(object sender, EventArgs e)
         {
 
-        }  
+        }
+
+        public void ReadQuestionAndAnswer()
+        {
+        // { read file from question and answer for child
+            if (PATH_TO_QUESTION_PARENT != "" && PATH_TO_QUESTION_CHILD != "")
+            {
+               StreamReader readFileQuestionChild = new StreamReader(PATH_TO_QUESTION_CHILD);
+
+               for (int i = 0; i < CNT_COUNT_QUESTION_CHILD; i++)
+               {
+                   for (int j = 0; j < CNT_COUNT_ANSWER_CHILD; j++)
+                   {
+                       m_arrstrQuestionChild[i, j] = readFileQuestionChild.ReadLine();
+                   }
+               }
+
+               readFileQuestionChild.Close();
+        // } read file from question and answer for child
+            
+        // { read file from question and answer for parent
+            StreamReader readFileQuestionParent = new StreamReader(PATH_TO_QUESTION_PARENT);
+
+            for (int i = 0; i < CNT_COUNT_QUESTION_PARENT; i++)
+            {
+                for (int j = 0; j < CNT_COUNT_ANSWER_PARENT; j++)
+                {
+                    m_arrstrQuestionParent[i, j] = readFileQuestionParent.ReadLine();
+                }
+            }
+
+            readFileQuestionParent.Close();
+
+            this.groupBox1.Visible = true;
+            this.groupBox2.Visible = true;
+
+        // } read file from question and answer for parent
+            }
+            else if (PATH_TO_QUESTION_CHILD != "")  // read file from question and answer for child
+            {
+                StreamReader readFileQuestionChild = new StreamReader(PATH_TO_QUESTION_CHILD);
+
+                for (int i = 0; i < CNT_COUNT_QUESTION_CHILD; i++)
+                {
+                    for (int j = 0; j < CNT_COUNT_ANSWER_CHILD; j++)
+                    {
+                        m_arrstrQuestionChild[i, j] = readFileQuestionChild.ReadLine();
+                    }
+                }
+
+                readFileQuestionChild.Close();
+
+                this.groupBox1.Visible = true;
+            }
+            else                                //read file from question and answer for parent
+            {
+                StreamReader readFileQuestionParent = new StreamReader(PATH_TO_QUESTION_PARENT);
+
+                for (int i = 0; i < CNT_COUNT_QUESTION_PARENT; i++)
+                {
+                    for (int j = 0; j < CNT_COUNT_ANSWER_PARENT; j++)
+                    {
+                        m_arrstrQuestionParent[i, j] = readFileQuestionParent.ReadLine();
+                    }
+                }
+
+                readFileQuestionParent.Close();
+
+                this.groupBox2.Visible = true;
+            }
+        }
+
+        public void ShowQuesitonAndAnswer()
+        {
+            if (PATH_TO_QUESTION_PARENT != "" && PATH_TO_QUESTION_CHILD != "")
+            {
+                this.questionChild.Text = m_arrstrQuestionChild[m_iCountQuestion, 0];
+                this.childAnswer1.Text = m_arrstrQuestionChild[m_iCountQuestion, 1];
+                this.childAnswer2.Text = m_arrstrQuestionChild[m_iCountQuestion, 2];
+                this.childAnswer3.Text = m_arrstrQuestionChild[m_iCountQuestion, 3];
+                this.childAnswer4.Text = m_arrstrQuestionChild[m_iCountQuestion, 4];
+                this.childAnswer5.Text = m_arrstrQuestionChild[m_iCountQuestion, 5];
+
+                this.questionParent.Text = m_arrstrQuestionParent[m_iCountQuestion, 0];
+                this.parentAnswer1.Text = m_arrstrQuestionParent[m_iCountQuestion, 1];
+                this.parentAnswer2.Text = m_arrstrQuestionParent[m_iCountQuestion, 2];
+                this.parentAnswer3.Text = m_arrstrQuestionParent[m_iCountQuestion, 3];
+            }
+            else if (PATH_TO_QUESTION_CHILD != "")  // read file from question and answer for child
+            {
+                this.questionChild.Text = m_arrstrQuestionChild[m_iCountQuestion, 0];
+                this.childAnswer1.Text = m_arrstrQuestionChild[m_iCountQuestion, 1];
+                this.childAnswer2.Text = m_arrstrQuestionChild[m_iCountQuestion, 2];
+                this.childAnswer3.Text = m_arrstrQuestionChild[m_iCountQuestion, 3];
+                this.childAnswer4.Text = m_arrstrQuestionChild[m_iCountQuestion, 4];
+                this.childAnswer5.Text = m_arrstrQuestionChild[m_iCountQuestion, 5];
+            }
+            else                                   //read file from question and answer for parent
+            {
+                this.questionParent.Text = m_arrstrQuestionParent[m_iCountQuestion, 0];
+                this.parentAnswer1.Text = m_arrstrQuestionParent[m_iCountQuestion, 1];
+                this.parentAnswer2.Text = m_arrstrQuestionParent[m_iCountQuestion, 2];
+                this.parentAnswer3.Text = m_arrstrQuestionParent[m_iCountQuestion, 3];
+            }
+            ++m_iCountQuestion;
+        }
+
+        public void Calculation()
+        {
+            if (PATH_TO_QUESTION_PARENT != "" && PATH_TO_QUESTION_CHILD != "")
+            {
+                CalculationForChild  ();
+                CalculationForParent ();
+            }
+            else if (PATH_TO_QUESTION_CHILD != "")  
+            {
+                CalculationForChild  ();
+            }
+            else                               
+            {
+                CalculationForParent ();
+            }
+        }
+
+        public void CalculationForChild()
+        {
+            if (
+                   (m_iCountQuestion <= 2) ||
+                   (m_iCountQuestion >= 18 && m_iCountQuestion <= 20)
+                  )
+            {
+                if (this.childAnswer1.Checked)
+                {
+                    ++m_arriCalculateForChild[CNT_CREATIVE];
+                }
+                else if (this.childAnswer2.Checked)
+                {
+                    m_arriCalculateForChild[CNT_CREATIVE] += 0.7;
+                }
+                else if (this.childAnswer3.Checked)
+                {
+                    m_arriCalculateForChild[CNT_CREATIVE] += 0.5;
+                }
+                else if (this.childAnswer4.Checked)
+                {
+                    m_arriCalculateForChild[CNT_CREATIVE] += 0.3;
+                }
+            }
+            else if (
+                     (m_iCountQuestion >= 3 && m_iCountQuestion >= 5) ||
+                     (m_iCountQuestion >= 21 && m_iCountQuestion <= 23)
+                    )
+            {
+                if (this.childAnswer1.Checked)
+                {
+                    ++m_arriCalculateForChild[CNT_HUMANITARIAN];
+                }
+                else if (this.childAnswer2.Checked)
+                {
+                    m_arriCalculateForChild[CNT_HUMANITARIAN] += 0.7;
+                }
+                else if (this.childAnswer3.Checked)
+                {
+                    m_arriCalculateForChild[CNT_HUMANITARIAN] += 0.5;
+                }
+                else if (this.childAnswer4.Checked)
+                {
+                    m_arriCalculateForChild[CNT_HUMANITARIAN] += 0.3;
+                }
+            }
+            else if (
+                     (m_iCountQuestion >= 6 && m_iCountQuestion <= 8) ||
+                     (m_iCountQuestion >= 24 && m_iCountQuestion <= 26)
+                    )
+            {
+                if (this.childAnswer1.Checked)
+                {
+                    ++m_arriCalculateForChild[CNT_LINGUISTIC];
+                }
+                else if (this.childAnswer2.Checked)
+                {
+                    m_arriCalculateForChild[CNT_LINGUISTIC] += 0.7;
+                }
+                else if (this.childAnswer3.Checked)
+                {
+                    m_arriCalculateForChild[CNT_LINGUISTIC] += 0.5;
+                }
+                else if (this.childAnswer4.Checked)
+                {
+                    m_arriCalculateForChild[CNT_LINGUISTIC] += 0.3;
+                }
+            }
+            else if (
+                     (m_iCountQuestion >= 9 && m_iCountQuestion <= 11) ||
+                     (m_iCountQuestion >= 27 && m_iCountQuestion <= 29)
+                    )
+            {
+                if (this.childAnswer1.Checked)
+                {
+                    ++m_arriCalculateForChild[CNT_MATHEMATICAL];
+                }
+                else if (this.childAnswer2.Checked)
+                {
+                    m_arriCalculateForChild[CNT_MATHEMATICAL] += 0.7;
+                }
+                else if (this.childAnswer3.Checked)
+                {
+                    m_arriCalculateForChild[CNT_MATHEMATICAL] += 0.5;
+                }
+                else if (this.childAnswer4.Checked)
+                {
+                    m_arriCalculateForChild[CNT_MATHEMATICAL] += 0.3;
+                }
+            }
+            else if (
+                     (m_iCountQuestion >= 12 && m_iCountQuestion <= 14) ||
+                     (m_iCountQuestion >= 30 && m_iCountQuestion <= 32)
+                    )
+            {
+                if (this.childAnswer1.Checked)
+                {
+                    ++m_arriCalculateForChild[CNT_TECHNICAL];
+                }
+                else if (this.childAnswer2.Checked)
+                {
+                    m_arriCalculateForChild[CNT_TECHNICAL] += 0.7;
+                }
+                else if (this.childAnswer3.Checked)
+                {
+                    m_arriCalculateForChild[CNT_TECHNICAL] += 0.5;
+                }
+                else if (this.childAnswer4.Checked)
+                {
+                    m_arriCalculateForChild[CNT_TECHNICAL] += 0.3;
+                }
+            }
+            else
+            {
+                if (this.childAnswer1.Checked)
+                {
+                    ++m_arriCalculateForChild[CNT_SPORT];
+                }
+                else if (this.childAnswer2.Checked)
+                {
+                    m_arriCalculateForChild[CNT_SPORT] += 0.7;
+                }
+                else if (this.childAnswer3.Checked)
+                {
+                    m_arriCalculateForChild[CNT_SPORT] += 0.5;
+                }
+                else if (this.childAnswer4.Checked)
+                {
+                    m_arriCalculateForChild[CNT_SPORT] += 0.3;
+                }
+            }
+        }
+
+        public void CalculationForParent()
+        {
+            if (m_iCountQuestion <= 2)
+            {
+                if (this.parentAnswer1.Checked)
+                {
+                    ++m_arriCalculateForParent[CNT_CREATIVE];
+                }
+                else if (this.parentAnswer1.Checked)
+                {
+                    m_arriCalculateForParent[CNT_CREATIVE] += 0.5;
+                }
+            }
+            else if (m_iCountQuestion >= 3 && m_iCountQuestion >= 5)
+            {
+                if (this.parentAnswer1.Checked)
+                {
+                    ++m_arriCalculateForParent[CNT_HUMANITARIAN];
+                }
+                else if (this.parentAnswer1.Checked)
+                {
+                    m_arriCalculateForParent[CNT_HUMANITARIAN] += 0.5;
+                }
+            }
+            else if (m_iCountQuestion >= 6 && m_iCountQuestion <= 8)
+            {
+                if (this.parentAnswer1.Checked)
+                {
+                    ++m_arriCalculateForParent[CNT_LINGUISTIC];
+                }
+                else if (this.parentAnswer1.Checked)
+                {
+                    m_arriCalculateForParent[CNT_LINGUISTIC] += 0.5;
+                }
+            }
+            else if (m_iCountQuestion >= 9 && m_iCountQuestion <= 11)
+            {
+                if (this.parentAnswer1.Checked)
+                {
+                    ++m_arriCalculateForParent[CNT_MATHEMATICAL];
+                }
+                else if (this.parentAnswer1.Checked)
+                {
+                    m_arriCalculateForParent[CNT_MATHEMATICAL] += 0.5;
+                }
+            }
+            else if (m_iCountQuestion >= 12 && m_iCountQuestion <= 14)
+            {
+                if (this.parentAnswer1.Checked)
+                {
+                    ++m_arriCalculateForParent[CNT_TECHNICAL];
+                }
+                else if (this.parentAnswer1.Checked)
+                {
+                    m_arriCalculateForParent[CNT_TECHNICAL] += 0.5;
+                }
+            }
+            else
+            {
+                if (this.parentAnswer1.Checked)
+                {
+                    ++m_arriCalculateForParent[CNT_SPORT];
+                }
+                else if (this.parentAnswer1.Checked)
+                {
+                    m_arriCalculateForParent[CNT_SPORT] += 0.5;
+                }
+            }
+        }
+
+        public void RemembertAnswer()
+        {
+            if (PATH_TO_QUESTION_PARENT != "" && PATH_TO_QUESTION_CHILD != "")
+            {
+                for (int i = 0; i < 5; i++)
+                {
+                    if (((RadioButton)groupBox1.Controls[i]).Checked == true) 
+                    {
+                        m_arrstrAnswerChild[m_iCountQuestion] = ((RadioButton)groupBox1.Controls[i]).Text;
+                        break;
+                    }
+                }
+
+                for (int i = 0; i < 3; i++)
+                {
+                    if (((RadioButton)groupBox2.Controls[i]).Checked == true)
+                    {
+                        m_arrstrAnswerParent[m_iCountQuestion] = ((RadioButton)groupBox2.Controls[i]).Text;
+                        break;
+                    }
+                }
+
+            }
+            else if (PATH_TO_QUESTION_CHILD != "")
+            {
+
+            }
+            else
+            {
+
+            }
+        }
     }
 }
