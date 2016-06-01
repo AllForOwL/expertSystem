@@ -208,7 +208,6 @@
         private System.Windows.Forms.RadioButton childAnswer4;
         private System.Windows.Forms.RadioButton childAnswer3;
         private System.Windows.Forms.RadioButton childAnswer2;
-        private System.Windows.Forms.RadioButton childAnswer1;
         private System.Windows.Forms.RadioButton parentAnswer3;
         private System.Windows.Forms.RadioButton parentAnswer2;
         private System.Windows.Forms.RadioButton parentAnswer1;
@@ -217,5 +216,6 @@
         private System.Windows.Forms.Label questionChild;
         private System.Windows.Forms.Label questionParent;
         private System.Windows.Forms.RadioButton childAnswer5;
+        public System.Windows.Forms.RadioButton childAnswer1;
     }
 }

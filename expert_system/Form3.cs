@@ -184,7 +184,7 @@ namespace expert_system
             {
                 WriteResultAndAnswer();
 
-                FormResult f_formResultTest = new FormResult();
+                OutputOrientation f_formResultTest = new OutputOrientation(m_strLogin, m_strAge);
                 f_formResultTest.Show();
             }
             else
@@ -423,7 +423,7 @@ namespace expert_system
                 }
             }
             else if (
-                     (m_iCountQuestion >= 3 && m_iCountQuestion >= 5) ||
+                     (m_iCountQuestion >= 3 && m_iCountQuestion <= 5) ||
                      (m_iCountQuestion >= 21 && m_iCountQuestion <= 23)
                     )
             {
@@ -544,7 +544,7 @@ namespace expert_system
                     m_arriCalculateForParent[CNT_CREATIVE] += 0.5;
                 }
             }
-            else if (m_iCountQuestion >= 3 && m_iCountQuestion >= 5)
+            else if (m_iCountQuestion >= 3 && m_iCountQuestion <= 5)
             {
                 if (this.parentAnswer1.Checked)
                 {
