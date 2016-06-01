@@ -35,8 +35,11 @@ namespace expert_system
 
         string PATH_TO_RESULT_USER;
         string PATH_TO_ANSWER_USER;
+        string PATH_TO_ANSWER_PARENT;
         string PATH_TO_QUESTION_CHILD;
         string PATH_TO_QUESTION_PARENT;
+
+
 
         string m_strAge;
         string m_strLogin;
@@ -164,8 +167,6 @@ namespace expert_system
                 this.parentAnswer3.Text = m_arrstrQuestionParent[m_iCountQuestion, 3];
             }
        // } show question and answer
-
-            ++m_iCountQuestion;
         }
  
         private void Form3_Load(object sender, EventArgs e)
@@ -179,7 +180,22 @@ namespace expert_system
 
         private void button1_Click(object sender, EventArgs e)
         {
-            ShowQuesitonAndAnswer();
+            if (m_iCountQuestion == 36)
+            {
+                WriteResultAndAnswer();
+
+                FormResult f_formResultTest = new FormResult();
+                f_formResultTest.Show();
+            }
+            else
+            {
+                Calculation();
+                RemembertAnswer();
+                if (m_iCountQuestion < 36)
+                {
+                    ShowQuesitonAndAnswer();
+                }
+            }
         }
 
         private void groupBox1_Enter(object sender, EventArgs e)
@@ -257,6 +273,68 @@ namespace expert_system
             }
         }
 
+        public void WriteResultAndAnswer()
+        {
+            if (PATH_TO_QUESTION_PARENT != "" && PATH_TO_QUESTION_CHILD != "")
+            {
+                 StreamWriter writeResult = new StreamWriter(PATH_TO_RESULT_USER, true);
+                 for (int i = 0; i < m_arriCalculateForChild.Length; i++)
+                 {
+                     writeResult.WriteLine(m_arriCalculateForChild[i]);
+                 }
+
+                 for (int i = 0; i < m_arriCalculateForParent.Length; i++)
+                 {
+                     writeResult.WriteLine(m_arriCalculateForParent[i]);
+                 }
+                 writeResult.Close();
+
+                StreamWriter writeAnswer = new StreamWriter(PATH_TO_ANSWER_USER, true);
+                for (int i = 0; i < m_arrstrAnswerChild.Length; i++)
+                {
+                    writeAnswer.WriteLine(m_arrstrAnswerChild[i]);
+                }
+
+                for (int i = 0; i < m_arrstrAnswerParent.Length; i++)
+                {
+                    writeAnswer.WriteLine(m_arrstrAnswerParent[i]);
+                }
+                writeAnswer.Close();
+            }
+            else if (PATH_TO_QUESTION_CHILD != "")
+            {
+                StreamWriter writeResult = new StreamWriter(PATH_TO_RESULT_USER, true);
+                for (int i = 0; i < m_arriCalculateForChild.Length; i++)
+                {
+                    writeResult.WriteLine(m_arriCalculateForChild[i]);
+                }
+                writeResult.Close();
+
+                StreamWriter writeAnswer = new StreamWriter(PATH_TO_ANSWER_USER, true);
+                for (int i = 0; i < m_arrstrAnswerChild.Length; i++)
+                {
+                    writeAnswer.WriteLine(m_arrstrAnswerChild[i]);
+                }
+                writeAnswer.Close();
+            }
+            else
+            {
+                StreamWriter writeResult = new StreamWriter(PATH_TO_RESULT_USER, true);
+                for (int i = 0; i < m_arriCalculateForParent.Length; i++)
+                {
+                    writeResult.WriteLine(m_arriCalculateForParent[i]);
+                }
+                writeResult.Close();
+
+                StreamWriter writeAnswer = new StreamWriter(PATH_TO_ANSWER_USER, true);
+                for (int i = 0; i < m_arrstrAnswerParent.Length; i++)
+                {
+                    writeAnswer.WriteLine(m_arrstrAnswerParent[i]);
+                }
+                writeAnswer.Close();
+            }
+        }
+
         public void ShowQuesitonAndAnswer()
         {
             if (PATH_TO_QUESTION_PARENT != "" && PATH_TO_QUESTION_CHILD != "")
@@ -268,10 +346,13 @@ namespace expert_system
                 this.childAnswer4.Text = m_arrstrQuestionChild[m_iCountQuestion, 4];
                 this.childAnswer5.Text = m_arrstrQuestionChild[m_iCountQuestion, 5];
 
-                this.questionParent.Text = m_arrstrQuestionParent[m_iCountQuestion, 0];
-                this.parentAnswer1.Text = m_arrstrQuestionParent[m_iCountQuestion, 1];
-                this.parentAnswer2.Text = m_arrstrQuestionParent[m_iCountQuestion, 2];
-                this.parentAnswer3.Text = m_arrstrQuestionParent[m_iCountQuestion, 3];
+                if (m_iCountQuestion < 18)
+                {
+                    this.questionParent.Text = m_arrstrQuestionParent[m_iCountQuestion, 0];
+                    this.parentAnswer1.Text = m_arrstrQuestionParent[m_iCountQuestion, 1];
+                    this.parentAnswer2.Text = m_arrstrQuestionParent[m_iCountQuestion, 2];
+                    this.parentAnswer3.Text = m_arrstrQuestionParent[m_iCountQuestion, 3];
+                }
             }
             else if (PATH_TO_QUESTION_CHILD != "")  // read file from question and answer for child
             {
@@ -284,12 +365,14 @@ namespace expert_system
             }
             else                                   //read file from question and answer for parent
             {
-                this.questionParent.Text = m_arrstrQuestionParent[m_iCountQuestion, 0];
-                this.parentAnswer1.Text = m_arrstrQuestionParent[m_iCountQuestion, 1];
-                this.parentAnswer2.Text = m_arrstrQuestionParent[m_iCountQuestion, 2];
-                this.parentAnswer3.Text = m_arrstrQuestionParent[m_iCountQuestion, 3];
+                if (m_iCountQuestion < 18)
+                {
+                    this.questionParent.Text = m_arrstrQuestionParent[m_iCountQuestion, 0];
+                    this.parentAnswer1.Text = m_arrstrQuestionParent[m_iCountQuestion, 1];
+                    this.parentAnswer2.Text = m_arrstrQuestionParent[m_iCountQuestion, 2];
+                    this.parentAnswer3.Text = m_arrstrQuestionParent[m_iCountQuestion, 3];
+                }
             }
-            ++m_iCountQuestion;
         }
 
         public void Calculation()
@@ -297,7 +380,10 @@ namespace expert_system
             if (PATH_TO_QUESTION_PARENT != "" && PATH_TO_QUESTION_CHILD != "")
             {
                 CalculationForChild  ();
-                CalculationForParent ();
+                if (m_iCountQuestion < 18)
+                {
+                    CalculationForParent();
+                }
             }
             else if (PATH_TO_QUESTION_CHILD != "")  
             {
@@ -305,7 +391,10 @@ namespace expert_system
             }
             else                               
             {
-                CalculationForParent ();
+                if (m_iCountQuestion < 18)
+                {
+                    CalculationForParent();
+                }
             }
         }
 
@@ -450,7 +539,7 @@ namespace expert_system
                 {
                     ++m_arriCalculateForParent[CNT_CREATIVE];
                 }
-                else if (this.parentAnswer1.Checked)
+                else if (this.parentAnswer2.Checked)
                 {
                     m_arriCalculateForParent[CNT_CREATIVE] += 0.5;
                 }
@@ -461,7 +550,7 @@ namespace expert_system
                 {
                     ++m_arriCalculateForParent[CNT_HUMANITARIAN];
                 }
-                else if (this.parentAnswer1.Checked)
+                else if (this.parentAnswer2.Checked)
                 {
                     m_arriCalculateForParent[CNT_HUMANITARIAN] += 0.5;
                 }
@@ -472,7 +561,7 @@ namespace expert_system
                 {
                     ++m_arriCalculateForParent[CNT_LINGUISTIC];
                 }
-                else if (this.parentAnswer1.Checked)
+                else if (this.parentAnswer2.Checked)
                 {
                     m_arriCalculateForParent[CNT_LINGUISTIC] += 0.5;
                 }
@@ -483,7 +572,7 @@ namespace expert_system
                 {
                     ++m_arriCalculateForParent[CNT_MATHEMATICAL];
                 }
-                else if (this.parentAnswer1.Checked)
+                else if (this.parentAnswer2.Checked)
                 {
                     m_arriCalculateForParent[CNT_MATHEMATICAL] += 0.5;
                 }
@@ -494,7 +583,7 @@ namespace expert_system
                 {
                     ++m_arriCalculateForParent[CNT_TECHNICAL];
                 }
-                else if (this.parentAnswer1.Checked)
+                else if (this.parentAnswer2.Checked)
                 {
                     m_arriCalculateForParent[CNT_TECHNICAL] += 0.5;
                 }
@@ -505,7 +594,7 @@ namespace expert_system
                 {
                     ++m_arriCalculateForParent[CNT_SPORT];
                 }
-                else if (this.parentAnswer1.Checked)
+                else if (this.parentAnswer2.Checked)
                 {
                     m_arriCalculateForParent[CNT_SPORT] += 0.5;
                 }
@@ -516,7 +605,7 @@ namespace expert_system
         {
             if (PATH_TO_QUESTION_PARENT != "" && PATH_TO_QUESTION_CHILD != "")
             {
-                for (int i = 0; i < 5; i++)
+                for (int i = 2; i < 7; i++)
                 {
                     if (((RadioButton)groupBox1.Controls[i]).Checked == true) 
                     {
@@ -525,24 +614,44 @@ namespace expert_system
                     }
                 }
 
-                for (int i = 0; i < 3; i++)
+                if (m_iCountQuestion < 18)
                 {
-                    if (((RadioButton)groupBox2.Controls[i]).Checked == true)
+                    for (int i = 1; i < 4; i++)
                     {
-                        m_arrstrAnswerParent[m_iCountQuestion] = ((RadioButton)groupBox2.Controls[i]).Text;
-                        break;
+                        if (((RadioButton)groupBox2.Controls[i]).Checked == true)
+                        {
+                            m_arrstrAnswerParent[m_iCountQuestion] = ((RadioButton)groupBox2.Controls[i]).Text;
+                            break;
+                        }
                     }
                 }
-
             }
             else if (PATH_TO_QUESTION_CHILD != "")
             {
-
+                for (int i = 2; i < 7; i++)
+                {
+                    if (((RadioButton)groupBox1.Controls[i]).Checked == true)
+                    {
+                        m_arrstrAnswerChild[m_iCountQuestion] = ((RadioButton)groupBox1.Controls[i]).Text;
+                        break;
+                    }
+                }
             }
             else
             {
-
+                if (m_iCountQuestion < 18)
+                {
+                    for (int i = 1; i < 4; i++)
+                    {
+                        if (((RadioButton)groupBox2.Controls[i]).Checked == true)
+                        {
+                            m_arrstrAnswerParent[m_iCountQuestion] = ((RadioButton)groupBox2.Controls[i]).Text;
+                            break;
+                        }
+                    }
+                }
             }
+            ++m_iCountQuestion;
         }
     }
 }
