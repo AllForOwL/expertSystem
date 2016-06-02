@@ -216,7 +216,58 @@ namespace expert_system
             }
             else
             {
+                switch (orientation)
+                {
+                    case PRESCHOOL:
+                        {
+                            ReadResultUser(PRESCHOOL);
+                            OutputResultInTable();
 
+                            break;
+                        }
+                    case PARENT:
+                        {
+                            ReadResultUser(PARENT);
+                            OutputResultInTable();
+
+                            break;
+                        }
+                    case PRESCHOOL_PARENT:
+                        {
+                            ReadResultUser(PRESCHOOL_PARENT);
+                            OutputResultInTable();
+
+                            break;
+                        }
+                    case ONLY_PRESCHOOL:
+                        {
+                            ReadResultUser(ONLY_PRESCHOOL);
+                            OutputResultInTable();
+
+                            break;
+                        }
+                    case ONLY_PARENT:
+                        {
+                            ReadResultUser(ONLY_PARENT);
+                            OutputResultInTable();
+
+                            break;
+                        }
+                    case THREE_CLASS:
+                        {
+                            ReadResultUser(THREE_CLASS);
+                            OutputResultInTable();
+
+                            break;
+                        }
+                    case FIVE_CLASS:
+                        {
+                            ReadResultUser(FIVE_CLASS);
+                            OutputResultInTable();
+
+                            break;
+                        }
+                }
             }
          
             }
@@ -563,14 +614,23 @@ namespace expert_system
         public void OutputResultInTable()
         {
             const int CNT_COUNT_ORIENTATION = 6;
-            int CNT_COUNT_ROWS = m_arrlsResultAccessory.Count / 6;
+            int CNT_COUNT_ROWS = 0;
+            if (m_arrlsResultAccessory.Count != 0)
+            {
+                CNT_COUNT_ROWS = m_arrlsResultAccessory.Count / 6;
+            }
+            else
+            {
+                CNT_COUNT_ROWS = m_arrlsdResultPreschool.Count / 6;
+            }
+            
             int f_iCountElementInArrayAccessory = 0;
             dataGridView1.RowCount = CNT_COUNT_ROWS;
             for (int i = 0; i < CNT_COUNT_ROWS; i++)
             {
                 for (int j = 0; j < CNT_COUNT_ORIENTATION; j++)
                 {
-                    dataGridView1.Rows[i].Cells[j].Value = m_arrlsResultAccessory[f_iCountElementInArrayAccessory];
+                    dataGridView1.Rows[i].Cells[j].Value = m_arrlsdResultPreschool[f_iCountElementInArrayAccessory];
                     ++f_iCountElementInArrayAccessory;
                 }
             }
