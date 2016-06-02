@@ -18,6 +18,10 @@ namespace expert_system
             const int PRESCHOOL        = 0;
             const int PARENT           = 1;
             const int PRESCHOOL_PARENT = 2;
+            const int ONLY_PRESCHOOL   = 3;
+            const int ONLY_PARENT      = 4;
+            const int THREE_CLASS      = 5;
+            const int FIVE_CLASS       = 6;
 
             ArrayList m_arrlsdResultPreschool;
             ArrayList m_arrlsResultAccessory;
@@ -176,6 +180,38 @@ namespace expert_system
 
                             break;
                         }
+                    case ONLY_PRESCHOOL:
+                        {
+                            ReadResultUser(ONLY_PRESCHOOL);
+                            CalculateFuzzyLogic(ONLY_PRESCHOOL);
+                            OutputResultInTable();
+
+                        break;
+                        }
+                    case ONLY_PARENT:
+                        {
+                            ReadResultUser(ONLY_PARENT);
+                            CalculateFuzzyLogic(ONLY_PARENT);
+                            OutputResultInTable();
+
+                        break;
+                        }
+                    case THREE_CLASS:
+                        {
+                            ReadResultUser(THREE_CLASS);
+                            CalculateFuzzyLogic(THREE_CLASS);
+                            OutputResultInTable();
+
+                            break;
+                        }
+                    case FIVE_CLASS:
+                        {
+                            ReadResultUser(FIVE_CLASS);
+                            CalculateFuzzyLogic(FIVE_CLASS);
+                            OutputResultInTable();
+
+                            break;
+                        }
                 }
             }
             else
@@ -186,8 +222,42 @@ namespace expert_system
             }
 
         public void ReadResultUser(int typeUser)
-        {         
-            string PATH_TO_FILE_FROM_RESULT = Path.GetFullPath(@"InfoUsers\" + m_strLogin + "_" + m_strAge + "_result.txt");
+        {
+            string PATH_TO_FILE_FROM_RESULT = "";
+            if (typeUser >= 3)
+            {
+                switch (typeUser)
+                {
+                    case ONLY_PRESCHOOL:
+                        {
+                            PATH_TO_FILE_FROM_RESULT = Path.GetFullPath(@"InfoUsers\" + m_strLogin + "_preschool_result.txt");
+
+                            break;
+                        }
+                    case ONLY_PARENT:
+                        {
+                            PATH_TO_FILE_FROM_RESULT = Path.GetFullPath(@"InfoUsers\" + m_strLogin + "_parent_result.txt");
+
+                            break;
+                        }
+                    case THREE_CLASS:
+                        {
+                            PATH_TO_FILE_FROM_RESULT = Path.GetFullPath(@"InfoUsers\" + m_strLogin + "_three_class_result.txt");
+
+                            break;
+                        }
+                    case FIVE_CLASS:
+                        {
+                            PATH_TO_FILE_FROM_RESULT = Path.GetFullPath(@"InfoUsers\" + m_strLogin + "_five_class_result.txt");
+
+                            break;
+                        }
+                }
+            }
+            else
+            {
+                PATH_TO_FILE_FROM_RESULT = Path.GetFullPath(@"InfoUsers\" + m_strLogin + "_" + m_strAge + "_result.txt");
+            }
 
             StreamReader readResultUser = new StreamReader(PATH_TO_FILE_FROM_RESULT);
             const int CNT_COUNT_ORIENTATION = 6;
@@ -232,6 +302,42 @@ namespace expert_system
                             }
 
                          break;
+                        }
+                    case ONLY_PRESCHOOL:
+                        {
+                            while (!readResultUser.EndOfStream)
+                            {
+                                m_arrlsdResultPreschool.Add(Convert.ToDouble(readResultUser.ReadLine()));
+                            }
+                    
+                        break;
+                        }
+                    case ONLY_PARENT:
+                        {
+                            while (!readResultUser.EndOfStream)
+                            {
+                                m_arrlsdResultPreschool.Add(Convert.ToDouble(readResultUser.ReadLine()));
+                            }
+
+                        break;
+                        }
+                    case THREE_CLASS:
+                        {
+                            while (!readResultUser.EndOfStream)
+                            {
+                                m_arrlsdResultPreschool.Add(Convert.ToDouble(readResultUser.ReadLine()));
+                            }
+
+                        break;
+                        }
+                    case FIVE_CLASS:
+                        {
+                            while (!readResultUser.EndOfStream)
+                            {
+                                m_arrlsdResultPreschool.Add(Convert.ToDouble(readResultUser.ReadLine()));
+                            }
+
+                        break;
                         }
                 }
             }
@@ -334,7 +440,123 @@ namespace expert_system
                         }
 
                   break;
-                  }      
+                  }
+                case ONLY_PRESCHOOL:
+                    {
+                        for (int i = 0; i < m_arrlsdResultPreschool.Count; i++)
+                        {
+                            double t_dResult = Convert.ToDouble(m_arrlsdResultPreschool[i]);
+                            if (t_dResult < 1.0)
+                            {
+                                m_arrlsResultAccessory.Add(RESULT_ACCESSORY_NO);
+                            }
+                            else if (t_dResult >= 0.0 && t_dResult <= 2)
+                            {
+                                m_arrlsResultAccessory.Add(RESULT_ACCESSORY_LESS);
+                            }
+                            else if (t_dResult > 2 && t_dResult <= 4)
+                            {
+                                m_arrlsResultAccessory.Add(RESULT_ACCESSORY_MIDDLE);
+                            }
+                            else if (t_dResult > 4 && t_dResult <= 5)
+                            {
+                                m_arrlsResultAccessory.Add(RESULT_ACCESORY_HIGH);
+                            }
+                            else
+                            {
+                                m_arrlsResultAccessory.Add(RESULT_ACCESORY_FULL);
+                            }
+                        }
+
+                        break;
+                    }
+                case ONLY_PARENT:
+                    {
+                        for (int i = 0; i < m_arrlsdResultPreschool.Count; i++)
+                        {
+                            double t_dResult = Convert.ToDouble(m_arrlsdResultPreschool[i]);
+                            if (t_dResult < 1.0)
+                            {
+                                m_arrlsResultAccessory.Add(RESULT_ACCESSORY_NO);
+                            }
+                            else if (t_dResult >= 0.0 && t_dResult <= 1)
+                            {
+                                m_arrlsResultAccessory.Add(RESULT_ACCESSORY_LESS);
+                            }
+                            else if (t_dResult > 1 && t_dResult <= 2)
+                            {
+                                m_arrlsResultAccessory.Add(RESULT_ACCESSORY_MIDDLE);
+                            }
+                            else if (t_dResult > 2 && t_dResult < 3)
+                            {
+                                m_arrlsResultAccessory.Add(RESULT_ACCESORY_HIGH);
+                            }
+                            else
+                            {
+                                m_arrlsResultAccessory.Add(RESULT_ACCESORY_FULL);
+                            }
+                        }
+
+                        break;
+                    }
+                case THREE_CLASS:
+                    {
+                        for (int i = 0; i < m_arrlsdResultPreschool.Count; i++)
+                        {
+                            double t_dResult = Convert.ToDouble(m_arrlsdResultPreschool[i]);
+                            if (t_dResult < 1.0)
+                            {
+                                m_arrlsResultAccessory.Add(RESULT_ACCESSORY_NO);
+                            }
+                            else if (t_dResult >= 0.0 && t_dResult <= 2)
+                            {
+                                m_arrlsResultAccessory.Add(RESULT_ACCESSORY_LESS);
+                            }
+                            else if (t_dResult > 2 && t_dResult <= 4)
+                            {
+                                m_arrlsResultAccessory.Add(RESULT_ACCESSORY_MIDDLE);
+                            }
+                            else if (t_dResult > 4 && t_dResult <= 5)
+                            {
+                                m_arrlsResultAccessory.Add(RESULT_ACCESORY_HIGH);
+                            }
+                            else
+                            {
+                                m_arrlsResultAccessory.Add(RESULT_ACCESORY_FULL);
+                            }
+                        }
+
+                        break;
+                    }
+                case FIVE_CLASS:
+                    {
+                        for (int i = 0; i < m_arrlsdResultPreschool.Count; i++)
+                        {
+                            double t_dResult = Convert.ToDouble(m_arrlsdResultPreschool[i]);
+                            if (t_dResult < 1.0)
+                            {
+                                m_arrlsResultAccessory.Add(RESULT_ACCESSORY_NO);
+                            }
+                            else if (t_dResult >= 0.0 && t_dResult <= 2)
+                            {
+                                m_arrlsResultAccessory.Add(RESULT_ACCESSORY_LESS);
+                            }
+                            else if (t_dResult > 2 && t_dResult <= 4)
+                            {
+                                m_arrlsResultAccessory.Add(RESULT_ACCESSORY_MIDDLE);
+                            }
+                            else if (t_dResult > 4 && t_dResult <= 5)
+                            {
+                                m_arrlsResultAccessory.Add(RESULT_ACCESORY_HIGH);
+                            }
+                            else
+                            {
+                                m_arrlsResultAccessory.Add(RESULT_ACCESORY_FULL);
+                            }
+                        }
+
+                        break;
+                    }
             }
         }
 

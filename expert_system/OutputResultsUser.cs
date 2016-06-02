@@ -197,7 +197,7 @@ namespace expert_system
             }
             else
             { 
-                FormTableFromResult formResult = new FormTableFromResult(m_strTypeLogic/*четкая или нечеткая*/, m_strLogin, m_strOrientation/*возраст*/);
+                FormTableFromResult formResult = new FormTableFromResult(m_strTypeLogic/*четкая или нечеткая*/, m_strLogin, 5/*возраст*/);
                 formResult.Show();
             }
         }
@@ -218,7 +218,7 @@ namespace expert_system
             }
             else
             {
-                FormTableFromResult formResult = new FormTableFromResult(m_strTypeLogic/*четкая или нечеткая*/, m_strLogin, m_strOrientation/*возраст*/);
+                FormTableFromResult formResult = new FormTableFromResult(m_strTypeLogic/*четкая или нечеткая*/, m_strLogin, 6/*возраст*/);
                 formResult.Show();
             }
            
@@ -242,6 +242,62 @@ namespace expert_system
         private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
         {
 
+        }
+
+        private void button4_Click_1(object sender, EventArgs e)
+        {
+            if (m_blDiagram)    // строить диаграмму
+            {
+                const int CNT_ONLY_PRESCHOOL = 3;
+                int f_iOrientation = CNT_ONLY_PRESCHOOL;
+
+                FormOutputResultDiagramUsers answer = new FormOutputResultDiagramUsers(m_strTypeLogic, m_strLogin, f_iOrientation);
+                answer.Show();
+            }
+            else if (m_blAnswer)    // показать ответы
+            {
+                const int CNT_ONLY_PRESCHOOL = 3;
+                int f_iOrientation = CNT_ONLY_PRESCHOOL;
+
+                FormOutputAnswer answer = new FormOutputAnswer(m_strLogin, f_iOrientation);
+                answer.Show();
+            }
+            else    // отобразить результаты
+            {
+                const int CNT_ONLY_PRESCHOOL = 3;
+                int f_iOrientation = CNT_ONLY_PRESCHOOL;
+
+                FormTableFromResult formResult = new FormTableFromResult(m_strTypeLogic/*четкая - нечеткая*/, m_strLogin, f_iOrientation/*возраст(родитель или дошкольник)*/);
+                formResult.Show();
+            }
+        }
+
+        private void button5_Click_1(object sender, EventArgs e)
+        {
+            if (m_blDiagram)    // строить диаграмму
+            {
+                const int CNT_ONLY_PARENT = 4;
+                int f_iOrientation = CNT_ONLY_PARENT;
+
+                FormOutputResultDiagramUsers answer = new FormOutputResultDiagramUsers(m_strTypeLogic, m_strLogin, f_iOrientation);
+                answer.Show();
+            }
+            else if (m_blAnswer)    // показать ответы
+            {
+                const int CNT_ONLY_PARENT = 4;
+                int f_iOrientation = CNT_ONLY_PARENT;
+
+                FormOutputAnswer answer = new FormOutputAnswer(m_strLogin, f_iOrientation);
+                answer.Show();
+            }
+            else    // отобразить результаты
+            {
+                const int CNT_ONLY_PARENT = 4;
+                int f_iOrientation = CNT_ONLY_PARENT;
+
+                FormTableFromResult formResult = new FormTableFromResult(m_strTypeLogic/*четкая - нечеткая*/, m_strLogin, f_iOrientation/*возраст(родитель или дошкольник)*/);
+                formResult.Show();
+            }
         }
     }
 }

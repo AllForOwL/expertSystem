@@ -180,7 +180,7 @@ namespace expert_system
 
         private void button1_Click(object sender, EventArgs e)
         {
-            if (m_iCountQuestion == 36)
+            if (m_iCountQuestion == 36 || (m_strAge == CNT_PARENT && m_iCountQuestion == 18))
             {
                 WriteResultAndAnswer();
 
