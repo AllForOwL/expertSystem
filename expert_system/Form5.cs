@@ -117,10 +117,9 @@ namespace expert_system
                 return;
             }
 
-            string result = cmbResult.Text;
+            string f_strTypeLogic = cmbResult.Text;
 
-
-            OutputResultsUser outputResult = new OutputResultsUser(m_strLoginUser, result);
+            OutputResultsUser outputResult = new OutputResultsUser(m_strLoginUser, f_strTypeLogic);
             outputResult.Show();
         }
 

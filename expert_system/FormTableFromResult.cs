@@ -15,9 +15,18 @@ namespace expert_system
 {
     public partial class FormTableFromResult : Form
     {
+            const int PRESCHOOL        = 0;
+            const int PARENT           = 1;
+            const int PRESCHOOL_PARENT = 2;
+
+            ArrayList m_arrlsdResultPreschool;
+            ArrayList m_arrlsResultAccessory;
+            string    m_strLogin;
+            string    m_strAge;
+
         int m_iNumberYears;
         int m_iTypeTest;
-        string m_strLogin;
+       // string m_strLogin;
         string m_strTest;
         bool m_blAnswer;
         string m_strOrientation;
@@ -127,493 +136,223 @@ namespace expert_system
             }
         }
 
-        public FormTableFromResult(string typeTests, string login, int orientation)
+        public FormTableFromResult(string typeLogic, string login, int orientation)
         {
             InitializeComponent();
-            
-            ++dataGridView1.ColumnCount;
-            
-            string pathFile;
 
-                // определяем кого показывать результат(дошкольник, родитель, или обоих)
-            if (orientation == 0)   // дошкольник
+            m_arrlsdResultPreschool = new ArrayList();
+            m_arrlsResultAccessory = new ArrayList();
+            m_strLogin = login;
+            m_strAge   = "preschool_parent";
+
+            const string CNT_FUZZY_LOGIC   = "нечеткая модель";
+            const string CNT_WITHOUT_FUZZY = "без нечеткой модели";
+
+            if (typeLogic == CNT_FUZZY_LOGIC)
             {
-                ArrayList f_arrlistUsers = new ArrayList();
-                int countRows = 0;
-
-                if (login == "root")
+                switch (orientation)
                 {
-                    ++dataGridView1.ColumnCount;
-
-                    string pathFileLocal = Path.GetFullPath(@"InfoUsers\AllUsers.txt");
-
-                    StreamReader readResultlocal = new StreamReader(pathFileLocal);
-
-                    string tempValue = "";
-
-                    while (!readResultlocal.EndOfStream)
-                    {
-                        tempValue = readResultlocal.ReadLine();
-                        f_arrlistUsers.Add(readResultlocal.ReadLine());
-                        tempValue = readResultlocal.ReadLine();
-                    }
-
-                    readResultlocal.Close();
-                }
-                else
-                {
-                    f_arrlistUsers.Add(login);
-                }
-
-                for (int countUser = 0; countUser < f_arrlistUsers.Count; countUser++)
-                {
-                    pathFile = Path.GetFullPath(@"InfoUsers\" + f_arrlistUsers[countUser] + "result_preschool_parent.txt");
-
-                    if (!File.Exists(pathFile))
-                    {
-                        continue;
-                    }
-
-                    StreamReader readResult = new StreamReader(pathFile);
-
-                    if (typeTests == "без нечеткой модели")
-                    {
-                        ++dataGridView1.RowCount;
-                        
-                        double valueFromFile = 0.0;
-                        while (!readResult.EndOfStream)
+                    case PRESCHOOL:
                         {
-                            for (int i = 0; i < 6; i++)
-                            {
-                                valueFromFile = Math.Round(Convert.ToDouble(readResult.ReadLine()), 2);
-                                dataGridView1.Rows[countRows].Cells[i].Value = valueFromFile.ToString();
-                            }
+                            ReadResultUser(PRESCHOOL);
+                            CalculateFuzzyLogic(PRESCHOOL);
+                            OutputResultInTable();
 
-                            if (login == "root")
-                            {
-                                dataGridView1.Rows[countRows].Cells[6].Value = f_arrlistUsers[countUser];
-                            }
-
-                            ++dataGridView1.RowCount;
-                            ++countRows;
+                            break;
                         }
-                    }
-                    else // дошкольник + нечеткая модель
-                    {
-                        ++dataGridView1.RowCount;
-                        double valueFromFile = 0.0;
-                        while (!readResult.EndOfStream)
+                    case PARENT:
                         {
-                            for (int i = 0; i < 6; i++)
-                            {
-                                valueFromFile = Convert.ToDouble(readResult.ReadLine());
+                            ReadResultUser(PARENT);
+                            CalculateFuzzyLogic(PARENT);
+                            OutputResultInTable();
 
-                                if (valueFromFile >= 0 && valueFromFile < 2)
-                                {
-                                    valueFromFile = 0.2;
-                                }
-                                else if (valueFromFile >= 2 && valueFromFile < 3)
-                                {
-                                    valueFromFile = 0.4;
-                                }
-                                else if (valueFromFile >= 3 && valueFromFile < 4)
-                                {
-                                    valueFromFile = 0.6;
-                                }
-                                else if (valueFromFile >= 4 && valueFromFile < 5)
-                                {
-                                    valueFromFile = 0.8;
-                                }
-                                else
-                                {
-                                    valueFromFile = 1.0;
-                                }
-                                dataGridView1.Rows[countRows].Cells[i].Value = valueFromFile.ToString();
-                            }
-
-                            if (login == "root")
-                            {
-                                dataGridView1.Rows[countRows].Cells[6].Value = f_arrlistUsers[countUser];
-                            }
-                            ++dataGridView1.RowCount;
-                            ++countRows;
+                            break;
                         }
-                    }
+                    case PRESCHOOL_PARENT:
+                        {
+                            ReadResultUser(PRESCHOOL_PARENT);
+                            CalculateFuzzyLogic(PRESCHOOL_PARENT);
+                            OutputResultInTable();
 
-                    readResult.Close();
+                            break;
+                        }
                 }
             }
-            else if (orientation == 1) // родитель
+            else
             {
-                ArrayList f_arrlistUsers = new ArrayList();
-                int countRows = 0;
-
-                if (login == "root")
-                {
-                    ++dataGridView1.ColumnCount;
-
-                    string pathFileLocal = Path.GetFullPath(@"InfoUsers\AllUsers.txt");
-
-                    StreamReader readResultlocal = new StreamReader(pathFileLocal);
-
-                    string tempValue = "";
-
-                    while (!readResultlocal.EndOfStream)
-                    {
-                        tempValue = readResultlocal.ReadLine();
-                        f_arrlistUsers.Add(readResultlocal.ReadLine());
-                        tempValue = readResultlocal.ReadLine();
-                    }
-
-                    readResultlocal.Close();
-                }
-                else
-                {
-                    f_arrlistUsers.Add(login);
-                }
-
-                for (int countUsers = 0; countUsers < f_arrlistUsers.Count; countUsers++)
-                {
-                    pathFile = Path.GetFullPath(@"InfoUsers\" + f_arrlistUsers[countUsers] + "result_preschool_parentparent.txt");
-
-                    if (!File.Exists(pathFile))
-                    {
-                        continue;
-                    }
-
-                    StreamReader readResult = new StreamReader(pathFile);
-
-                    if (typeTests == "без нечеткой модели")
-                    {
-                        ++dataGridView1.RowCount;
-                        double valueFromFile = 0.0;
-                        while (!readResult.EndOfStream)
-                        {
-                            for (int i = 0; i < 6; i++)
-                            {
-                                valueFromFile = Math.Round(Convert.ToDouble(readResult.ReadLine()),2);
-                                dataGridView1.Rows[countRows].Cells[i].Value = valueFromFile.ToString();
-                            }
-
-                            if (login == "root")
-                            {
-                                dataGridView1.Rows[countRows].Cells[6].Value = f_arrlistUsers[countUsers];
-                            }
-                            ++dataGridView1.RowCount;
-                            ++countRows;
-                        }
-                    }
-                    else // родитель + нечеткая модель
-                    {
-                        ++dataGridView1.RowCount;
-                        double valueFromFile = 0.0;
-                        while (!readResult.EndOfStream)
-                        {
-                            for (int i = 0; i < 6; i++)
-                            {
-                                valueFromFile = Convert.ToDouble(readResult.ReadLine());
-
-                                if (valueFromFile >= 0 && valueFromFile < 1)
-                                {
-                                    valueFromFile = 0.3;
-                                }
-                                else if (valueFromFile >= 1 && valueFromFile < 2)
-                                {
-                                    valueFromFile = 0.6;
-                                }
-                                else if (valueFromFile >= 2 && valueFromFile < 3)
-                                {
-                                    valueFromFile = 0.8;
-                                }
-                                else if (valueFromFile >= 3)
-                                {
-                                    valueFromFile = 1.0;
-                                }
-
-                                dataGridView1.Rows[countRows].Cells[i].Value = valueFromFile.ToString();   
-                            }
-
-                            if (login == "root")
-                            {
-                                dataGridView1.Rows[countRows].Cells[6].Value = f_arrlistUsers[countUsers];
-                            }
-                            ++dataGridView1.RowCount;
-                            ++countRows;
-                        }
-                    }
-
-                    readResult.Close();
-                }
 
             }
-            else // дошкольник+родитель
+         
+            }
+
+        public void ReadResultUser(int typeUser)
+        {         
+            string PATH_TO_FILE_FROM_RESULT = Path.GetFullPath(@"InfoUsers\" + m_strLogin + "_" + m_strAge + "_result.txt");
+
+            StreamReader readResultUser = new StreamReader(PATH_TO_FILE_FROM_RESULT);
+            const int CNT_COUNT_ORIENTATION = 6;
+            while (!readResultUser.EndOfStream)
             {
-                ArrayList f_arrlistUsers = new ArrayList();
-                int countRows = 0;
-                int differenceRows = 0;
-
-                if (login == "root")
+                switch (typeUser)
                 {
-                    ++dataGridView1.ColumnCount;
-
-                    string pathFileLocal = Path.GetFullPath(@"InfoUsers\AllUsers.txt");
-
-                    StreamReader readResultlocal = new StreamReader(pathFileLocal);
-
-                    string tempValue = "";
-
-                    while (!readResultlocal.EndOfStream)
-                    {
-                        tempValue = readResultlocal.ReadLine();
-                        f_arrlistUsers.Add(readResultlocal.ReadLine());
-                        tempValue = readResultlocal.ReadLine();
-                    }
-
-                    readResultlocal.Close();
-                }
-                else
-                {
-                    f_arrlistUsers.Add(login);
-                }
-
-                for (int countUser = 0; countUser < f_arrlistUsers.Count; countUser++)
-                {
-                    pathFile = Path.GetFullPath(@"InfoUsers\" + f_arrlistUsers[countUser] + "result_preschool_parent.txt");
-
-                    if (!File.Exists(pathFile))
-                    {
-                        continue;
-                    }
-
-                    StreamReader readResult = new StreamReader(pathFile);
-
-                    if (typeTests == "без нечеткой модели")
-                    {
-                        ++dataGridView1.RowCount;
-
-                        double valueFromFile = 0.0;
-                        while (!readResult.EndOfStream)
+                    case PRESCHOOL:
                         {
-                            for (int i = 0; i < 6; i++)
+                            for (int i = 0; i < CNT_COUNT_ORIENTATION; i++)
                             {
-                                valueFromFile = Math.Round(Convert.ToDouble(readResult.ReadLine()), 2);
-                                dataGridView1.Rows[countRows].Cells[i].Value = valueFromFile.ToString();    
+                                m_arrlsdResultPreschool.Add(Convert.ToDouble(readResultUser.ReadLine()));
                             }
+                            for (int i = 0; i < 6; i++) { }
 
-                            if (login == "root")
-                            {
-                                dataGridView1.Rows[countRows].Cells[6].Value = f_arrlistUsers[countUser];
-                            }
-
-                            ++dataGridView1.RowCount;
-                            ++countRows;
+                            break;
                         }
-                    }
-                    {
-                        ++dataGridView1.RowCount;
-                        double valueFromFile = 0.0;
-                        while (!readResult.EndOfStream)
+                    case PARENT:
                         {
-                            for (int i = 0; i < 6; i++)
+                            for (int i = 0; i < 6; i++) { }
+                            for (int i = 0; i < CNT_COUNT_ORIENTATION; i++)
                             {
-                                valueFromFile = Convert.ToDouble(readResult.ReadLine());
-
-                                /*if (valueFromFile >= 0 && valueFromFile < 2)
-                                {
-                                    valueFromFile = 0.2;
-                                }
-                                else if (valueFromFile >= 2 && valueFromFile < 3)
-                                {
-                                    valueFromFile = 0.4;
-                                }
-                                else if (valueFromFile >= 3 && valueFromFile < 4)
-                                {
-                                    valueFromFile = 0.6;
-                                }
-                                else if (valueFromFile >= 4 && valueFromFile <= 5)
-                                {
-                                    valueFromFile = 0.8;
-                                }
-                                else if (valueFromFile >= 6)
-                                {
-                                    valueFromFile = 1.0;
-                                }*/
-                                dataGridView1.Rows[countRows].Cells[i].Value = valueFromFile.ToString();  
+                                m_arrlsdResultPreschool.Add(Convert.ToDouble(readResultUser.ReadLine()));
                             }
-
-                            if (login == "root")
-                            {
-                                dataGridView1.Rows[countRows].Cells[6].Value = f_arrlistUsers[countUser];
-                            }
-
-                            ++dataGridView1.RowCount;
-                            ++countRows;
+                            break;
                         }
-                    }
-
-                    readResult.Close();
-                }
-
-                if (login == "root")
-                {
-                    ++dataGridView1.ColumnCount;
-
-                    f_arrlistUsers.Clear();
-                    string pathFileLocal = Path.GetFullPath(@"InfoUsers\AllUsers.txt");
-
-                    StreamReader readResultlocal = new StreamReader(pathFileLocal);
-
-                    string tempValue = "";
-
-                    while (!readResultlocal.EndOfStream)
-                    {
-                        tempValue = readResultlocal.ReadLine();
-                        f_arrlistUsers.Add(readResultlocal.ReadLine());
-                        tempValue = readResultlocal.ReadLine();
-                    }
-
-                    readResultlocal.Close();
-                }
-                else
-                {
-                    f_arrlistUsers.Clear();
-                    f_arrlistUsers.Add(login);
-                }
-
-                for (int countUsers = 0; countUsers < f_arrlistUsers.Count; countUsers++)
-                {
-                    pathFile = Path.GetFullPath(@"InfoUsers\" + f_arrlistUsers[countUsers] + "result_preschool_parent.txt");
-
-                    if (!File.Exists(pathFile))
-                    {
-                        continue;
-                    }
-
-                    StreamReader readResult = new StreamReader(pathFile);
-
-                    differenceRows = countRows - differenceRows;
-
-                    if (typeTests == "без нечеткой модели")
-                    {
-                        ++dataGridView1.RowCount;
-                        double valueFromFile = 0.0;
-                        while (!readResult.EndOfStream)
+                    case PRESCHOOL_PARENT:
                         {
-                            for (int i = 0; i < 6; i++)
+                            double [] f_arrdSumResult = new double[6];
+                            while (!readResultUser.EndOfStream)
                             {
-                                valueFromFile = Math.Round(Convert.ToDouble(readResult.ReadLine()), 2);
-                                valueFromFile += Convert.ToDouble(dataGridView1.Rows[countRows - differenceRows].Cells[i].Value);
-
-                                if (valueFromFile >= 0 && valueFromFile < 2)
+                                for (int i = 0; i < 6; i++) { f_arrdSumResult[i] = 0.0; }
+                                for (int i = 0; i < 6; i++)
                                 {
-                                    valueFromFile = 1.5;
+                                    f_arrdSumResult[i] = Convert.ToDouble(readResultUser.ReadLine());
                                 }
-                                else if (valueFromFile >= 2 && valueFromFile < 3)
+                                for (int i = 0; i < 6; i++)
                                 {
-                                    valueFromFile = 2.5;
+                                    f_arrdSumResult[i] += Convert.ToDouble(readResultUser.ReadLine());
+                                    m_arrlsdResultPreschool.Add(f_arrdSumResult[i]);
                                 }
-                                else if (valueFromFile >= 3 && valueFromFile < 4)
-                                {
-                                    valueFromFile = 3.5;
-                                }
-                                else if (valueFromFile >= 4 && valueFromFile <= 5)
-                                {
-                                    valueFromFile = 4.5;
-                                }
-                                if (valueFromFile >= 5 && valueFromFile <= 6)
-                                {
-                                    valueFromFile = 5.2;
-                                }
-                                else if (valueFromFile >= 6 && valueFromFile <= 7)
-                                {
-                                    valueFromFile = 6.4;
-                                }
-                                else if (valueFromFile >= 7 && valueFromFile <= 8)
-                                {
-                                    valueFromFile = 7.6;
-                                }
-                                else if (valueFromFile >= 8 && valueFromFile <= 9)
-                                {
-                                    valueFromFile = 8.8;
-                                }
-                                else if (valueFromFile >= 9)
-                                {
-                                    valueFromFile = 9.0;
-                                }
-
-
-                                dataGridView1.Rows[countRows - differenceRows].Cells[i].Value = valueFromFile.ToString(); 
                             }
 
-                            --differenceRows;
-                            ++dataGridView1.RowCount;
-                            //++countRows;
+                         break;
                         }
-                    }
-                    else // дошкольник + родитель нечеткая модель
-                    {
-                        ++dataGridView1.RowCount;
-                        double valueFromFile = 0.0;
-                        while (!readResult.EndOfStream)
-                        {
-                            for (int i = 0; i < 6; i++)
-                            {
-                                valueFromFile = Math.Round(Convert.ToDouble(readResult.ReadLine()), 2);
-                                valueFromFile += Convert.ToDouble(dataGridView1.Rows[countRows - differenceRows].Cells[i].Value);
-
-
-                                if (valueFromFile >= 0 && valueFromFile < 2)
-                                {
-                                    valueFromFile = 0.1;
-                                }
-                                else if (valueFromFile >= 2 && valueFromFile < 3)
-                                {
-                                    valueFromFile = 0.2;
-                                }
-                                else if (valueFromFile >= 3 && valueFromFile < 4)
-                                {
-                                    valueFromFile = 0.3;
-                                }
-                                else if (valueFromFile >= 4 && valueFromFile < 5)
-                                {
-                                    valueFromFile = 0.4;
-                                }
-                                if (valueFromFile >= 5 && valueFromFile < 6)
-                                {
-                                    valueFromFile = 0.5;
-                                }
-                                else if (valueFromFile >= 6 && valueFromFile < 7)
-                                {
-                                    valueFromFile = 0.6;
-                                }
-                                else if (valueFromFile >= 7 && valueFromFile < 8)
-                                {
-                                    valueFromFile = 0.7;
-                                }
-                                else if (valueFromFile >= 8 && valueFromFile < 9)
-                                {
-                                    valueFromFile = 0.8;
-                                }
-                                else if (valueFromFile >= 9)
-                                {
-                                    valueFromFile = 1.0;
-                                }
-
-                                
-
-                                dataGridView1.Rows[countRows - differenceRows].Cells[i].Value = valueFromFile.ToString();
-                            }
-
-                            --differenceRows;
-                            ++dataGridView1.RowCount;
-                           // ++countRows;
-                        }
-                    }
-                    differenceRows = countRows;
-                    readResult.Close();
                 }
             }
+            readResultUser.Close();
+        }
+
+        public void CalculateFuzzyLogic(int typeUser)
+        {
+            const double RESULT_ACCESSORY_NO = 0.0;
+            const double RESULT_ACCESSORY_LESS = 0.3;
+            const double RESULT_ACCESSORY_MIDDLE = 0.6;
+            const double RESULT_ACCESORY_HIGH = 0.9;
+            const double RESULT_ACCESORY_FULL = 1.0;
+
+            switch (typeUser)
+            {
+                case PRESCHOOL:
+                    {
+                        for (int i = 0; i < m_arrlsdResultPreschool.Count; i++)
+                        {
+                            double t_dResult = Convert.ToDouble(m_arrlsdResultPreschool[i]);
+                            if (t_dResult < 1.0)
+                            {
+                                m_arrlsResultAccessory.Add(RESULT_ACCESSORY_NO);
+                            }
+                            else if (t_dResult >= 0.0 && t_dResult <= 2)
+                            {
+                                m_arrlsResultAccessory.Add(RESULT_ACCESSORY_LESS);
+                            }
+                            else if (t_dResult > 2 && t_dResult <= 4)
+                            {
+                                m_arrlsResultAccessory.Add(RESULT_ACCESSORY_MIDDLE);
+                            }
+                            else if (t_dResult > 4 && t_dResult <= 5)
+                            {
+                                m_arrlsResultAccessory.Add(RESULT_ACCESORY_HIGH);
+                            }
+                            else
+                            {
+                                m_arrlsResultAccessory.Add(RESULT_ACCESORY_FULL);
+                            }
+                        }
+
+                        break;
+                    }
+                case PARENT:
+                    {
+                        for (int i = 0; i < m_arrlsdResultPreschool.Count; i++)
+                        {
+                            double t_dResult = Convert.ToDouble(m_arrlsdResultPreschool[i]);
+                            if (t_dResult < 1.0)
+                            {
+                                m_arrlsResultAccessory.Add(RESULT_ACCESSORY_NO);
+                            }
+                            else if (t_dResult >= 0.0 && t_dResult <= 1)
+                            {
+                                m_arrlsResultAccessory.Add(RESULT_ACCESSORY_LESS);
+                            }
+                            else if (t_dResult > 1 && t_dResult <= 2)
+                            {
+                                m_arrlsResultAccessory.Add(RESULT_ACCESSORY_MIDDLE);
+                            }
+                            else if (t_dResult > 2 && t_dResult < 3)
+                            {
+                                m_arrlsResultAccessory.Add(RESULT_ACCESORY_HIGH);
+                            }
+                            else
+                            {
+                                m_arrlsResultAccessory.Add(RESULT_ACCESORY_FULL);
+                            }
+                        }
+
+                        break;
+                    }
+                case PRESCHOOL_PARENT:
+                    {
+                        for (int i = 0; i < m_arrlsdResultPreschool.Count; i++)
+                        {
+                            double t_dResult = Convert.ToDouble(m_arrlsdResultPreschool[i]);
+                            if (t_dResult < 1.0)
+                            {
+                                m_arrlsResultAccessory.Add(RESULT_ACCESSORY_NO);
+                            }
+                            else if (t_dResult >= 0.0 && t_dResult <= 3)
+                            {
+                                m_arrlsResultAccessory.Add(RESULT_ACCESSORY_LESS);
+                            }
+                            else if (t_dResult > 3 && t_dResult <= 7)
+                            {
+                                m_arrlsResultAccessory.Add(RESULT_ACCESSORY_MIDDLE);
+                            }
+                            else if (t_dResult > 7 && t_dResult < 9)
+                            {
+                                m_arrlsResultAccessory.Add(RESULT_ACCESORY_HIGH);
+                            }
+                            else
+                            {
+                                m_arrlsResultAccessory.Add(RESULT_ACCESORY_FULL);
+                            }
+                        }
+
+                  break;
+                  }      
             }
+        }
+
+        public void OutputResultInTable()
+        {
+            const int CNT_COUNT_ORIENTATION = 6;
+            int CNT_COUNT_ROWS = m_arrlsResultAccessory.Count / 6;
+            int f_iCountElementInArrayAccessory = 0;
+            dataGridView1.RowCount = CNT_COUNT_ROWS;
+            for (int i = 0; i < CNT_COUNT_ROWS; i++)
+            {
+                for (int j = 0; j < CNT_COUNT_ORIENTATION; j++)
+                {
+                    dataGridView1.Rows[i].Cells[j].Value = m_arrlsResultAccessory[f_iCountElementInArrayAccessory];
+                    ++f_iCountElementInArrayAccessory;
+                }
+            }
+        }
 
         public FormTableFromResult(string strTypeTest, string orientation)
         {

@@ -14,10 +14,10 @@ namespace expert_system
     public partial class OutputResultsUser : Form
     {
         public string m_strLogin;
-        public string m_strTypeTest;
+        public string m_strTypeLogic;
         public string m_strOrientation;
         public bool   m_blAnswer;
-        public bool m_blDiagram;
+        public bool   m_blDiagram;
 
         public OutputResultsUser()
         {
@@ -31,7 +31,7 @@ namespace expert_system
             InitializeComponent();
 
             m_strLogin = "root";
-            m_strTypeTest = typeTest;
+            m_strTypeLogic = typeTest;
         }
 
         public OutputResultsUser(int diagram)
@@ -56,7 +56,7 @@ namespace expert_system
 
             m_blDiagram = true;
             m_strLogin = "root";
-            m_strTypeTest = typeTest;
+            m_strTypeLogic = typeTest;
         }
 
         public OutputResultsUser(string login, bool answer)
@@ -68,14 +68,14 @@ namespace expert_system
             m_blDiagram = false;
         }
 
-        public OutputResultsUser(string login, string typeTest)
+        public OutputResultsUser(string login, string typeLogic)
         {
             InitializeComponent();
 
-            m_strLogin = login;
-            m_strTypeTest = typeTest;
-            m_blAnswer = false;
-            m_blDiagram = false;
+            m_strLogin     = login;
+            m_strTypeLogic = typeLogic;
+            m_blAnswer     = false;
+            m_blDiagram    = false;
         }
 
         public OutputResultsUser(string login, string result, bool diagram)
@@ -83,7 +83,7 @@ namespace expert_system
             InitializeComponent();
 
             m_strLogin = login;
-            m_strTypeTest = result;
+            m_strTypeLogic = result;
             m_blAnswer = false;
             m_blDiagram = true;
         }
@@ -93,7 +93,7 @@ namespace expert_system
             InitializeComponent();
 
             m_strLogin = login;
-            m_strTypeTest = result;
+            m_strTypeLogic = result;
             m_blAnswer = true;
             m_blDiagram = false;
         }
@@ -129,7 +129,7 @@ namespace expert_system
                     f_iOrientation = 2;
                 }
 
-                FormOutputResultDiagramUsers answer = new FormOutputResultDiagramUsers(m_strTypeTest, m_strLogin, f_iOrientation);
+                FormOutputResultDiagramUsers answer = new FormOutputResultDiagramUsers(m_strTypeLogic, m_strLogin, f_iOrientation);
                 answer.Show();
             }
             else if (m_blAnswer)    // показать ответы
@@ -157,25 +157,26 @@ namespace expert_system
             }
             else    // отобразить результаты
             {
+                const int CNT_PRESCHOOL        = 0;
+                const int CNT_PARENT           = 1;
+                const int CNT_PRESCHOOL_PARENT = 2;
+
                 int f_iOrientation = 0;
 
                 if (comboBox1.Text == "дошкольник")
                 {
-                    m_strOrientation = "preschool";
-                    f_iOrientation = 0;
+                    f_iOrientation = CNT_PRESCHOOL;
                 }
                 else if (comboBox1.Text == "родитель")
                 {
-                    m_strOrientation = "parent";
-                    f_iOrientation = 1;
+                    f_iOrientation = CNT_PARENT;
                 }
                 else if (comboBox1.Text == "дошкольник+родитель")
                 {
-                    m_strOrientation = "preschool_parent";
-                    f_iOrientation = 2;
+                    f_iOrientation = CNT_PRESCHOOL_PARENT;
                 }
 
-                FormTableFromResult formResult = new FormTableFromResult(m_strTypeTest/*четкая - нечеткая*/, m_strLogin, f_iOrientation/*возраст(родитель или дошкольник)*/);
+                FormTableFromResult formResult = new FormTableFromResult(m_strTypeLogic/*четкая - нечеткая*/, m_strLogin, f_iOrientation/*возраст(родитель или дошкольник)*/);
                 formResult.Show();
             }
         }
@@ -186,7 +187,7 @@ namespace expert_system
 
             if (m_blDiagram)
             {
-                FormOutputResultDiagramUsers answer = new FormOutputResultDiagramUsers(m_strLogin, m_strTypeTest, m_strOrientation);
+                FormOutputResultDiagramUsers answer = new FormOutputResultDiagramUsers(m_strLogin, m_strTypeLogic, m_strOrientation);
                 answer.Show();
             }
             else if (m_blAnswer)
@@ -196,7 +197,7 @@ namespace expert_system
             }
             else
             { 
-                FormTableFromResult formResult = new FormTableFromResult(m_strTypeTest/*четкая или нечеткая*/, m_strLogin, m_strOrientation/*возраст*/);
+                FormTableFromResult formResult = new FormTableFromResult(m_strTypeLogic/*четкая или нечеткая*/, m_strLogin, m_strOrientation/*возраст*/);
                 formResult.Show();
             }
         }
@@ -207,7 +208,7 @@ namespace expert_system
 
             if (m_blDiagram)
             {
-                FormOutputResultDiagramUsers answer = new FormOutputResultDiagramUsers(m_strLogin, m_strTypeTest,  m_strOrientation);
+                FormOutputResultDiagramUsers answer = new FormOutputResultDiagramUsers(m_strLogin, m_strTypeLogic,  m_strOrientation);
                 answer.Show();
             }
             else if (m_blAnswer)
@@ -217,7 +218,7 @@ namespace expert_system
             }
             else
             {
-                FormTableFromResult formResult = new FormTableFromResult(m_strTypeTest/*четкая или нечеткая*/, m_strLogin, m_strOrientation/*возраст*/);
+                FormTableFromResult formResult = new FormTableFromResult(m_strTypeLogic/*четкая или нечеткая*/, m_strLogin, m_strOrientation/*возраст*/);
                 formResult.Show();
             }
            
@@ -227,14 +228,14 @@ namespace expert_system
         {
             m_strOrientation = "five_class";
            
-            FormTableFromResult formResult = new FormTableFromResult(m_strTypeTest/*четкая или нечеткая*/, m_strLogin, m_strOrientation/*возраст*/);
+            FormTableFromResult formResult = new FormTableFromResult(m_strTypeLogic/*четкая или нечеткая*/, m_strLogin, m_strOrientation/*возраст*/);
             formResult.Show();
          
         }
 
         private void button5_Click(object sender, EventArgs e)
         {
-            FormTableFromResult formResult = new FormTableFromResult(m_strTypeTest/*четкая или нечеткая*/, m_strLogin, m_strOrientation/*возраст*/);
+            FormTableFromResult formResult = new FormTableFromResult(m_strTypeLogic/*четкая или нечеткая*/, m_strLogin, m_strOrientation/*возраст*/);
             formResult.Show();
         }
 
