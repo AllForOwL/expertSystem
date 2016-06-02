@@ -114,7 +114,7 @@ namespace expert_system
 
         private void button1_Click(object sender, EventArgs e)
         {
-            FormOutputResultDiagramUsers endResult = new FormOutputResultDiagramUsers(m_strLogin, "без нечеткой модели", m_strAge);
+            FormOutputResultDiagramUsers endResult = new FormOutputResultDiagramUsers(m_strLogin, m_strAge);
             endResult.Show();
         }
 
@@ -163,6 +163,5 @@ namespace expert_system
          
             return f_iMaxValue;
         }
-    
     }
 }

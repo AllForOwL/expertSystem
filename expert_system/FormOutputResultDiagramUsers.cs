@@ -14,17 +14,18 @@ namespace expert_system
 {
     public partial class FormOutputResultDiagramUsers : Form
     {
-        public int m_iCount;
+       /* public int m_iCount;
         public string m_strLogin;
         public string m_strOrientation;
         public int m_iOrientation;
         public string m_strTypeTest;
         public string[] m_arrayAccount = new string[30];
+        */
 
         public FormOutputResultDiagramUsers()
         {
             InitializeComponent();
-            m_strTypeTest = "";
+            //m_strTypeTest = "";
         }
 
         public FormOutputResultDiagramUsers(string typeTests, string login, int orientation)
@@ -694,7 +695,10 @@ namespace expert_system
             }
         }
 
-        public FormOutputResultDiagramUsers(string login, string orientation)
+        public FormOutputResultDiagramUsers(string typeTests, string login, string orientation)    // temp
+        { }
+
+       /* public FormOutputResultDiagramUsers(string login, string orientation)
         {
             InitializeComponent();
 
@@ -702,12 +706,57 @@ namespace expert_system
             m_strOrientation = orientation;
             m_strTypeTest = "";
         }
-
-        public FormOutputResultDiagramUsers(string login, string typeTests, string orientation)
+        */
+        public FormOutputResultDiagramUsers(string login, string age)
         {
             InitializeComponent();
 
-            ArrayList f_arrlistUsers = new ArrayList();
+            const int CNT_COUNT_ORIENTATION = 6;
+
+            const string CNT_PRESCHOOL_PARENT  = "preschool_parent";
+
+            string f_strLogin = login;
+            string f_strAge   = age;
+            string PATH_TO_FILE_READ_RESULT = Path.GetFullPath(@"InfoUsers\" + f_strLogin + "_" + f_strAge + "_result.txt");
+
+            StreamReader readResult = new StreamReader(PATH_TO_FILE_READ_RESULT);
+
+            int f_iMaxValue = 0;
+            double [] f_arrdResultUser = new double [CNT_COUNT_ORIENTATION];
+
+            if (f_strAge == CNT_PRESCHOOL_PARENT)
+            {
+                while (!readResult.EndOfStream)
+                {
+                    for (int i = 0; i < 6; i++) { f_arrdResultUser[i] = 0; }
+                    for (int i = 0; i < 2; i++)
+                    {
+                        for (int j = 0; j < 6; j++)
+                        {
+                            f_arrdResultUser[j] += Convert.ToDouble(readResult.ReadLine());
+                        }
+                    }
+                }
+            }
+            else
+            {
+                while (!readResult.EndOfStream)
+                {
+                    for (int i = 0; i < 6; i++) { f_arrdResultUser[i] = 0; }
+                    for (int j = 0; j < 6; j++)
+                    {
+                        f_arrdResultUser[j] += Convert.ToDouble(readResult.ReadLine());
+                    }
+                }
+            }
+            readResult.Close();
+         
+            for (int i = 0; i < CNT_COUNT_ORIENTATION; i++)
+            {
+                chart1.Series[i].Points.Add(f_arrdResultUser[i]);
+            }
+
+            /*ArrayList f_arrlistUsers = new ArrayList();
             int countRows = 0;
 
             if (login == "root")
@@ -832,6 +881,7 @@ namespace expert_system
 
                 readResult.Close();
             }
+            */
 
         }
 
@@ -839,4 +889,5 @@ namespace expert_system
         {
         }
     }
-}
+    
+    }
