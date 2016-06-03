@@ -20,6 +20,12 @@ namespace expert_system
 
         private void button1_Click(object sender, EventArgs e)
         {
+            string PathAllLogin = Path.GetFullPath(@"InfoUsers\AllLogin.txt");
+
+            StreamWriter writeNewLogin = new StreamWriter(PathAllLogin, true);
+            writeNewLogin.WriteLine(textBox4.Text);
+            writeNewLogin.Close();
+
            string PathAllUsers = Path.GetFullPath(@"InfoUsers\AllUsers.txt");
            
            StreamWriter writeNewUsers = new StreamWriter(PathAllUsers, true);

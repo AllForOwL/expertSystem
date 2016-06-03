@@ -20,22 +20,16 @@ namespace expert_system
 
         private void button1_Click(object sender, EventArgs e)
         {
-            string strresult_ = comboBox1.Text;
-            if (strresult_ == "")
+            if (comboBox1.Text == "Результаты")
             {
-                MessageBox.Show("Выберите тип вывода результата");
+                MessageBox.Show("Введите по чём показывать результат");
+
                 return;
             }
-            string user;
 
-           // StreamReader readuser = new StreamReader(Path.GetFullPath(@"InfoUsers\AllUsers.txt"));
-            
-            //readuser.ReadLine();
-            //user = readuser.ReadLine();
-            
-            //readuser.Close();
+            string f_strTypeLogic = comboBox1.Text;
 
-            OutputResultsUser outputResult = new OutputResultsUser("root", strresult_);
+            OutputResultsUser outputResult = new OutputResultsUser("root", f_strTypeLogic);
             outputResult.Show();
         }
 
