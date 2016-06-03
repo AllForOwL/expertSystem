@@ -22,691 +22,24 @@ namespace expert_system
         public string[] m_arrayAccount = new string[30];
         */
 
+        const int PRESCHOOL = 0;
+        const int PARENT = 1;
+        const int PRESCHOOL_PARENT = 2;
+        const int ONLY_PRESCHOOL = 3;
+        const int ONLY_PARENT = 4;
+        const int THREE_CLASS = 5;
+        const int FIVE_CLASS = 6;
+
+        ArrayList m_arrlsdResultPreschool;
+        ArrayList m_arrlsResultAccessory;
+        string m_strLogin;
+        string m_strAge;
+
         public FormOutputResultDiagramUsers()
         {
             InitializeComponent();
             //m_strTypeTest = "";
         }
-
-        public FormOutputResultDiagramUsers(string typeTests, string login, int orientation)
-        {
-            InitializeComponent();
-
-            string pathFile;
-
-            // определяем кого показывать результат(дошкольник, родитель, или обоих)
-            if (orientation == 0)   // докшкольник
-            {
-                ArrayList f_arrlistUsers = new ArrayList();
-                int countRows = 0;
-
-                if (login == "root")
-                {
-                    string pathFileLocal = Path.GetFullPath(@"InfoUsers\AllUsers.txt");
-
-                    StreamReader readResultlocal = new StreamReader(pathFileLocal);
-
-                    string tempValue = "";
-
-                    while (!readResultlocal.EndOfStream)
-                    {
-                        tempValue = readResultlocal.ReadLine();
-                        f_arrlistUsers.Add(readResultlocal.ReadLine());
-                        tempValue = readResultlocal.ReadLine();
-                    }
-
-                    readResultlocal.Close();
-
-                    int f_iCountHummanitarian = 0;
-                    int f_iCountLinguistic    = 0;
-                    int f_iCountTechnical     = 0;
-                    int f_iCountMathematical  = 0;
-                    int f_iCountSport         = 0;
-                    int f_iCountCreative      = 0;
-
-                    int f_iCountUsers = f_arrlistUsers.Count;
-
-                    for (int i = 0; i < f_iCountUsers; i++)
-                    {
-                        pathFile = Path.GetFullPath(@"InfoUsers\" + f_arrlistUsers[i] + "result_preschool.txt");
-
-                        if (!File.Exists(pathFile))
-                        {
-                            continue;
-                        }
-
-                        StreamReader readResult = new StreamReader(pathFile);
-
-                        double []valueFromFile = new double[6];
-                        double maxValue = 0.0;
-                        int iter = 0;
-                        while (!readResult.EndOfStream)
-                        {
-                            for (int j = 0; j < 6; j++)
-                            {
-                                valueFromFile[j] = Math.Round(Convert.ToDouble(readResult.ReadLine()), 2);
-                                if (valueFromFile[j] > maxValue)
-                                {
-                                    maxValue = valueFromFile[j];
-                                    iter = j;
-                                }
-                            }
-                        }
-
-                        switch (iter)
-                        {
-                            case 0:
-                                {
-                                    ++f_iCountCreative;
-                                    break;
-                                }
-                            case 1:
-                                {
-                                    ++f_iCountHummanitarian;
-                                    break;
-                                }
-                            case 2:
-                                {
-                                    ++f_iCountLinguistic;
-                                    break;
-                                }
-                            case 3:
-                                {
-                                    ++f_iCountMathematical;
-                                    break;
-                                }
-                            case 4:
-                                {
-                                    ++f_iCountTechnical;
-                                    break;
-                                }
-                            case 5:
-                                {
-                                    ++f_iCountSport;
-                                    break;
-                                }
-                        }
-
-                        readResult.Close();
-                    }
-
-                    chart1.Series[0].Points.Add(f_iCountCreative);
-                    chart1.Series[1].Points.Add(f_iCountHummanitarian);
-                    chart1.Series[2].Points.Add(f_iCountLinguistic);
-                    chart1.Series[3].Points.Add(f_iCountMathematical);
-                    chart1.Series[4].Points.Add(f_iCountTechnical);
-                    chart1.Series[5].Points.Add(f_iCountSport);
-
-                    return;
-                }
-                else
-                {
-                    f_arrlistUsers.Add(login);
-                }
-
-                for (int countUser = 0; countUser < f_arrlistUsers.Count; countUser++)
-                {
-
-                    pathFile = Path.GetFullPath(@"InfoUsers\" + f_arrlistUsers[countUser] + "result_preschool.txt");
-
-                    if (!File.Exists(pathFile))
-                    {
-                        MessageBox.Show("Тест не был пройден!");
-                        return;
-                    }
-
-                    StreamReader readResult = new StreamReader(pathFile);
-
-                    if (typeTests == "без нечеткой модели")
-                    {
-                        double valueFromFile = 0.0;
-                        while (!readResult.EndOfStream)
-                        {
-                            for (int i = 0; i < 6; i++)
-                            {
-                                valueFromFile = Math.Round(Convert.ToDouble(readResult.ReadLine()), 2);
-                                chart1.Series[i].Points.Add(valueFromFile);
-                            }
-                            ++countRows;
-                        }
-                    }
-                    else // дошкольник + нечеткая модель
-                    {
-                        double valueFromFile = 0.0;
-                        while (!readResult.EndOfStream)
-                        {
-                            for (int i = 0; i < 6; i++)
-                            {
-                                valueFromFile = Convert.ToDouble(readResult.ReadLine());
-
-                                if (valueFromFile >= 0 && valueFromFile < 2)
-                                {
-                                    valueFromFile = 0.2;
-                                }
-                                else if (valueFromFile >= 2 && valueFromFile < 3)
-                                {
-                                    valueFromFile = 0.4;
-                                }
-                                else if (valueFromFile >= 3 && valueFromFile < 4)
-                                {
-                                    valueFromFile = 0.6;
-                                }
-                                else if (valueFromFile >= 4 && valueFromFile < 5)
-                                {
-                                    valueFromFile = 0.8;
-                                }
-                                else
-                                {
-                                    valueFromFile = 1.0;
-                                }
-
-                                chart1.Series[i].Points.Add(valueFromFile);
-                            }
-                            ++countRows;
-                        }
-                    }
-
-                    readResult.Close();
-                }
-
-            }
-            else if (orientation == 1) // родитель
-            {
-                ArrayList f_arrlistUsers = new ArrayList();
-                int countRows = 0;
-
-                if (login == "root")
-                {
-                    string pathFileLocal = Path.GetFullPath(@"InfoUsers\AllUsers.txt");
-
-                    StreamReader readResultlocal = new StreamReader(pathFileLocal);
-
-                    string tempValue = "";
-
-                    while (!readResultlocal.EndOfStream)
-                    {
-                        tempValue = readResultlocal.ReadLine();
-                        f_arrlistUsers.Add(readResultlocal.ReadLine());
-                        tempValue = readResultlocal.ReadLine();
-                    }
-
-                    readResultlocal.Close();
-
-                    int f_iCountHummanitarian = 0;
-                    int f_iCountLinguistic = 0;
-                    int f_iCountTechnical = 0;
-                    int f_iCountMathematical = 0;
-                    int f_iCountSport = 0;
-                    int f_iCountCreative = 0;
-
-                    int f_iCountUsers = f_arrlistUsers.Count;
-
-                    for (int i = 0; i < f_iCountUsers; i++)
-                    {
-                        pathFile = Path.GetFullPath(@"InfoUsers\" + f_arrlistUsers[i] + "result_preschool_parentparent.txt");
-
-                        if (!File.Exists(pathFile))
-                        {
-                            continue;
-                        }
-
-                        StreamReader readResult = new StreamReader(pathFile);
-
-                        double[] valueFromFile = new double[6];
-                        double maxValue = 0.0;
-                        int iter = 0;
-                        while (!readResult.EndOfStream)
-                        {
-                            for (int j = 0; j < 6; j++)
-                            {
-                                valueFromFile[j] = Math.Round(Convert.ToDouble(readResult.ReadLine()), 2);
-                                if (valueFromFile[j] > maxValue)
-                                {
-                                    maxValue = valueFromFile[j];
-                                    iter = j;
-                                }
-                            }
-                        }
-
-                        switch (iter)
-                        {
-                            case 0:
-                                {
-                                    ++f_iCountCreative;
-                                    break;
-                                }
-                            case 1:
-                                {
-                                    ++f_iCountHummanitarian;
-                                    break;
-                                }
-                            case 2:
-                                {
-                                    ++f_iCountLinguistic;
-                                    break;
-                                }
-                            case 3:
-                                {
-                                    ++f_iCountMathematical;
-                                    break;
-                                }
-                            case 4:
-                                {
-                                    ++f_iCountTechnical;
-                                    break;
-                                }
-                            case 5:
-                                {
-                                    ++f_iCountSport;
-                                    break;
-                                }
-                        }
-
-                        readResult.Close();
-                    }
-
-                    chart1.Series[0].Points.Add(f_iCountCreative);
-                    chart1.Series[1].Points.Add(f_iCountHummanitarian);
-                    chart1.Series[2].Points.Add(f_iCountLinguistic);
-                    chart1.Series[3].Points.Add(f_iCountMathematical);
-                    chart1.Series[4].Points.Add(f_iCountTechnical);
-                    chart1.Series[5].Points.Add(f_iCountSport);
-
-                    return;
-
-
-                }
-                else
-                {
-                    f_arrlistUsers.Add(login);
-                }
-
-                for (int countUser = 0; countUser < f_arrlistUsers.Count; countUser++)
-                {
-
-                    pathFile = Path.GetFullPath(@"InfoUsers\" + f_arrlistUsers[countUser] + "result_preschool_parentparent.txt");
-
-                    if (!File.Exists(pathFile))
-                    {
-                        //MessageBox.Show("Тест не был пройден!");
-                        return;
-                    }
-
-                    StreamReader readResult = new StreamReader(pathFile);
-
-                    if (typeTests == "без нечеткой модели")
-                    {
-
-                        double valueFromFile = 0.0;
-                        while (!readResult.EndOfStream)
-                        {
-                            for (int i = 0; i < 6; i++)
-                            {
-                                valueFromFile = Math.Round(Convert.ToDouble(readResult.ReadLine()), 2);
-                                chart1.Series[i].Points.Add(valueFromFile);
-                            }
-                            ++countRows;
-                        }
-                    }
-                    else // дошкольник + нечеткая модель
-                    {
-                        double valueFromFile = 0.0;
-                        while (!readResult.EndOfStream)
-                        {
-                            for (int i = 0; i < 6; i++)
-                            {
-                                valueFromFile = Convert.ToDouble(readResult.ReadLine());
-
-                                if (valueFromFile >= 0 && valueFromFile < 1)
-                                {
-                                    valueFromFile = 0.3;
-                                }
-                                else if (valueFromFile >= 1 && valueFromFile < 2)
-                                {
-                                    valueFromFile = 0.6;
-                                }
-                                else if (valueFromFile >= 2 && valueFromFile < 3)
-                                {
-                                    valueFromFile = 0.8;
-                                }
-                                else if (valueFromFile >= 3)
-                                {
-                                    valueFromFile = 1.0;
-                                }
-                                chart1.Series[i].Points.Add(valueFromFile);
-                            }
-                            ++countRows;
-                        }
-                    }
-
-                    readResult.Close();
-                }
-
-            }
-            else // дошкольник+родитель
-            {
-                ArrayList f_arrlistUsers = new ArrayList();
-                int countRows = 0;
-
-                if (login == "root")
-                {
-                    string pathFileLocal = Path.GetFullPath(@"InfoUsers\AllUsers.txt");
-
-                    StreamReader readResultlocal = new StreamReader(pathFileLocal);
-
-                    string tempValue = "";
-
-                    while (!readResultlocal.EndOfStream)
-                    {
-                        tempValue = readResultlocal.ReadLine();
-                        f_arrlistUsers.Add(readResultlocal.ReadLine());
-                        tempValue = readResultlocal.ReadLine();
-                    }
-
-                    readResultlocal.Close();
-
-
-                    int f_iCountHummanitarian = 0;
-                    int f_iCountLinguistic = 0;
-                    int f_iCountTechnical = 0;
-                    int f_iCountMathematical = 0;
-                    int f_iCountSport = 0;
-                    int f_iCountCreative = 0;
-
-                    int f_iCountUsers = f_arrlistUsers.Count;
-
-                    for (int i = 0; i < f_iCountUsers; i++)
-                    {
-                        pathFile = Path.GetFullPath(@"InfoUsers\" + f_arrlistUsers[i] + "result_preschool_parent.txt");
-
-                        if (!File.Exists(pathFile))
-                        {
-                            continue;
-                        }
-
-                        StreamReader readResult = new StreamReader(pathFile);
-
-                        double[] valueFromFile = new double[6];
-                        double maxValue = 0.0;
-                        int iter = 0;
-                        while (!readResult.EndOfStream)
-                        {
-                            for (int j = 0; j < 6; j++)
-                            {
-                                valueFromFile[j] = Math.Round(Convert.ToDouble(readResult.ReadLine()), 2);
-                                if (valueFromFile[j] > maxValue)
-                                {
-                                    maxValue = valueFromFile[j];
-                                    iter = j;
-                                }
-                            }
-                        }
-
-                        switch (iter)
-                        {
-                            case 0:
-                                {
-                                    ++f_iCountCreative;
-                                    break;
-                                }
-                            case 1:
-                                {
-                                    ++f_iCountHummanitarian;
-                                    break;
-                                }
-                            case 2:
-                                {
-                                    ++f_iCountLinguistic;
-                                    break;
-                                }
-                            case 3:
-                                {
-                                    ++f_iCountMathematical;
-                                    break;
-                                }
-                            case 4:
-                                {
-                                    ++f_iCountTechnical;
-                                    break;
-                                }
-                            case 5:
-                                {
-                                    ++f_iCountSport;
-                                    break;
-                                }
-                        }
-
-                        readResult.Close();
-                    }
-
-                    chart1.Series[0].Points.Add(f_iCountCreative);
-                    chart1.Series[1].Points.Add(f_iCountHummanitarian);
-                    chart1.Series[2].Points.Add(f_iCountLinguistic);
-                    chart1.Series[3].Points.Add(f_iCountMathematical);
-                    chart1.Series[4].Points.Add(f_iCountTechnical);
-                    chart1.Series[5].Points.Add(f_iCountSport);
-
-                    return;
-
-                }
-                else
-                {
-                    f_arrlistUsers.Add(login);
-                }
-
-                double[] arrayResultPreschool = new double[24];
-
-                for (int countUser = 0; countUser < f_arrlistUsers.Count; countUser++)
-                {
-                    pathFile = Path.GetFullPath(@"InfoUsers\" + f_arrlistUsers[countUser] + "result_preschool_parent.txt");
-
-                    if (!File.Exists(pathFile))
-                    {
-                        MessageBox.Show("Тест не был пройден!");
-                        return;
-                    }
-
-                    StreamReader readResult = new StreamReader(pathFile);
-
-                    if (typeTests == "без нечеткой модели")
-                    {
-                        double[] arr = new double[6];
-                        int iter = 0;
-                        double valueFromFile = 0.0;
-                        while (!readResult.EndOfStream)
-                        {
-                            for (int i = 0; i < 6; i++)
-                            {
-                                valueFromFile = Math.Round(Convert.ToDouble(readResult.ReadLine()), 2);
-                                arr[i] = valueFromFile;
-                                //chart1.Series[i].Points.Add(valueFromFile);
-
-                                ++iter;
-                            }
-
-                            ++countRows;
-                        }
-
-                        for (int i = 0; i < 6; i++)
-                        {
-                            arrayResultPreschool[i] = arr[i];
-                        }
-
-                    }
-                    else // дошкольник + нечеткая модель
-                    {
-                        int iter = 0;
-                        double valueFromFile = 0.0;
-                        while (!readResult.EndOfStream)
-                        {
-                            for (int i = 0; i < 6; i++)
-                            {
-                                valueFromFile = Math.Round(Convert.ToDouble(readResult.ReadLine()), 2);
-                                arrayResultPreschool[iter] = valueFromFile;
-
-                               /* if (valueFromFile >= 0 && valueFromFile < 2)
-                                {
-                                    valueFromFile = 0.2;
-                                }
-                                else if (valueFromFile >= 2 && valueFromFile < 3)
-                                {
-                                    valueFromFile = 0.4;
-                                }
-                                else if (valueFromFile >= 3 && valueFromFile < 4)
-                                {
-                                    valueFromFile = 0.6;
-                                }
-                                else if (valueFromFile >= 4 && valueFromFile <= 5)
-                                {
-                                    valueFromFile = 0.8;
-                                }
-                                else if (valueFromFile >= 6)
-                                {
-                                    valueFromFile = 1.0;
-                                }*/
-
-                                ++iter;
-                               // chart1.Series[i].Points.Add(valueFromFile);
-                            }
-                            ++countRows;
-                        }
-                    }
-
-                    readResult.Close();
-                }
-
-                if (login == "root")
-                {
-                    string pathFileLocal = Path.GetFullPath(@"InfoUsers\AllUsers.txt");
-
-                    StreamReader readResultlocal = new StreamReader(pathFileLocal);
-
-                    string tempValue = "";
-
-                    while (!readResultlocal.EndOfStream)
-                    {
-                        tempValue = readResultlocal.ReadLine();
-                        f_arrlistUsers.Add(readResultlocal.ReadLine());
-                        tempValue = readResultlocal.ReadLine();
-                    }
-
-                    readResultlocal.Close();
-                }
-                else
-                {
-                    f_arrlistUsers.Clear();
-                    f_arrlistUsers.Add(login);
-                }
-
-                for (int countUsers = 0; countUsers < f_arrlistUsers.Count; countUsers++)
-                {
-
-                    pathFile = Path.GetFullPath(@"InfoUsers\" + f_arrlistUsers[countUsers] + "result_preschool_parentparent.txt");
-
-                    if (!File.Exists(pathFile))
-                    {
-                        continue;
-                        //return;
-                    }
-
-                    StreamReader readResult = new StreamReader(pathFile);
-
-                    if (typeTests == "без нечеткой модели")
-                    { double[] arr = new double[6];
-                        int iter = 0;
-                        double valueFromFile = 0.0;
-                        while (!readResult.EndOfStream)
-                        {
-                           
-                            iter = 0;
-                            for (int i = 0; i < 6; i++)
-                            {
-                                valueFromFile = Math.Round(Convert.ToDouble(readResult.ReadLine()), 2);
-                                arr[i] = valueFromFile;
-                                //chart1.Series[i].Points.Add(valueFromFile);
-                                ++iter;
-                            }
-                            ++countRows;
-                        }
-                        for (int i = 0; i < 6; i++)
-                        {
-                            chart1.Series[i].Points.Add(arrayResultPreschool[i] + arr[i]);
-                        }
-                    }
-                    else // дошкольник + parent нечеткая модель
-                    {
-                        int iter = 0;
-                        double valueFromFile = 0.0;
-                        while (!readResult.EndOfStream)
-                        {
-                            for (int i = 0; i < 6; i++)
-                            {
-                                valueFromFile = Convert.ToDouble(readResult.ReadLine());
-                                valueFromFile += arrayResultPreschool[iter];
-
-                                if (valueFromFile >= 0 && valueFromFile < 2)
-                                {
-                                    valueFromFile = 0.1;
-                                }
-                                else if (valueFromFile >= 2 && valueFromFile < 3)
-                                {
-                                    valueFromFile = 0.2;
-                                }
-                                else if (valueFromFile >= 3 && valueFromFile < 4)
-                                {
-                                    valueFromFile = 0.3;
-                                }
-                                else if (valueFromFile >= 4 && valueFromFile < 5)
-                                {
-                                    valueFromFile = 0.4;
-                                }
-                                if (valueFromFile >= 5 && valueFromFile < 6)
-                                {
-                                    valueFromFile = 0.5;
-                                }
-                                else if (valueFromFile >= 6 && valueFromFile < 7)
-                                {
-                                    valueFromFile = 0.6;
-                                }
-                                else if (valueFromFile >= 7 && valueFromFile < 8)
-                                {
-                                    valueFromFile = 0.7;
-                                }
-                                else if (valueFromFile >= 8 && valueFromFile < 9)
-                                {
-                                    valueFromFile = 0.8;
-                                }
-                                else if (valueFromFile >= 9)
-                                {
-                                    valueFromFile = 1.0;
-                                }
-
-
-                                ++iter;
-                                chart1.Series[i].Points.Add(valueFromFile);
-                            }
-
-                            ++countRows;
-                        }
-                    }
-
-                    readResult.Close();
-                }
-            }
-        }
-
-        public FormOutputResultDiagramUsers(string typeTests, string login, string orientation)    // temp
-        { }
-
-       /* public FormOutputResultDiagramUsers(string login, string orientation)
-        {
-            InitializeComponent();
-
-            m_strLogin = login;
-            m_strOrientation = orientation;
-            m_strTypeTest = "";
-        }
-        */
         public FormOutputResultDiagramUsers(string login, string age)
         {
             InitializeComponent();
@@ -755,134 +88,514 @@ namespace expert_system
             {
                 chart1.Series[i].Points.Add(f_arrdResultUser[i]);
             }
+        }
 
-            /*ArrayList f_arrlistUsers = new ArrayList();
-            int countRows = 0;
+        public FormOutputResultDiagramUsers(string typeLogic, string login, int age)
+        {
+            InitializeComponent();
 
-            if (login == "root")
+            m_arrlsdResultPreschool = new ArrayList();
+            m_arrlsResultAccessory = new ArrayList();
+            m_strLogin = login;
+            m_strAge = "preschool_parent";
+
+            const string CNT_FUZZY_LOGIC = "нечеткая модель";
+            const string CNT_WITHOUT_FUZZY = "без нечеткой модели";
+
+            if (typeLogic == CNT_FUZZY_LOGIC)
             {
-                string pathFileLocal = Path.GetFullPath(@"InfoUsers\AllUsers.txt");
-
-                StreamReader readResultlocal = new StreamReader(pathFileLocal);
-
-                string tempValue = "";
-
-                while (!readResultlocal.EndOfStream)
+                switch (age)
                 {
-                    tempValue = readResultlocal.ReadLine();
-                    f_arrlistUsers.Add(readResultlocal.ReadLine());
-                    tempValue = readResultlocal.ReadLine();
-                }
+                    case PRESCHOOL:
+                        {
+                            ReadResultUser(PRESCHOOL);
+                            CalculateFuzzyLogic(PRESCHOOL);
+                            OutputResultInDiagram();
 
-                readResultlocal.Close();
+                            break;
+                        }
+                    case PARENT:
+                        {
+                            ReadResultUser(PARENT);
+                            CalculateFuzzyLogic(PARENT);
+                            OutputResultInDiagram();
+
+                            break;
+                        }
+                    case PRESCHOOL_PARENT:
+                        {
+                            ReadResultUser(PRESCHOOL_PARENT);
+                            CalculateFuzzyLogic(PRESCHOOL_PARENT);
+                            OutputResultInDiagram();
+
+                            break;
+                        }
+                    case ONLY_PRESCHOOL:
+                        {
+                            ReadResultUser(ONLY_PRESCHOOL);
+                            CalculateFuzzyLogic(ONLY_PRESCHOOL);
+                            OutputResultInDiagram();
+
+                            break;
+                        }
+                    case ONLY_PARENT:
+                        {
+                            ReadResultUser(ONLY_PARENT);
+                            CalculateFuzzyLogic(ONLY_PARENT);
+                            OutputResultInDiagram();
+
+                            break;
+                        }
+                    case THREE_CLASS:
+                        {
+                            ReadResultUser(THREE_CLASS);
+                            CalculateFuzzyLogic(THREE_CLASS);
+                            OutputResultInDiagram();
+
+                            break;
+                        }
+                    case FIVE_CLASS:
+                        {
+                            ReadResultUser(FIVE_CLASS);
+                            CalculateFuzzyLogic(FIVE_CLASS);
+                            OutputResultInDiagram();
+
+                            break;
+                        }
+                }
             }
             else
             {
-                f_arrlistUsers.Add(login);
+                switch (age)
+                {
+                    case PRESCHOOL:
+                        {
+                            ReadResultUser(PRESCHOOL);
+                            OutputResultInDiagram();
+
+                            break;
+                        }
+                    case PARENT:
+                        {
+                            ReadResultUser(PARENT);
+                            OutputResultInDiagram();
+
+                            break;
+                        }
+                    case PRESCHOOL_PARENT:
+                        {
+                            ReadResultUser(PRESCHOOL_PARENT);
+                            OutputResultInDiagram();
+
+                            break;
+                        }
+                    case ONLY_PRESCHOOL:
+                        {
+                            ReadResultUser(ONLY_PRESCHOOL);
+                            OutputResultInDiagram();
+
+                            break;
+                        }
+                    case ONLY_PARENT:
+                        {
+                            ReadResultUser(ONLY_PARENT);
+                            OutputResultInDiagram();
+
+                            break;
+                        }
+                    case THREE_CLASS:
+                        {
+                            ReadResultUser(THREE_CLASS);
+                            OutputResultInDiagram();
+
+                            break;
+                        }
+                    case FIVE_CLASS:
+                        {
+                            ReadResultUser(FIVE_CLASS);
+                            OutputResultInDiagram();
+
+                            break;
+                        }
+                }
+            }
+        }
+
+        public void ReadResultUser(int typeUser)
+        {
+            string PATH_TO_FILE_FROM_RESULT = "";
+            if (typeUser >= 3)
+            {
+                switch (typeUser)
+                {
+                    case ONLY_PRESCHOOL:
+                        {
+                            PATH_TO_FILE_FROM_RESULT = Path.GetFullPath(@"InfoUsers\" + m_strLogin + "_preschool_result.txt");
+
+                            break;
+                        }
+                    case ONLY_PARENT:
+                        {
+                            PATH_TO_FILE_FROM_RESULT = Path.GetFullPath(@"InfoUsers\" + m_strLogin + "_parent_result.txt");
+
+                            break;
+                        }
+                    case THREE_CLASS:
+                        {
+                            PATH_TO_FILE_FROM_RESULT = Path.GetFullPath(@"InfoUsers\" + m_strLogin + "_three_class_result.txt");
+
+                            break;
+                        }
+                    case FIVE_CLASS:
+                        {
+                            PATH_TO_FILE_FROM_RESULT = Path.GetFullPath(@"InfoUsers\" + m_strLogin + "_five_class_result.txt");
+
+                            break;
+                        }
+                }
+            }
+            else
+            {
+                PATH_TO_FILE_FROM_RESULT = Path.GetFullPath(@"InfoUsers\" + m_strLogin + "_" + m_strAge + "_result.txt");
             }
 
-            for (int countUsers = 0; countUsers < f_arrlistUsers.Count; countUsers++)
+            StreamReader readResultUser = new StreamReader(PATH_TO_FILE_FROM_RESULT);
+            const int CNT_COUNT_ORIENTATION = 6;
+            while (!readResultUser.EndOfStream)
             {
-                string pathFile = Path.GetFullPath(@"InfoUsers\" + f_arrlistUsers[countUsers] + "result_" + orientation + ".txt");
-
-                if (!File.Exists(pathFile))
+                switch (typeUser)
                 {
-                    //    MessageBox.Show("Тест не был пройден!");
-                    return;
-                }
-
-                StreamReader readResult = new StreamReader(pathFile);
-
-                if (typeTests == "без нечеткой модели")
-                {
-                    double valueFromFile = 0.0;
-                    while (!readResult.EndOfStream)
-                    {
-                        for (int i = 0; i < 6; i++)
+                    case PRESCHOOL:
                         {
-                            valueFromFile = Math.Round(Convert.ToDouble(readResult.ReadLine()), 2);
+                            for (int i = 0; i < CNT_COUNT_ORIENTATION; i++)
+                            {
+                                m_arrlsdResultPreschool.Add(Convert.ToDouble(readResultUser.ReadLine()));
+                            }
+                            for (int i = 0; i < 6; i++) { }
 
-                            if (valueFromFile >= 0 && valueFromFile < 2)
-                            {
-                                valueFromFile = 1.5;
-                            }
-                            else if (valueFromFile >= 2 && valueFromFile < 3)
-                            {
-                                valueFromFile = 2.5;
-                            }
-                            else if (valueFromFile >= 3 && valueFromFile < 4)
-                            {
-                                valueFromFile = 3.5;
-                            }
-                            else if (valueFromFile >= 4 && valueFromFile <= 5)
-                            {
-                                valueFromFile = 4.5;
-                            }
-                            if (valueFromFile >= 5 && valueFromFile <= 6)
-                            {
-                                valueFromFile = 5.2;
-                            }
-                            else if (valueFromFile >= 6 && valueFromFile <= 7)
-                            {
-                                valueFromFile = 6.4;
-                            }
-                            else if (valueFromFile >= 7 && valueFromFile <= 8)
-                            {
-                                valueFromFile = 7.6;
-                            }
-                            else if (valueFromFile >= 8 && valueFromFile <= 9)
-                            {
-                                valueFromFile = 8.8;
-                            }
-                            else if (valueFromFile >= 9)
-                            {
-                                valueFromFile = 9.0;
-                            }
-
-                            chart1.Series[i].Points.Add(valueFromFile);
+                            break;
                         }
-                        ++countRows;
-                    }
-                }
-                else //  нечеткая модель
-                {
-                    double valueFromFile = 0.0;
-                    while (!readResult.EndOfStream)
-                    {
-                        for (int i = 0; i < 6; i++)
+                    case PARENT:
                         {
-                            valueFromFile = Convert.ToDouble(readResult.ReadLine());
+                            for (int i = 0; i < 6; i++) { }
+                            for (int i = 0; i < CNT_COUNT_ORIENTATION; i++)
+                            {
+                                m_arrlsdResultPreschool.Add(Convert.ToDouble(readResultUser.ReadLine()));
+                            }
+                            break;
+                        }
+                    case PRESCHOOL_PARENT:
+                        {
+                            double[] f_arrdSumResult = new double[6];
+                            while (!readResultUser.EndOfStream)
+                            {
+                                for (int i = 0; i < 6; i++) { f_arrdSumResult[i] = 0.0; }
+                                for (int i = 0; i < 6; i++)
+                                {
+                                    f_arrdSumResult[i] = Convert.ToDouble(readResultUser.ReadLine());
+                                }
+                                for (int i = 0; i < 6; i++)
+                                {
+                                    f_arrdSumResult[i] += Convert.ToDouble(readResultUser.ReadLine());
+                                    m_arrlsdResultPreschool.Add(f_arrdSumResult[i]);
+                                }
+                            }
 
-                            if (valueFromFile >= 0 && valueFromFile < 2)
+                            break;
+                        }
+                    case ONLY_PRESCHOOL:
+                        {
+                            while (!readResultUser.EndOfStream)
                             {
-                                valueFromFile = 0.2;
+                                m_arrlsdResultPreschool.Add(Convert.ToDouble(readResultUser.ReadLine()));
                             }
-                            else if (valueFromFile >= 2 && valueFromFile < 3)
+
+                            break;
+                        }
+                    case ONLY_PARENT:
+                        {
+                            while (!readResultUser.EndOfStream)
                             {
-                                valueFromFile = 0.4;
+                                m_arrlsdResultPreschool.Add(Convert.ToDouble(readResultUser.ReadLine()));
                             }
-                            else if (valueFromFile >= 3 && valueFromFile < 4)
+
+                            break;
+                        }
+                    case THREE_CLASS:
+                        {
+                            while (!readResultUser.EndOfStream)
                             {
-                                valueFromFile = 0.6;
+                                m_arrlsdResultPreschool.Add(Convert.ToDouble(readResultUser.ReadLine()));
                             }
-                            else if (valueFromFile >= 4 && valueFromFile < 5)
+
+                            break;
+                        }
+                    case FIVE_CLASS:
+                        {
+                            while (!readResultUser.EndOfStream)
                             {
-                                valueFromFile = 0.8;
+                                m_arrlsdResultPreschool.Add(Convert.ToDouble(readResultUser.ReadLine()));
+                            }
+
+                            break;
+                        }
+                }
+            }
+            readResultUser.Close();
+        }
+
+        public void CalculateFuzzyLogic(int typeUser)
+        {
+            const double RESULT_ACCESSORY_NO = 0.0;
+            const double RESULT_ACCESSORY_LESS = 0.3;
+            const double RESULT_ACCESSORY_MIDDLE = 0.6;
+            const double RESULT_ACCESORY_HIGH = 0.9;
+            const double RESULT_ACCESORY_FULL = 1.0;
+
+            switch (typeUser)
+            {
+                case PRESCHOOL:
+                    {
+                        for (int i = 0; i < m_arrlsdResultPreschool.Count; i++)
+                        {
+                            double t_dResult = Convert.ToDouble(m_arrlsdResultPreschool[i]);
+                            if (t_dResult < 1.0)
+                            {
+                                m_arrlsResultAccessory.Add(RESULT_ACCESSORY_NO);
+                            }
+                            else if (t_dResult >= 0.0 && t_dResult <= 2)
+                            {
+                                m_arrlsResultAccessory.Add(RESULT_ACCESSORY_LESS);
+                            }
+                            else if (t_dResult > 2 && t_dResult <= 4)
+                            {
+                                m_arrlsResultAccessory.Add(RESULT_ACCESSORY_MIDDLE);
+                            }
+                            else if (t_dResult > 4 && t_dResult <= 5)
+                            {
+                                m_arrlsResultAccessory.Add(RESULT_ACCESORY_HIGH);
                             }
                             else
                             {
-                                valueFromFile = 1.0;
+                                m_arrlsResultAccessory.Add(RESULT_ACCESORY_FULL);
                             }
-                            chart1.Series[i].Points.Add(valueFromFile);
                         }
-                        ++countRows;
+
+                        break;
+                    }
+                case PARENT:
+                    {
+                        for (int i = 0; i < m_arrlsdResultPreschool.Count; i++)
+                        {
+                            double t_dResult = Convert.ToDouble(m_arrlsdResultPreschool[i]);
+                            if (t_dResult < 1.0)
+                            {
+                                m_arrlsResultAccessory.Add(RESULT_ACCESSORY_NO);
+                            }
+                            else if (t_dResult >= 0.0 && t_dResult <= 1)
+                            {
+                                m_arrlsResultAccessory.Add(RESULT_ACCESSORY_LESS);
+                            }
+                            else if (t_dResult > 1 && t_dResult <= 2)
+                            {
+                                m_arrlsResultAccessory.Add(RESULT_ACCESSORY_MIDDLE);
+                            }
+                            else if (t_dResult > 2 && t_dResult < 3)
+                            {
+                                m_arrlsResultAccessory.Add(RESULT_ACCESORY_HIGH);
+                            }
+                            else
+                            {
+                                m_arrlsResultAccessory.Add(RESULT_ACCESORY_FULL);
+                            }
+                        }
+
+                        break;
+                    }
+                case PRESCHOOL_PARENT:
+                    {
+                        for (int i = 0; i < m_arrlsdResultPreschool.Count; i++)
+                        {
+                            double t_dResult = Convert.ToDouble(m_arrlsdResultPreschool[i]);
+                            if (t_dResult < 1.0)
+                            {
+                                m_arrlsResultAccessory.Add(RESULT_ACCESSORY_NO);
+                            }
+                            else if (t_dResult >= 0.0 && t_dResult <= 3)
+                            {
+                                m_arrlsResultAccessory.Add(RESULT_ACCESSORY_LESS);
+                            }
+                            else if (t_dResult > 3 && t_dResult <= 7)
+                            {
+                                m_arrlsResultAccessory.Add(RESULT_ACCESSORY_MIDDLE);
+                            }
+                            else if (t_dResult > 7 && t_dResult < 9)
+                            {
+                                m_arrlsResultAccessory.Add(RESULT_ACCESORY_HIGH);
+                            }
+                            else
+                            {
+                                m_arrlsResultAccessory.Add(RESULT_ACCESORY_FULL);
+                            }
+                        }
+
+                        break;
+                    }
+                case ONLY_PRESCHOOL:
+                    {
+                        for (int i = 0; i < m_arrlsdResultPreschool.Count; i++)
+                        {
+                            double t_dResult = Convert.ToDouble(m_arrlsdResultPreschool[i]);
+                            if (t_dResult < 1.0)
+                            {
+                                m_arrlsResultAccessory.Add(RESULT_ACCESSORY_NO);
+                            }
+                            else if (t_dResult >= 0.0 && t_dResult <= 2)
+                            {
+                                m_arrlsResultAccessory.Add(RESULT_ACCESSORY_LESS);
+                            }
+                            else if (t_dResult > 2 && t_dResult <= 4)
+                            {
+                                m_arrlsResultAccessory.Add(RESULT_ACCESSORY_MIDDLE);
+                            }
+                            else if (t_dResult > 4 && t_dResult <= 5)
+                            {
+                                m_arrlsResultAccessory.Add(RESULT_ACCESORY_HIGH);
+                            }
+                            else
+                            {
+                                m_arrlsResultAccessory.Add(RESULT_ACCESORY_FULL);
+                            }
+                        }
+
+                        break;
+                    }
+                case ONLY_PARENT:
+                    {
+                        for (int i = 0; i < m_arrlsdResultPreschool.Count; i++)
+                        {
+                            double t_dResult = Convert.ToDouble(m_arrlsdResultPreschool[i]);
+                            if (t_dResult < 1.0)
+                            {
+                                m_arrlsResultAccessory.Add(RESULT_ACCESSORY_NO);
+                            }
+                            else if (t_dResult >= 0.0 && t_dResult <= 1)
+                            {
+                                m_arrlsResultAccessory.Add(RESULT_ACCESSORY_LESS);
+                            }
+                            else if (t_dResult > 1 && t_dResult <= 2)
+                            {
+                                m_arrlsResultAccessory.Add(RESULT_ACCESSORY_MIDDLE);
+                            }
+                            else if (t_dResult > 2 && t_dResult < 3)
+                            {
+                                m_arrlsResultAccessory.Add(RESULT_ACCESORY_HIGH);
+                            }
+                            else
+                            {
+                                m_arrlsResultAccessory.Add(RESULT_ACCESORY_FULL);
+                            }
+                        }
+
+                        break;
+                    }
+                case THREE_CLASS:
+                    {
+                        for (int i = 0; i < m_arrlsdResultPreschool.Count; i++)
+                        {
+                            double t_dResult = Convert.ToDouble(m_arrlsdResultPreschool[i]);
+                            if (t_dResult < 1.0)
+                            {
+                                m_arrlsResultAccessory.Add(RESULT_ACCESSORY_NO);
+                            }
+                            else if (t_dResult >= 0.0 && t_dResult <= 2)
+                            {
+                                m_arrlsResultAccessory.Add(RESULT_ACCESSORY_LESS);
+                            }
+                            else if (t_dResult > 2 && t_dResult <= 4)
+                            {
+                                m_arrlsResultAccessory.Add(RESULT_ACCESSORY_MIDDLE);
+                            }
+                            else if (t_dResult > 4 && t_dResult <= 5)
+                            {
+                                m_arrlsResultAccessory.Add(RESULT_ACCESORY_HIGH);
+                            }
+                            else
+                            {
+                                m_arrlsResultAccessory.Add(RESULT_ACCESORY_FULL);
+                            }
+                        }
+
+                        break;
+                    }
+                case FIVE_CLASS:
+                    {
+                        for (int i = 0; i < m_arrlsdResultPreschool.Count; i++)
+                        {
+                            double t_dResult = Convert.ToDouble(m_arrlsdResultPreschool[i]);
+                            if (t_dResult < 1.0)
+                            {
+                                m_arrlsResultAccessory.Add(RESULT_ACCESSORY_NO);
+                            }
+                            else if (t_dResult >= 0.0 && t_dResult <= 2)
+                            {
+                                m_arrlsResultAccessory.Add(RESULT_ACCESSORY_LESS);
+                            }
+                            else if (t_dResult > 2 && t_dResult <= 4)
+                            {
+                                m_arrlsResultAccessory.Add(RESULT_ACCESSORY_MIDDLE);
+                            }
+                            else if (t_dResult > 4 && t_dResult <= 5)
+                            {
+                                m_arrlsResultAccessory.Add(RESULT_ACCESORY_HIGH);
+                            }
+                            else
+                            {
+                                m_arrlsResultAccessory.Add(RESULT_ACCESORY_FULL);
+                            }
+                        }
+
+                        break;
+                    }
+            }
+        }
+
+        public void OutputResultInDiagram()
+        {
+            const int CNT_COUNT_ORIENTATION = 6;
+            int CNT_COUNT_ROWS = 0;
+            if (m_arrlsResultAccessory.Count != 0)
+            {
+                CNT_COUNT_ROWS = m_arrlsResultAccessory.Count / 6;
+                int f_iCountElementInArrayAccessory = 0;
+                //dataGridView1.RowCount = CNT_COUNT_ROWS;
+
+                for (int i = 0; i < CNT_COUNT_ROWS; i++)
+                {
+                    for (int j = 0; j < CNT_COUNT_ORIENTATION; j++)
+                    {
+                        chart1.Series[j].Points.Add(Convert.ToDouble(m_arrlsResultAccessory[f_iCountElementInArrayAccessory]));
+                        ++f_iCountElementInArrayAccessory;
                     }
                 }
-
-                readResult.Close();
             }
-            */
+            else
+            {
+                CNT_COUNT_ROWS = m_arrlsdResultPreschool.Count / 6;
+                int f_iCountElementInArrayAccessory = 0;
+                //dataGridView1.RowCount = CNT_COUNT_ROWS;
 
+                for (int i = 0; i < CNT_COUNT_ROWS; i++)
+                {
+                    for (int j = 0; j < CNT_COUNT_ORIENTATION; j++)
+                    {
+                        chart1.Series[j].Points.Add(Convert.ToDouble(m_arrlsdResultPreschool[f_iCountElementInArrayAccessory]));
+                        ++f_iCountElementInArrayAccessory;
+                    }
+                }
+            }
+
+            
         }
 
         private void FormOutputResultDiagramUsers_Load(object sender, EventArgs e)

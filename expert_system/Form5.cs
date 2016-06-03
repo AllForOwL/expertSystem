@@ -132,10 +132,9 @@ namespace expert_system
                 return;
             }
 
-            string result = cmbResult.Text;
-            string typeTest = cmbChooiseTest.Text;
+            string typeLogic = cmbResult.Text;
 
-            OutputResultsUser outputResult = new OutputResultsUser(m_strLoginUser, result, true);
+            OutputResultsUser outputResult = new OutputResultsUser(m_strLoginUser, typeLogic, true);
             outputResult.Show();
         }
 

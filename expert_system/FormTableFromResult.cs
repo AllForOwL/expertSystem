@@ -618,22 +618,33 @@ namespace expert_system
             if (m_arrlsResultAccessory.Count != 0)
             {
                 CNT_COUNT_ROWS = m_arrlsResultAccessory.Count / 6;
+                int f_iCountElementInArrayAccessory = 0;
+                dataGridView1.RowCount = CNT_COUNT_ROWS;
+                for (int i = 0; i < CNT_COUNT_ROWS; i++)
+                {
+                    for (int j = 0; j < CNT_COUNT_ORIENTATION; j++)
+                    {
+                        dataGridView1.Rows[i].Cells[j].Value = m_arrlsResultAccessory[f_iCountElementInArrayAccessory];
+                        ++f_iCountElementInArrayAccessory;
+                    }
+                }
             }
             else
             {
                 CNT_COUNT_ROWS = m_arrlsdResultPreschool.Count / 6;
-            }
-            
-            int f_iCountElementInArrayAccessory = 0;
-            dataGridView1.RowCount = CNT_COUNT_ROWS;
-            for (int i = 0; i < CNT_COUNT_ROWS; i++)
-            {
-                for (int j = 0; j < CNT_COUNT_ORIENTATION; j++)
+                int f_iCountElementInArrayAccessory = 0;
+                dataGridView1.RowCount = CNT_COUNT_ROWS;
+                for (int i = 0; i < CNT_COUNT_ROWS; i++)
                 {
-                    dataGridView1.Rows[i].Cells[j].Value = m_arrlsdResultPreschool[f_iCountElementInArrayAccessory];
-                    ++f_iCountElementInArrayAccessory;
+                    for (int j = 0; j < CNT_COUNT_ORIENTATION; j++)
+                    {
+                        dataGridView1.Rows[i].Cells[j].Value = m_arrlsdResultPreschool[f_iCountElementInArrayAccessory];
+                        ++f_iCountElementInArrayAccessory;
+                    }
                 }
             }
+            
+            
         }
 
         public FormTableFromResult(string strTypeTest, string orientation)
