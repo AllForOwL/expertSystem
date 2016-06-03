@@ -30,6 +30,8 @@ namespace expert_system
         const int THREE_CLASS = 5;
         const int FIVE_CLASS = 6;
 
+        const string CNT_ROOT = "root";
+
         ArrayList m_arrlsdResultPreschool;
         ArrayList m_arrlsResultAccessory;
         string m_strLogin;
@@ -40,6 +42,7 @@ namespace expert_system
             InitializeComponent();
             //m_strTypeTest = "";
         }
+
         public FormOutputResultDiagramUsers(string login, string age)
         {
             InitializeComponent();
@@ -108,57 +111,169 @@ namespace expert_system
                 {
                     case PRESCHOOL:
                         {
-                            ReadResultUser(PRESCHOOL);
-                            CalculateFuzzyLogic(PRESCHOOL);
-                            OutputResultInDiagram();
+                            if (m_strLogin == CNT_ROOT)
+                            {
+                                string CNT_PATH_TO_ALL_USER = Path.GetFullPath(@"InfoUsers\AllLogin.txt");
+                                StreamReader readAllUsers = new StreamReader(CNT_PATH_TO_ALL_USER);
+                                while (!readAllUsers.EndOfStream)
+                                {
+                                    m_strLogin = readAllUsers.ReadLine();
+                                    ReadResultUser(PRESCHOOL);
+                                    CalculateFuzzyLogic(PRESCHOOL);
+                                    OutputResultInDiagram();
+                                }
+                                readAllUsers.Close();
+                            }
+                            else
+                            {
+                                ReadResultUser(PRESCHOOL);
+                                CalculateFuzzyLogic(PRESCHOOL);
+                                OutputResultInDiagram();
+                            }
 
                             break;
                         }
                     case PARENT:
                         {
-                            ReadResultUser(PARENT);
-                            CalculateFuzzyLogic(PARENT);
-                            OutputResultInDiagram();
+                            if (m_strLogin == CNT_ROOT)
+                            {
+                                string CNT_PATH_TO_ALL_USER = Path.GetFullPath(@"InfoUsers\AllLogin.txt");
+                                StreamReader readAllUsers = new StreamReader(CNT_PATH_TO_ALL_USER);
+                                while (!readAllUsers.EndOfStream)
+                                {
+                                    m_strLogin = readAllUsers.ReadLine();
+                                    ReadResultUser(PARENT);
+                                    CalculateFuzzyLogic(PARENT);
+                                    OutputResultInDiagram();
+                                }
+                                readAllUsers.Close();
+                            }
+                            else
+                            {
+                                ReadResultUser(PARENT);
+                                CalculateFuzzyLogic(PARENT);
+                                OutputResultInDiagram();
+                            }
 
                             break;
                         }
                     case PRESCHOOL_PARENT:
                         {
-                            ReadResultUser(PRESCHOOL_PARENT);
-                            CalculateFuzzyLogic(PRESCHOOL_PARENT);
-                            OutputResultInDiagram();
+                            if (m_strLogin == CNT_ROOT)
+                            {
+                                string CNT_PATH_TO_ALL_USER = Path.GetFullPath(@"InfoUsers\AllLogin.txt");
+                                StreamReader readAllUsers = new StreamReader(CNT_PATH_TO_ALL_USER);
+                                while (!readAllUsers.EndOfStream)
+                                {
+                                    m_strLogin = readAllUsers.ReadLine();
+                                    ReadResultUser(PRESCHOOL_PARENT);
+                                    CalculateFuzzyLogic(PRESCHOOL_PARENT);
+                                    OutputResultInDiagram();
+                                }
+                                readAllUsers.Close();
+                            }
+                            else
+                            {
+                                ReadResultUser(PRESCHOOL_PARENT);
+                                CalculateFuzzyLogic(PRESCHOOL_PARENT);
+                                OutputResultInDiagram();
+                            }
 
                             break;
                         }
                     case ONLY_PRESCHOOL:
                         {
-                            ReadResultUser(ONLY_PRESCHOOL);
-                            CalculateFuzzyLogic(ONLY_PRESCHOOL);
-                            OutputResultInDiagram();
+                            if (m_strLogin == CNT_ROOT)
+                            {
+                                string CNT_PATH_TO_ALL_USER = Path.GetFullPath(@"InfoUsers\AllLogin.txt");
+                                StreamReader readAllUsers = new StreamReader(CNT_PATH_TO_ALL_USER);
+                                while (!readAllUsers.EndOfStream)
+                                {
+                                    m_strLogin = readAllUsers.ReadLine();
+                                    ReadResultUser(ONLY_PRESCHOOL);
+                                    CalculateFuzzyLogic(ONLY_PRESCHOOL);
+                                    OutputResultInDiagram();
+                                }
+                                readAllUsers.Close();
+                            }
+                            else
+                            {
+                                ReadResultUser(ONLY_PRESCHOOL);
+                                CalculateFuzzyLogic(ONLY_PRESCHOOL);
+                                OutputResultInDiagram();
+                            }
 
                             break;
                         }
                     case ONLY_PARENT:
                         {
-                            ReadResultUser(ONLY_PARENT);
-                            CalculateFuzzyLogic(ONLY_PARENT);
-                            OutputResultInDiagram();
+                            if (m_strLogin == CNT_ROOT)
+                            {
+                                string CNT_PATH_TO_ALL_USER = Path.GetFullPath(@"InfoUsers\AllLogin.txt");
+                                StreamReader readAllUsers = new StreamReader(CNT_PATH_TO_ALL_USER);
+                                while (!readAllUsers.EndOfStream)
+                                {
+                                    m_strLogin = readAllUsers.ReadLine();
+                                    ReadResultUser(ONLY_PARENT);
+                                    CalculateFuzzyLogic(ONLY_PARENT);
+                                    OutputResultInDiagram();
+                                }
+                                readAllUsers.Close();
+                            }
+                            else
+                            {
+                                ReadResultUser(ONLY_PARENT);
+                                CalculateFuzzyLogic(ONLY_PARENT);
+                                OutputResultInDiagram();
+                            }
 
                             break;
                         }
                     case THREE_CLASS:
                         {
-                            ReadResultUser(THREE_CLASS);
-                            CalculateFuzzyLogic(THREE_CLASS);
-                            OutputResultInDiagram();
+                            if (m_strLogin == CNT_ROOT)
+                            {
+                                string CNT_PATH_TO_ALL_USER = Path.GetFullPath(@"InfoUsers\AllLogin.txt");
+                                StreamReader readAllUsers = new StreamReader(CNT_PATH_TO_ALL_USER);
+                                while (!readAllUsers.EndOfStream)
+                                {
+                                    m_strLogin = readAllUsers.ReadLine();
+                                    ReadResultUser(THREE_CLASS);
+                                    CalculateFuzzyLogic(THREE_CLASS);
+                                    OutputResultInDiagram();
+                                }
+                                readAllUsers.Close();
+                            }
+                            else
+                            {
+                                ReadResultUser(THREE_CLASS);
+                                CalculateFuzzyLogic(THREE_CLASS);
+                                OutputResultInDiagram();
+                            }
 
                             break;
                         }
                     case FIVE_CLASS:
                         {
-                            ReadResultUser(FIVE_CLASS);
-                            CalculateFuzzyLogic(FIVE_CLASS);
-                            OutputResultInDiagram();
+                            if (m_strLogin == CNT_ROOT)
+                            {
+                                string CNT_PATH_TO_ALL_USER = Path.GetFullPath(@"InfoUsers\AllLogin.txt");
+                                StreamReader readAllUsers = new StreamReader(CNT_PATH_TO_ALL_USER);
+                                while (!readAllUsers.EndOfStream)
+                                {
+                                    m_strLogin = readAllUsers.ReadLine();
+                                    ReadResultUser(FIVE_CLASS);
+                                    CalculateFuzzyLogic(FIVE_CLASS);
+                                    OutputResultInDiagram();
+                                }
+                                readAllUsers.Close();
+                            }
+                            else
+                            {
+                                ReadResultUser(FIVE_CLASS);
+                                CalculateFuzzyLogic(FIVE_CLASS);
+                                OutputResultInDiagram();
+                            }
 
                             break;
                         }
@@ -170,50 +285,155 @@ namespace expert_system
                 {
                     case PRESCHOOL:
                         {
-                            ReadResultUser(PRESCHOOL);
-                            OutputResultInDiagram();
+                            if (m_strLogin == CNT_ROOT)
+                            {
+                                string CNT_PATH_TO_ALL_USER = Path.GetFullPath(@"InfoUsers\AllLogin.txt");
+                                StreamReader readAllUsers = new StreamReader(CNT_PATH_TO_ALL_USER);
+                                while (!readAllUsers.EndOfStream)
+                                {
+                                    m_strLogin = readAllUsers.ReadLine();
+                                    ReadResultUser(PRESCHOOL);
+                                    OutputResultInDiagram();
+                                }
+                                readAllUsers.Close();
+                            }
+                            else
+                            {
+                                ReadResultUser(PRESCHOOL);
+                                OutputResultInDiagram();
+                            }
 
                             break;
                         }
                     case PARENT:
                         {
-                            ReadResultUser(PARENT);
-                            OutputResultInDiagram();
+                            if (m_strLogin == CNT_ROOT)
+                            {
+                                string CNT_PATH_TO_ALL_USER = Path.GetFullPath(@"InfoUsers\AllLogin.txt");
+                                StreamReader readAllUsers = new StreamReader(CNT_PATH_TO_ALL_USER);
+                                while (!readAllUsers.EndOfStream)
+                                {
+                                    m_strLogin = readAllUsers.ReadLine();
+                                    ReadResultUser(PARENT);
+                                    OutputResultInDiagram();
+                                }
+                                readAllUsers.Close();
+                            }
+                            else
+                            {
+                                ReadResultUser(PARENT);
+                                OutputResultInDiagram();
+                            }
 
                             break;
                         }
                     case PRESCHOOL_PARENT:
                         {
-                            ReadResultUser(PRESCHOOL_PARENT);
-                            OutputResultInDiagram();
+                            if (m_strLogin == CNT_ROOT)
+                            {
+                                string CNT_PATH_TO_ALL_USER = Path.GetFullPath(@"InfoUsers\AllLogin.txt");
+                                StreamReader readAllUsers = new StreamReader(CNT_PATH_TO_ALL_USER);
+                                while (!readAllUsers.EndOfStream)
+                                {
+                                    m_strLogin = readAllUsers.ReadLine();
+                                    ReadResultUser(PRESCHOOL_PARENT);
+                                    OutputResultInDiagram();
+                                }
+                                readAllUsers.Close();
+                            }
+                            else
+                            {
+                                ReadResultUser(PRESCHOOL_PARENT);
+                                OutputResultInDiagram();
+                            }
 
                             break;
                         }
                     case ONLY_PRESCHOOL:
                         {
-                            ReadResultUser(ONLY_PRESCHOOL);
-                            OutputResultInDiagram();
+                            if (m_strLogin == CNT_ROOT)
+                            {
+                                string CNT_PATH_TO_ALL_USER = Path.GetFullPath(@"InfoUsers\AllLogin.txt");
+                                StreamReader readAllUsers = new StreamReader(CNT_PATH_TO_ALL_USER);
+                                while (!readAllUsers.EndOfStream)
+                                {
+                                    m_strLogin = readAllUsers.ReadLine();
+                                    ReadResultUser(ONLY_PRESCHOOL);
+                                    OutputResultInDiagram();
+                                }
+                                readAllUsers.Close();
+                            }
+                            else
+                            {
+                                ReadResultUser(ONLY_PRESCHOOL);
+                                OutputResultInDiagram();
+                            }
 
                             break;
                         }
                     case ONLY_PARENT:
                         {
-                            ReadResultUser(ONLY_PARENT);
-                            OutputResultInDiagram();
+                            if (m_strLogin == CNT_ROOT)
+                            {
+                                string CNT_PATH_TO_ALL_USER = Path.GetFullPath(@"InfoUsers\AllLogin.txt");
+                                StreamReader readAllUsers = new StreamReader(CNT_PATH_TO_ALL_USER);
+                                while (!readAllUsers.EndOfStream)
+                                {
+                                    m_strLogin = readAllUsers.ReadLine();
+                                    ReadResultUser(ONLY_PARENT);
+                                    OutputResultInDiagram();
+                                }
+                                readAllUsers.Close();
+                            }
+                            else
+                            {
+                                ReadResultUser(ONLY_PARENT);
+                                OutputResultInDiagram();
+                            }
 
                             break;
                         }
                     case THREE_CLASS:
                         {
-                            ReadResultUser(THREE_CLASS);
-                            OutputResultInDiagram();
+                            if (m_strLogin == CNT_ROOT)
+                            {
+                                string CNT_PATH_TO_ALL_USER = Path.GetFullPath(@"InfoUsers\AllLogin.txt");
+                                StreamReader readAllUsers = new StreamReader(CNT_PATH_TO_ALL_USER);
+                                while (!readAllUsers.EndOfStream)
+                                {
+                                    m_strLogin = readAllUsers.ReadLine();
+                                    ReadResultUser(THREE_CLASS);
+                                    OutputResultInDiagram();
+                                }
+                                readAllUsers.Close();
+                            }
+                            else
+                            {
+                                ReadResultUser(THREE_CLASS);
+                                OutputResultInDiagram();
+                            }
 
                             break;
                         }
                     case FIVE_CLASS:
                         {
-                            ReadResultUser(FIVE_CLASS);
-                            OutputResultInDiagram();
+                            if (m_strLogin == CNT_ROOT)
+                            {
+                                string CNT_PATH_TO_ALL_USER = Path.GetFullPath(@"InfoUsers\AllLogin.txt");
+                                StreamReader readAllUsers = new StreamReader(CNT_PATH_TO_ALL_USER);
+                                while (!readAllUsers.EndOfStream)
+                                {
+                                    m_strLogin = readAllUsers.ReadLine();
+                                    ReadResultUser(FIVE_CLASS);
+                                    OutputResultInDiagram();
+                                }
+                                readAllUsers.Close();
+                            }
+                            else
+                            {
+                                ReadResultUser(FIVE_CLASS);
+                                OutputResultInDiagram();
+                            }
 
                             break;
                         }
@@ -223,6 +443,9 @@ namespace expert_system
 
         public void ReadResultUser(int typeUser)
         {
+            m_arrlsdResultPreschool.Clear();
+            m_arrlsResultAccessory.Clear();
+
             string PATH_TO_FILE_FROM_RESULT = "";
             if (typeUser >= 3)
             {

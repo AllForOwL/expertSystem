@@ -35,21 +35,16 @@ namespace expert_system
 
         private void button3_Click(object sender, EventArgs e)
         {
-            string strresult_ = comboBox1.Text;
-            if (strresult_ == "")
+            if (comboBox1.Text == "Результаты")
             {
-                MessageBox.Show("Выберите тип вывода результата");
+                MessageBox.Show("Введите по чём показывать результат");
+
                 return;
             }
-            string user;
 
-            /*StreamReader readuser = new StreamReader(Path.GetFullPath(@"InfoUsers\AllUsers.txt"));
+            string typeLogic = comboBox1.Text;
 
-            user = readuser.ReadLine();
-
-            readuser.Close();
-            */
-            OutputResultsUser outputResult = new OutputResultsUser(true, strresult_);
+            OutputResultsUser outputResult = new OutputResultsUser("root", typeLogic, true);
             outputResult.Show();
         }
 
